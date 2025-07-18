@@ -1,3 +1,4 @@
 /BackendDjango/.env.*
 /BackendDjango/.env
+/frontend-reactjs/.env
 /BackendDjango/my_secret/
