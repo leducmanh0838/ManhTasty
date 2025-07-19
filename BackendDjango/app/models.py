@@ -29,10 +29,11 @@ class Recipe(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes')
     title = models.CharField(max_length=255)
     description = models.TextField()
-    image = CloudinaryField('avatar', null=True, blank=True)
+    image = CloudinaryField('image', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField('Tag', blank=True)
+    ingredients = models.ManyToManyField('Ingredient', through='RecipeIngredient', related_name='recipes')
 
     def __str__(self):
         return self.title
@@ -51,12 +52,28 @@ class Recipe(models.Model):
 
 # 3. Nguyên liệu
 class Ingredient(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ingredients')
     name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class RecipeIngredient(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.quantity} {self.name}"
+        return f"{self.quantity} of {self.ingredient.name} for {self.recipe.title}"
+
+    class Meta:
+        db_table = 'app_recipe_ingredient'
+# class Ingredient(models.Model):
+#     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ingredients')
+#     name = models.CharField(max_length=100)
+#     quantity = models.CharField(max_length=100)
+#
+#     def __str__(self):
+#         return f"{self.quantity} {self.name}"
 
 # 4. Các bước nấu ăn
 class Step(models.Model):
