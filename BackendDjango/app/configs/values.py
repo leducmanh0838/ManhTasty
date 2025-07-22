@@ -1,0 +1,2 @@
+class TokenValue:
+    ACCESS_TOKEN_EXPIRE_SECONDS = 36000

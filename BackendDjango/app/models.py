@@ -18,7 +18,7 @@ class LoginType(models.IntegerChoices):
 class User(AbstractUser):
     login_type = models.PositiveSmallIntegerField(choices=LoginType.choices, default=LoginType.SYSTEM)
     # avatar_url = models.URLField(blank=True, null=True)
-    avatar = CloudinaryField('avatar', null=True, blank=True)
+    avatar = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return self.username
@@ -66,7 +66,7 @@ class RecipeIngredient(models.Model):
         return f"{self.quantity} of {self.ingredient.name} for {self.recipe.title}"
 
     class Meta:
-        db_table = 'app_recipe_ingredient'
+        db_table = 'app_recipe_ingredients'
 # class Ingredient(models.Model):
 #     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ingredients')
 #     name = models.CharField(max_length=100)

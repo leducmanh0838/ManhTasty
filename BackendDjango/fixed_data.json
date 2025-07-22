@@ -1,0 +1,42 @@
+[
+{
+  "model": "app.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$Abnhz3jlMiOT5nqQOJBtHU$Y4sEtAqzyLqcd16xVyiVq4PDt65zBho1OD22uievymU=",
+    "last_login": "2025-07-20T17:26:06.266Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-07-20T17:25:39.412Z",
+    "login_type": 1,
+    "avatar": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "oauth2_provider.application",
+  "pk": 1,
+  "fields": {
+    "client_id": "irGlcY6HnppSLYdTAIukJBrPwTZCli3z3VtFEKkB",
+    "user": 1,
+    "redirect_uris": "",
+    "post_logout_redirect_uris": "",
+    "client_type": "confidential",
+    "authorization_grant_type": "password",
+    "client_secret": "pbkdf2_sha256$600000$j11uRNARxLlg1GqAolqvUM$7J2EXzyuW6Bq9KLq5fWqwwo6wX3zF/fjKKdb4JSs+jE=",
+    "hash_client_secret": true,
+    "name": "app",
+    "skip_authorization": false,
+    "created": "2025-07-20T17:26:56.536Z",
+    "updated": "2025-07-20T17:26:56.536Z",
+    "algorithm": "",
+    "allowed_origins": ""
+  }
+}
+]

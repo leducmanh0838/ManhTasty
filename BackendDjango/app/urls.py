@@ -1,7 +1,16 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 
-from app.views import RecipeAPIView
+from app.views.recipe_view import RecipeViewSet
+from app.views.user_view import LoginViewSet
+
+router = routers.DefaultRouter()
+router.register('login', LoginViewSet, basename='login')
+router.register('recipe', RecipeViewSet, basename='recipe')
 
 urlpatterns = [
-    path('recipes/create/', RecipeAPIView.as_view(), name='create-recipe'),
+    path('api/', include(router.urls)),
+    # path('recipes/create/', RecipeAPIView.as_view(), name='recipe'),
+    # path('auth/google/', GoogleLoginAPIView.as_view(), name='user'),
+    # path('auth/facebook/', FacebookLoginAPIView.as_view(), name='user2'),
 ]

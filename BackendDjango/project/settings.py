@@ -28,6 +28,13 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+GOOGLE_WEB_CLIENT_ID = os.environ.get("GOOGLE_WEB_CLIENT_ID")
+
+FACEBOOK_APP_ID = os.environ.get("FACEBOOK_APP_ID")
+FACEBOOK_APP_SECRET = os.environ.get("FACEBOOK_APP_SECRET")
+
+DOT_CLIENT_ID = os.environ.get("DOT_CLIENT_ID")
+DOT_CLIENT_SECRET = os.environ.get("DOT_CLIENT_SECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
@@ -47,11 +54,13 @@ INSTALLED_APPS = [
     'app',
     'drf_yasg',
     'oauth2_provider',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -157,3 +166,7 @@ EMAIL_HOST_PASSWORD = os.getenv('PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 AUTH_USER_MODEL = 'app.User'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
