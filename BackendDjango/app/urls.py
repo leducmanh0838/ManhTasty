@@ -1,12 +1,14 @@
 from django.urls import path, include
 from rest_framework import routers
 
+from app.views.reaction_view import ReactionViewSet
 from app.views.recipe_view import RecipeViewSet
 from app.views.user_view import LoginViewSet
 
 router = routers.DefaultRouter()
 router.register('login', LoginViewSet, basename='login')
-router.register('recipe', RecipeViewSet, basename='recipe')
+router.register('recipes', RecipeViewSet, basename='recipes')
+router.register('reactions', ReactionViewSet, basename='reactions')
 
 urlpatterns = [
     path('api/', include(router.urls)),

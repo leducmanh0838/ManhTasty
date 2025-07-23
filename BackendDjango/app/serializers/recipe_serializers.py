@@ -1,30 +1,24 @@
-# $2b$12$d.F2tugu9sBGCAS0WplbWOq4gg5MMwh6HX/XJKaOUYWI40l7/kExO
+# $2b$12$W12DhXaO.7RCDXCCYbS99u3PSknbT5XveQyc9xozSUTUtVznw1Ev.
+from cloudinary.uploader import upload
 from rest_framework import serializers
 from app.models import Recipe, Ingredient, RecipeIngredient, Step, Tag
+from app.utils.media import generate_public_id
 
 
 class IngredientInputSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
     quantity = serializers.CharField(max_length=100)
 
-class StepInputSerializer(serializers.Serializer):
-    order = serializers.IntegerField()
-    description = serializers.CharField()
-
 class TagInputSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=50)
 
 class RecipeCreateSerializer(serializers.ModelSerializer):
-    # ingredients_input = IngredientInputSerializer(many=True, required=False)
-    # steps_input = StepInputSerializer(many=True, required=False)
-    # tags_input = TagInputSerializer(many=True, required=False)
     tags = serializers.JSONField(required=False)
     ingredients = serializers.JSONField(required=False)
-    steps = serializers.JSONField(required=False)
 
     class Meta:
         model = Recipe
-        fields = ['id','title', 'description','image', 'ingredients', 'steps', 'tags']
+        fields = ['id','title', 'description','image', 'ingredients', 'tags', 'image']
 
     def validate_tags(self, value):
         if not isinstance(value, list):
@@ -57,26 +51,23 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         serializer.is_valid(raise_exception=True)
         return serializer.validated_data
 
-    def validate_steps(self, value):
-        if not isinstance(value, list):
-            raise serializers.ValidationError("Expected a list of steps")
-
-        serializer = StepInputSerializer(data=value, many=True)
-        serializer.is_valid(raise_exception=True)
-        return serializer.validated_data
 
     def create(self, validated_data):
         ingredients_data = validated_data.pop('ingredients')
         tags_data = validated_data.pop('tags')
-        steps_data = validated_data.pop('steps')
-        # validated_data.pop('author')
         user = self.context['request'].user
+        image_file = validated_data.pop('image', None)
+        if image_file:
+            # Upload thủ công để chỉ định public_id
+            upload_result = upload(
+                image_file,
+                public_id=f"recipes/main_images/{generate_public_id()}"
+            )
+            validated_data['image'] = upload_result['public_id']
 
         # Tạo công thức
         recipe = Recipe.objects.create(author=user, **validated_data)
 
-        for step_data in steps_data:
-            Step.objects.create(recipe=recipe, **step_data)
 
         # Tạo nguyên liệu và liên kết
         for ingredient_data in ingredients_data:
@@ -98,3 +89,38 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
 
         return recipe
 
+class RecipeListSerializer(serializers.ModelSerializer):
+    ingredients = serializers.SerializerMethodField()
+    tags = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Recipe
+        fields = ['id', 'title', 'image', 'ingredients', 'tags']
+
+    def get_ingredients(self, obj):
+        return [ing.name for ing in obj.ingredients.all()[:3]]
+        # return list(obj.ingredients.values_list('name', flat=True)[:3])
+    def get_tags(self, obj):
+        return [tag.name for tag in obj.tags.all()]
+
+class RecipeRetrieveSerializer(serializers.ModelSerializer):
+    author = serializers.SerializerMethodField()
+    ingredients = serializers.SerializerMethodField()
+    tags = serializers.SerializerMethodField()
+    medias = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Recipe
+        fields = ['id', 'title', 'description', 'image', 'author', 'ingredients', 'tags', 'medias']
+
+    def get_author(self, obj):
+        return obj.author.get_full_name()  # hoặc obj.author.full_name nếu bạn custom field
+
+    def get_ingredients(self, obj):
+        return [ingredient.name for ingredient in obj.ingredients.all()]
+
+    def get_tags(self, obj):
+        return [tag.name for tag in obj.tags.all()]
+
+    def get_medias(self, obj):
+        return [media.file.url for media in obj.medias.all().order_by('order')]

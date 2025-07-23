@@ -7,7 +7,6 @@ from django.utils.timezone import now
 from oauth2_provider.models import Application, AccessToken, RefreshToken
 from oauthlib.common import generate_token
 from rest_framework.decorators import action
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, viewsets
 from google.oauth2 import id_token
@@ -16,7 +15,7 @@ import os
 
 from app.configs.values import TokenValue
 from app.models import User, LoginType
-from app.utils.image import upload_avatar_to_cloudinary
+from app.utils.media import upload_avatar_to_cloudinary
 from project.settings import DOT_CLIENT_ID, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET
 
 class LoginViewSet(viewsets.ViewSet):
