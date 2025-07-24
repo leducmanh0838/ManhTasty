@@ -5,9 +5,10 @@ from django.db.models import Q, Count
 from rest_framework import parsers, mixins, viewsets
 from rest_framework.decorators import action
 
-from app.models import Recipe, RecipeStatus, Reaction, EmotionType
-from app.paginations import RecipePagination
+from app.models import Recipe, RecipeStatus, Reaction, EmotionType, Comment
+from app.paginations import RecipePagination, CommentPagination
 from app.permissions import IsAuthor
+from app.serializers.comment_serializers import CommentSerializer
 from app.serializers.recipe_media_serializers import RecipeMediaCreateSerializer
 from app.serializers.recipe_serializers import RecipeCreateSerializer, RecipeListSerializer, RecipeRetrieveSerializer
 from rest_framework.response import Response
@@ -140,3 +141,18 @@ class RecipeViewSet(mixins.CreateModelMixin,
             emotion_counts[emotion_value] = item['count']
 
         return Response(emotion_counts)
+
+
+class RecipeCommentViewSet(mixins.ListModelMixin,
+                     mixins.CreateModelMixin,
+                     viewsets.GenericViewSet):
+    serializer_class = CommentSerializer
+    pagination_class = CommentPagination
+
+    def get_queryset(self):
+        recipe_id = self.kwargs['recipe_pk']
+        return Comment.objects.filter(recipe_id=recipe_id, parent__isnull=True).order_by('-id')
+
+    def perform_create(self, serializer):
+        recipe_id = self.kwargs['recipe_pk']
+        serializer.save(user=self.request.user, recipe_id=recipe_id)
