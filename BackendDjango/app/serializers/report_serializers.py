@@ -1,13 +1,14 @@
 from rest_framework import serializers
 from django.contrib.contenttypes.models import ContentType
-from app.models import Reaction, EmotionType
+from app.models import Report
 
-class ReactionCreateSerializer(serializers.ModelSerializer):
-    content_type = serializers.CharField()
+
+class ReportCreateSerializer(serializers.ModelSerializer):
+    content_type = serializers.CharField()  # VD: 'recipe'
 
     class Meta:
-        model = Reaction
-        fields = ['object_id', 'content_type', 'emotion']
+        model = Report
+        fields = ['object_id', 'content_type', 'reason', 'description']
 
     def validate_content_type(self, value):
         try:
@@ -32,21 +33,21 @@ class ReactionCreateSerializer(serializers.ModelSerializer):
 
         return attrs
 
-    def create(self, validated_data):
-        user = self.context['request'].user
-        content_type = validated_data['content_type']
-        object_id = validated_data['object_id']
-        emotion = validated_data['emotion']
-
-        reaction, created = Reaction.objects.get_or_create(
-            user=user,
-            content_type=content_type,
-            object_id=object_id,
-            defaults={'emotion': emotion}
-        )
-
-        if not created:
-            reaction.emotion = emotion
-            reaction.save()
-
-        return reaction
+    # def create(self, validated_data):
+    #     user = self.context['request'].user
+    #     content_type = validated_data['content_type']
+    #     object_id = validated_data['object_id']
+    #     emotion = validated_data['emotion']
+    #
+    #     reaction, created = Reaction.objects.get_or_create(
+    #         user=user,
+    #         content_type=content_type,
+    #         object_id=object_id,
+    #         defaults={'emotion': emotion}
+    #     )
+    #
+    #     if not created:
+    #         reaction.emotion = emotion
+    #         reaction.save()
+    #
+    #     return reaction

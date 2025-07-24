@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 from app.models import Recipe, RecipeStatus, Reaction, EmotionType, Comment
 from app.paginations import RecipePagination, CommentPagination
 from app.permissions import IsAuthor
-from app.serializers.comment_serializers import CommentSerializer
+from app.serializers.comment_serializers import StoreCommentCreateSerializer, StoreCommentListSerializer
 from app.serializers.recipe_media_serializers import RecipeMediaCreateSerializer
 from app.serializers.recipe_serializers import RecipeCreateSerializer, RecipeListSerializer, RecipeRetrieveSerializer
 from rest_framework.response import Response
@@ -146,8 +146,14 @@ class RecipeViewSet(mixins.CreateModelMixin,
 class RecipeCommentViewSet(mixins.ListModelMixin,
                      mixins.CreateModelMixin,
                      viewsets.GenericViewSet):
-    serializer_class = CommentSerializer
+    # serializer_class = StoreCommentCreateSerializer
     pagination_class = CommentPagination
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return StoreCommentCreateSerializer
+        elif self.action == 'list':
+            return StoreCommentListSerializer
+        return StoreCommentListSerializer  # fallback
 
     def get_queryset(self):
         recipe_id = self.kwargs['recipe_pk']

@@ -16,9 +16,23 @@ from app.serializers.user_serializers import AvatarAndNameSerializer
 #         user = self.context['request'].user
 #         return Comment.objects.create(user=user, **validated_data)
 
-class CommentSerializer(serializers.ModelSerializer):
+class StoreCommentCreateSerializer(serializers.ModelSerializer):
     user=AvatarAndNameSerializer(read_only=True)
 
     class Meta:
         model = Comment
         fields = ['id', 'user', 'content', 'parent', 'created_at']
+
+class StoreCommentListSerializer(serializers.ModelSerializer):
+    user=AvatarAndNameSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ['id', 'user', 'content', 'created_at']
+
+class CommentChildSerializer(serializers.ModelSerializer):
+    user = AvatarAndNameSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ['id', 'user', 'content', 'created_at']

@@ -1,8 +1,10 @@
 from django.urls import path, include
 from rest_framework_nested import routers
 
+from app.views.comment_view import CommentViewSet
 from app.views.reaction_view import ReactionViewSet
 from app.views.recipe_view import RecipeViewSet, RecipeCommentViewSet
+from app.views.report_view import ReportViewSet
 from app.views.user_view import LoginViewSet
 
 # router = routers.DefaultRouter()
@@ -10,7 +12,8 @@ router = routers.SimpleRouter()
 router.register(r'login', LoginViewSet, basename='login')
 router.register(r'recipes', RecipeViewSet, basename='recipes')
 router.register(r'reactions', ReactionViewSet, basename='reactions')
-# router.register(r'comments', CommentViewSet, basename='comments')
+router.register(r'comments', CommentViewSet, basename='comments')
+router.register(r'reports', ReportViewSet, basename='reports')
 
 # Tạo nested router cho comments theo từng recipe
 recipes_router = routers.NestedSimpleRouter(router, r'recipes', lookup='recipe')

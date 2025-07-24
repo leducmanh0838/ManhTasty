@@ -69,6 +69,7 @@ class Recipe(TimeStampedModel):
     tags = models.ManyToManyField('Tag', through='RecipeTag', related_name='tags')
     ingredients = models.ManyToManyField('Ingredient', through='RecipeIngredient', related_name='recipes')
     reactions = GenericRelation('Reaction')
+    reports = GenericRelation('Report')
 
     def __str__(self):
         return self.title
@@ -142,6 +143,8 @@ class Comment(TimeStampedModel):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
+    reactions = GenericRelation('Reaction')
+    reports = GenericRelation('Report')
 
     parent = models.ForeignKey(
         'self',
