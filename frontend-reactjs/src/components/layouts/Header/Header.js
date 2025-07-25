@@ -4,9 +4,15 @@ import "./Header.css";
 import { AppContext } from "../../../provides/AppProvider";
 import { useContext } from "react";
 import LoginButtonWithDialog from "../../../dialogs/LoginButtonWithDialog";
+import { ActionType } from "../../../reducers/AuthReducer";
 
 const Header = () => {
-    const { user } = useContext(AppContext);
+    const { currentUser, currentUserDispatch } = useContext(AppContext);
+    // const currentUserInfo = currentUser.user
+
+    const handleLogout = () => {
+        currentUserDispatch({ type: ActionType.LOGOUT });
+    }
     return (
         <header className="d-flex align-items-center justify-content-between p-3 shadow bg-white sticky-top mt-2 mx-2 rounded">
             <button
@@ -48,22 +54,22 @@ const Header = () => {
                     <li><a className="dropdown-item text-danger" href="#">Đăng xuất</a></li>
                 </ul>
             </div> */}
-            {user ? (<>
+            {currentUser ? (<>
                 <div className="dropdown">
                     <button
-                        className="btn btn-light dropdown-toggle d-flex align-items-center"
+                        className="btn btn-light dropdown-toggle d-flex align-items-center justify-content-center"
                         type="button"
                         id="dropdownMenuButton"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                     >
                         <img
-                            src="https://res.cloudinary.com/dedsaxk7j/image/upload/v1749456346/wyppshgkujdyyeumsw4g.png"
+                            src={currentUser.avatar}
                             alt="Avatar"
                             className="rounded-circle me-2"
                             style={{ width: '32px', height: '32px', objectFit: 'cover' }}
                         />
-                        <span className="d-none d-md-inline">Mạnh</span>
+                        <span className="d-none d-md-inline">{`${currentUser.last_name} ${currentUser.first_name}`}</span>
                     </button>
 
                     <ul className="dropdown-menu dropdown-menu-end p-2 shadow" style={{ width: '300px' }}>
@@ -86,7 +92,7 @@ const Header = () => {
                             </Link>
                         </li>
                         <li><hr className="dropdown-divider" /></li>
-                        <li><button className="dropdown-item text-danger">Đăng xuất</button></li>
+                        <li><button className="dropdown-item text-danger" onClick={handleLogout}>Đăng xuất</button></li>
                     </ul>
                 </div>
             </>) : (<>

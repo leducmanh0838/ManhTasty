@@ -1,0 +1,45 @@
+{
+  "title": "Trứng chiên thơm ngon đơn giản",
+  "description": "Món trứng chiên đơn giản, dễ làm, phù hợp cho bữa ăn nhanh hoặc bữa cơm gia đình. Chỉ cần vài nguyên liệu cơ bản là bạn đã có món ăn ngon miệng.",
+  "tags": ["đơn giản", "bữa cơm", "trứng", "dễ làm", "tiết kiệm thời gian"],
+  "ingredients": [
+    {
+      "name": "Trứng gà",
+      "quantity": "2 quả"
+    },
+    {
+      "name": "Hành lá",
+      "quantity": "1 nhánh (xắt nhỏ)"
+    },
+    {
+      "name": "Nước mắm",
+      "quantity": "1 thìa cà phê"
+    },
+    {
+      "name": "Muối",
+      "quantity": "1/4 thìa cà phê"
+    },
+    {
+      "name": "Dầu ăn",
+      "quantity": "1 thìa canh"
+    }
+  ],
+  "steps": [
+    {
+      "description": "Đập trứng vào bát, thêm nước mắm và muối rồi đánh đều.",
+      "image": "https://example.com/images/trungchien-b1.jpg"
+    },
+    {
+      "description": "Cho hành lá xắt nhỏ vào hỗn hợp trứng, trộn đều.",
+      "image": "https://example.com/images/trungchien-b2.jpg"
+    },
+    {
+      "description": "Làm nóng dầu ăn trong chảo, đổ hỗn hợp trứng vào.",
+      "image": "https://example.com/images/trungchien-b3.jpg"
+    },
+    {
+      "description": "Chiên lửa vừa đến khi trứng vàng đều hai mặt thì gắp ra đĩa.",
+      "image": "https://example.com/images/trungchien-b4.jpg"
+    }
+  ]
+}

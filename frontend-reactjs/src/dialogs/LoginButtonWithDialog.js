@@ -1,6 +1,7 @@
-import { GoogleLogin } from '@react-oauth/google';
-import React, { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap'; // dùng react-bootstrap cho tiện
+import { useState } from 'react';
+import { Modal} from 'react-bootstrap'; // dùng react-bootstrap cho tiện
+import FacebookLogin from '../components/layouts/buttons/FacebookLogin';
+import MyGoogleLogin from '../components/layouts/buttons/MyGoogleLogin';
 
 const LoginButtonWithDialog = () => {
     const [showModal, setShowModal] = useState(false);
@@ -35,26 +36,18 @@ const LoginButtonWithDialog = () => {
                     {/* <button className="btn btn-dark w-100 mb-2 d-flex align-items-center justify-content-center">
                         <i className="bi bi-google me-2"></i> Tiếp tục với Google
                     </button> */}
-                    <div className="w-100 mb-2 d-flex justify-content-center">
-                        <GoogleLogin
-                            onError={() => console.log("Login thất bại")}
-                            width="100%"
-                            useOneTap={false}
-                            size="large"
-                            shape="pill"
-                            theme="filled_black"
-                        />
-                    </div>
+                    <MyGoogleLogin setShowModal={setShowModal}/>
 
                     {/* <div className="d-flex align-items-center my-3">
             <hr className="flex-grow-1" />
             <span className="mx-2 text-muted">hoặc</span>
             <hr className="flex-grow-1" />
           </div> */}
+                    <FacebookLogin setShowModal={setShowModal}/>
 
-                    <button className="btn btn-light w-100 d-flex align-items-center justify-content-center border">
+                    {/* <button className="btn btn-light w-100 d-flex align-items-center justify-content-center border">
                         <i className="bi bi-facebook me-2"></i> Tiếp tục với Facebook
-                    </button>
+                    </button> */}
                 </Modal.Body>
             </Modal>
         </>

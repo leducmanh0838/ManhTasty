@@ -1,0 +1,25 @@
+/* .recipe-card .group:hover .action-buttons {
+  opacity: 1;
+} */
+
+.action-buttons {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.recipe-card .group:hover .action-buttons {
+  opacity: 1;
+}
+
+/* .hover-box:hover {
+  background-color: black;
+  color: white;
+} */
+
+.recipe-image {
+  transition: filter 0.3s ease;
+}
+
+.group:hover .recipe-image {
+  filter: brightness(50%); /* làm tối 40% */
+}
