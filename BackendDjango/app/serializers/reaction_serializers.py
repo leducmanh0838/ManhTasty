@@ -10,8 +10,14 @@ class ReactionCreateSerializer(serializers.ModelSerializer):
         fields = ['object_id', 'content_type', 'emotion']
 
     def validate_content_type(self, value):
+        allowed_models = ['recipe', 'comment']
+        model_name = value.lower()
+
+        if model_name not in allowed_models:
+            raise serializers.ValidationError("Only 'recipe' and 'comment' are allowed as content_type.")
+
         try:
-            return ContentType.objects.get(model=value.lower())
+            return ContentType.objects.get(model=model_name)
         except ContentType.DoesNotExist:
             raise serializers.ValidationError("Invalid content_type")
 

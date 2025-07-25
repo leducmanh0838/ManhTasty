@@ -25,8 +25,9 @@ class EmotionType(models.IntegerChoices):
     LOVE = 2, 'Love'
     HAHA = 3, 'Haha'
     WOW = 4, 'Wow'
-    SAD = 5, 'Sad'
-    ANGRY = 6, 'Angry'
+    DELICIOUS = 5, 'Delicious'
+    SAD = 6, 'Sad'
+    ANGRY = 7, 'Angry'
 
 class RecipeStatus(models.IntegerChoices):
     CREATING = -1, 'Creating'

@@ -92,10 +92,16 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
 class RecipeListSerializer(serializers.ModelSerializer):
     ingredients = serializers.SerializerMethodField()
     tags = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
         fields = ['id', 'title', 'image', 'ingredients', 'tags']
+
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url  # CloudinaryField tự sinh URL
+        return None
 
     def get_ingredients(self, obj):
         return [ing.name for ing in obj.ingredients.all()[:3]]
@@ -116,8 +122,18 @@ class RecipeRetrieveSerializer(serializers.ModelSerializer):
     def get_author(self, obj):
         return obj.author.get_full_name()  # hoặc obj.author.full_name nếu bạn custom field
 
+    # def get_ingredients(self, obj):
+    #     return [ingredient.name for ingredient in obj.ingredients.all()]
+
     def get_ingredients(self, obj):
-        return [ingredient.name for ingredient in obj.ingredients.all()]
+        recipe_ingredients = RecipeIngredient.objects.filter(recipe=obj).select_related('ingredient')
+        return [
+            {
+                'name': ri.ingredient.name,
+                'quantity': ri.quantity
+            }
+            for ri in recipe_ingredients
+        ]
 
     def get_tags(self, obj):
         return [tag.name for tag in obj.tags.all()]
