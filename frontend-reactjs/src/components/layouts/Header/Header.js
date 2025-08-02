@@ -5,13 +5,16 @@ import { AppContext } from "../../../provides/AppProvider";
 import { useContext } from "react";
 import LoginButtonWithDialog from "../../../dialogs/LoginButtonWithDialog";
 import { ActionType } from "../../../reducers/AuthReducer";
+import { useLogout } from "../../../utils/Auth";
 
 const Header = () => {
+    const logout = useLogout();
     const { currentUser, currentUserDispatch } = useContext(AppContext);
     // const currentUserInfo = currentUser.user
 
     const handleLogout = () => {
-        currentUserDispatch({ type: ActionType.LOGOUT });
+        // currentUserDispatch({ type: ActionType.LOGOUT });
+        logout();
     }
     return (
         <header className="d-flex align-items-center justify-content-between p-3 shadow bg-white sticky-top mt-2 mx-2 rounded">

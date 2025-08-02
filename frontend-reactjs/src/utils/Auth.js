@@ -23,6 +23,22 @@ export function useLogin() {
   return login;
 }
 
+export function useLogout() {
+  const { currentUserDispatch, tokenDispatch } = useContext(AppContext);
+
+  const logout = () => {
+    currentUserDispatch({
+      type: ActionType.LOGOUT
+    });
+
+    tokenDispatch({
+      type: ActionType.LOGOUT
+    });
+  };
+
+  return logout;
+}
+
 export async function getAccessToken() {
   console.info('getAccessToken')
   const token = cookie.load('token');

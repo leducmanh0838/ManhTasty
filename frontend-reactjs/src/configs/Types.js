@@ -75,7 +75,7 @@ export const EmotionType = {
     3: '😂', // Haha
     4: '😮', // Wow
     5: '😋', // Delicious
-    6: '😠', // Angry
+    6: '😡', // Angry
   },
 
   getLabel(value) {
@@ -93,7 +93,7 @@ export const emotionTypes = [
     { id: 3, label: 'Haha', icon: '😂' },
     { id: 4, label: 'Wow', icon: '😮' },
     { id: 5, label: 'Ngon', icon: '😋' },
-    { id: 6, label: 'Phẫn nộ', icon: '😠' },
+    { id: 6, label: 'Phẫn nộ', icon: '😡' },
 ];
 
 

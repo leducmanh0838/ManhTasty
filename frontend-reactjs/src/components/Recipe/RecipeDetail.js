@@ -14,6 +14,7 @@ import { AppContext } from "../../provides/AppProvider";
 import CommentList from "./RecipeDetailLayout/Comment/CommentList";
 import CommentInput from "./RecipeDetailLayout/Comment/CommentInput";
 import CommentLayout from "./RecipeDetailLayout/Comment/CommentLayout";
+import { toast } from "react-toastify";
 
 
 const RecipeDetail = () => {
@@ -60,6 +61,10 @@ const RecipeDetail = () => {
 
     const handleGiveEmotion = async (emotionType) => {
         console.info("handleGiveEmotion")
+        if (!currentUser) {
+            toast.warning("Bạn cần đăng nhập để thả cảm xúc!");
+            return;
+        }
         try {
             const api = await authApis();
 
@@ -103,6 +108,10 @@ const RecipeDetail = () => {
     }
 
     const handleDeleteCurrentEmotion = async () => {
+        if (!currentUser) {
+            toast.warning("Bạn cần đăng nhập để thả cảm xúc!");
+            return;
+        }
         try {
             const api = await authApis();
             const reactionId = selectedEmotion.id
@@ -162,14 +171,6 @@ const RecipeDetail = () => {
                     <GridTagList tags={recipe.tags} />
 
                     <EmotionList emotions={emotions} />
-                    {/* <button
-                        // onClick={toggleLike}
-                        className={`btn border-0 flex items-center space-x-2 px-4 py-2 bg-light rounded-pill my-2 shadow-sm
-        ${liked ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"}`}
-                    >
-                        <HiOutlineThumbUp size={20} className={`${liked ? "text-white" : "text-gray-600"} mx-2`} />
-                        <span style={{fontSize:"16px"}}>{liked ? "Đã thích" : "Thích"}</span>
-                    </button> */}
 
 
                     <div
@@ -240,7 +241,7 @@ const RecipeDetail = () => {
                 </h5>
                 {/* <CommentInput onSubmit={handleAddComment}/> */}
                 {/* <CommentList recipeId={recipeId} /> */}
-                <CommentLayout recipeId={recipeId}/>
+                <CommentLayout recipeId={recipeId} />
             </div>
         </>
 

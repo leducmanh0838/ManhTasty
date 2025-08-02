@@ -61,8 +61,11 @@ class StoreCommentListSerializer(serializers.ModelSerializer):
 
         for r in reactions:
             if r.user_id == user.id:
-                return r.emotion
-
+                # return r.emotion
+                return {
+                    "emotion": r.emotion,
+                    "id": r.id,
+                }
         return None  # 👈 Không có cảm xúc nào từng thả
 
 class ChildCommentSerializer(serializers.ModelSerializer):

@@ -6,6 +6,7 @@ import HomePage from './components/Home/HomePage';
 import Header from './components/layouts/Header/Header';
 import { AppProvider } from './provides/AppProvider';
 import RecipeDetail from './components/Recipe/RecipeDetail';
+import { ToastContainer } from 'react-toastify';
 
 const App = () => {
 
@@ -14,6 +15,16 @@ const App = () => {
       <BrowserRouter>
         <div className="d-flex" >
           {/* Sidebar */}
+          <ToastContainer
+            position="top-center"
+            autoClose={10000}
+            hideProgressBar={false}
+            newestOnTop={true}
+            closeOnClick
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
           <Sidebar />
 
           {/* Main Content */}

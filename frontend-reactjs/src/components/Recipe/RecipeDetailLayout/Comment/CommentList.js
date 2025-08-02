@@ -1,7 +1,7 @@
 
 import Comment from './Comment';
 
-const CommentList = ({ comments }) => {
+const CommentList = ({ comments, recipeId }) => {
     // const [comments, setComment] = useState([]);
     // useEffect(() => {
     //     const fetchData = async () => {
@@ -19,13 +19,16 @@ const CommentList = ({ comments }) => {
     return (
         <>
             {comments.map((comment) => (
-                <Comment
+                <Comment key={comment.id}
+                    recipeId={recipeId}
                     commentId={comment.id}
                     avatar={comment.user.avatar}
                     name={`${comment.user.first_name} ${comment.user.last_name}`}
                     date={comment.created_at}
                     content={comment.content}
                     replyCount={comment.reply_count}
+                    emotionCounts={comment.emotion_counts}
+                    currentEmotion={comment.current_emotion}
                 />
             ))}
         </>
