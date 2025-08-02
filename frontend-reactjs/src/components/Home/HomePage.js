@@ -1,8 +1,17 @@
-import { mockRecipes } from "../../mocks/homepage";
+import { useEffect, useState } from "react";
 import "./Home.css";
 import { BiDotsHorizontalRounded, BiShareAlt } from "react-icons/bi";
+import Apis, { endpoints } from "../../configs/Apis";
+import { Link } from "react-router-dom";
+import { slugify } from "../../utils/Common";
 
 const HomePage = () => {
+    const [recipes, setRecipes] = useState([]);
+    useEffect(()=>{
+        Apis.get(endpoints.home.recipes)
+        .then(res => setRecipes(res.data.results))
+    }, []);
+
     return (
         // <main className="py-4 px-3 recipe-grid">
         //     {mockRecipes.map((recipe) => (
@@ -29,8 +38,9 @@ const HomePage = () => {
         // </div>
 
         <main className="py-4 px-3 recipe-grid">
-            {mockRecipes.map((recipe) => (
-                <div
+            {recipes.map((recipe) => (
+                <Link
+                    to={`/recipes/${recipe.id}-${slugify(recipe.title)}`}
                     key={recipe.id}
                     className="card mb-4 recipe-card"
                     style={{
@@ -123,7 +133,7 @@ const HomePage = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </Link>
             ))}
         </main>
 

@@ -148,6 +148,11 @@ class RecipeCommentViewSet(mixins.ListModelMixin,
                      viewsets.GenericViewSet):
     # serializer_class = StoreCommentCreateSerializer
     pagination_class = CommentPagination
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [IsAuthenticated()]
+        return [AllowAny()]
+
     def get_serializer_class(self):
         if self.action == 'create':
             return StoreCommentCreateSerializer

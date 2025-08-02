@@ -1,7 +1,9 @@
-# $2b$12$W12DhXaO.7RCDXCCYbS99u3PSknbT5XveQyc9xozSUTUtVznw1Ev.
+# $2b$12$by56vaFDxvQie8qU3jFQ6ulNL4EUqZVp.alJr6TrW3YztwBA3wrSO
 from cloudinary.uploader import upload
 from rest_framework import serializers
-from app.models import Recipe, Ingredient, RecipeIngredient, Step, Tag
+from app.models import Recipe, Ingredient, RecipeIngredient, Step, Tag, MediaType
+from app.serializers.step_serializers import StepListSerializer
+from app.serializers.user_serializers import AvatarAndNameSerializer
 from app.utils.media import generate_public_id
 
 
@@ -18,7 +20,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ['id','title', 'description','image', 'ingredients', 'tags', 'image']
+        fields = ['id','title', 'description','image', 'ingredients', 'tags']
 
     def validate_tags(self, value):
         if not isinstance(value, list):
@@ -110,14 +112,16 @@ class RecipeListSerializer(serializers.ModelSerializer):
         return [tag.name for tag in obj.tags.all()]
 
 class RecipeRetrieveSerializer(serializers.ModelSerializer):
-    author = serializers.SerializerMethodField()
+    author = AvatarAndNameSerializer()
     ingredients = serializers.SerializerMethodField()
     tags = serializers.SerializerMethodField()
     medias = serializers.SerializerMethodField()
+    steps = StepListSerializer(many=True)
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
-        fields = ['id', 'title', 'description', 'image', 'author', 'ingredients', 'tags', 'medias']
+        fields = ['id', 'title', 'description', 'image', 'author', 'ingredients', 'tags', 'medias', 'steps']
 
     def get_author(self, obj):
         return obj.author.get_full_name()  # hoặc obj.author.full_name nếu bạn custom field
@@ -139,4 +143,25 @@ class RecipeRetrieveSerializer(serializers.ModelSerializer):
         return [tag.name for tag in obj.tags.all()]
 
     def get_medias(self, obj):
-        return [media.file.url for media in obj.medias.all().order_by('order')]
+        cloud_name = "dedsaxk7j"
+        result = []
+
+        for media in obj.medias.all().order_by('order'):
+            public_id = media.file.public_id
+            media_type = media.media_type  # jpg, mp4, etc.
+
+            # Tạm thời: nếu đuôi là mp4 => video, còn lại là image
+            resource_type = "video" if media_type == MediaType.VIDEO else "image"
+
+            url = f"https://res.cloudinary.com/{cloud_name}/{resource_type}/upload/{public_id}"
+            result.append({
+                'src': url,
+                'type': media_type
+            })
+
+        return result
+
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url
+        return None

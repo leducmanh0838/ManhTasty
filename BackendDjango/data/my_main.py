@@ -1,4 +1,4 @@
-with open('../initial_data.json', 'rb') as f:
+with open('initial_data.json', 'rb') as f:
     content = f.read()
 
 # Thử decode thử nghiệm
@@ -7,5 +7,5 @@ try:
 except UnicodeDecodeError:
     text = content.decode('utf-8', errors='ignore')  # fallback
 
-with open('../fixed_data.json', 'w', encoding='utf-8') as f:
+with open('fixed_data.json', 'w', encoding='utf-8') as f:
     f.write(text)

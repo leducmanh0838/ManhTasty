@@ -25,10 +25,14 @@ class StoreCommentCreateSerializer(serializers.ModelSerializer):
 
 class StoreCommentListSerializer(serializers.ModelSerializer):
     user=AvatarAndNameSerializer(read_only=True)
+    reply_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
-        fields = ['id', 'user', 'content', 'created_at']
+        fields = ['id', 'user', 'content', 'created_at', 'reply_count']
+
+    def get_reply_count(self, obj):
+        return obj.replies.count()
 
 class CommentChildSerializer(serializers.ModelSerializer):
     user = AvatarAndNameSerializer(read_only=True)

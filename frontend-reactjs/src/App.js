@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import HomePage from './components/Home/HomePage';
 import Header from './components/layouts/Header/Header';
 import { AppProvider } from './provides/AppProvider';
+import RecipeDetail from './components/Recipe/RecipeDetail';
 
 const App = () => {
 
@@ -28,6 +29,7 @@ const App = () => {
             <Route path="/saved" element={<SavedPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/settings" element={<SettingsPage />} /> */}
+              <Route path="/recipes/:idSlug" element={<RecipeDetail />} />
             </Routes>
             {/* Recipe Grid */}
 

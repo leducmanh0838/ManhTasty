@@ -36,14 +36,3 @@
     transform: rotate(360deg);
   }
 }
-
-.recipe-grid {
-  column-gap: 1rem;
-  column-width: 150px; /* mặc định cho mobile */
-}
-
-@media (min-width: 768px) {
-  .recipe-grid {
-    column-width: 290px; /* cho tablet trở lên */
-  }
-}

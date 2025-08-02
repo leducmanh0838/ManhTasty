@@ -19,15 +19,20 @@ def create_fake_users(n: int = 100, password: str = "Admin@123"):
     users = []
     for i in range(n):
         print(f'user {i}\n')
-        username = fake.unique.user_name()
+        # username = fake.unique.user_name()
         email = fake.unique.email()
+        first_name = fake.first_name()
+        last_name = fake.last_name()
+        username = f"google_{email}"
         avatar = f"https://i.pravatar.cc/300?img={random.randint(1, 70)}"
 
         users.append(User(
             username=username,
+            first_name=first_name,
+            last_name=last_name,
             email=email,
             password=make_password(password),
-            login_type=random.choice(login_type_values),
+            login_type=LoginType.GOOGLE,
             avatar=avatar,
         ))
 

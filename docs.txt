@@ -3,3 +3,5 @@ python manage.py dumpdata app.user oauth2_provider.application --indent 2 > init
 python manage.py flush
 
 python manage.py loaddata initial_data.json 
+
+python manage.py seed_users --n 200 --password Admin@123

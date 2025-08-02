@@ -26,8 +26,7 @@ class EmotionType(models.IntegerChoices):
     HAHA = 3, 'Haha'
     WOW = 4, 'Wow'
     DELICIOUS = 5, 'Delicious'
-    SAD = 6, 'Sad'
-    ANGRY = 7, 'Angry'
+    ANGRY = 6, 'Angry'
 
 class RecipeStatus(models.IntegerChoices):
     CREATING = -1, 'Creating'
@@ -66,6 +65,7 @@ class Recipe(TimeStampedModel):
     title = models.CharField(max_length=255)
     description = models.TextField()
     image = CloudinaryField('image', null=True, blank=True)
+    cover_image = CloudinaryField('cover_image', null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes')
     tags = models.ManyToManyField('Tag', through='RecipeTag', related_name='tags')
     ingredients = models.ManyToManyField('Ingredient', through='RecipeIngredient', related_name='recipes')

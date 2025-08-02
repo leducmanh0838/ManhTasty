@@ -1,0 +1,33 @@
+.thumb-img {
+  height: 100px;
+  object-fit: contain;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.thumbnail-scroll {
+  white-space: nowrap;   /* đảm bảo không xuống dòng */
+  overflow-x: auto;      /* bật cuộn ngang */
+  scrollbar-width: thin; /* Firefox */
+}
+
+.thumbnail-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.thumbnail-scroll::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+.scroll-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 50%;
+}
+
+.scroll-item {
+  scroll-snap-align: center;
+  flex: 0 0 auto;
+}

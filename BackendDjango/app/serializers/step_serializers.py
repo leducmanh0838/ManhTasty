@@ -20,3 +20,14 @@ class StepCreateSerializer(serializers.ModelSerializer):
             )
             validated_data['image'] = upload_result['public_id']
         return super().create(validated_data)
+
+class StepListSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+    class Meta:
+        model = Step
+        fields = ['order', 'description', 'image']
+
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url
+        return None
