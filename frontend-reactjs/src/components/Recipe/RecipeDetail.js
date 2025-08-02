@@ -1,63 +1,66 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Apis, { authApis, endpoints } from "../../configs/Apis";
 import RecipeGallery from "./RecipeDetailLayout/RecipeGallery";
 import GridTagList from "./RecipeDetailLayout/GridTagList";
 import IngredientList from "./RecipeDetailLayout/IngredientList";
 import StepList from "./RecipeDetailLayout/StepList";
-import { FaCarrot, FaThumbsUp } from "react-icons/fa";
+import { FaCarrot, FaRegComment, FaThumbsUp } from "react-icons/fa";
 import { GiKnifeFork } from "react-icons/gi";
 import EmotionList from "../Emotion/EmotionList";
 import { HiOutlineThumbUp } from "react-icons/hi";
-import { emotionTypes } from "../../configs/Types";
+import { EmotionType, emotionTypes } from "../../configs/Types";
+import { AppContext } from "../../provides/AppProvider";
+import CommentList from "./RecipeDetailLayout/Comment/CommentList";
+import CommentInput from "./RecipeDetailLayout/Comment/CommentInput";
+import CommentLayout from "./RecipeDetailLayout/Comment/CommentLayout";
 
-// const emotionData = [
-//   { emoji: '🥰', count: 3 },
-//   { emoji: '💖', count: 5 },
-//   { emoji: '👏', count: 1 },
-// ];
-
-// const emotionData = [
-//   { icon: <FaThumbsUp className="text-primary" />, count: 3 },
-//   { icon: <AiFillHeart className="text-danger" />, count: 5 },
-//   { icon: <FaHandsClapping className="text-warning" />, count: 1 },
-// ];
-const emotionData = {
-    "1": 10,
-    "2": 5,
-    "3": 1,
-    "4": 2,
-    "5": 5,
-    "6": 8
-}
 
 const RecipeDetail = () => {
     const { idSlug } = useParams();
     const recipeId = idSlug.split("-")[0];
 
+    const { currentUser } = useContext(AppContext);
+
     const [recipe, setRecipe] = useState(null);
-    // const [liked, setLiked] = useState(false);
-    // const [selected, setSelected] = useState(null);
-    // const [showMenu, setShowMenu] = useState(false);
-    const [showMenu, setShowMenu] = useState(false);
-    const [selected, setSelected] = useState(null);
-    const [emotions, setEmotions] = useState(null);
+    const [showEmotionMenu, setShowEmotionMenu] = useState(false);
+    const [selectedEmotion, setSelectedEmotion] = useState({});
+
+    const [emotions, setEmotions] = useState({});
 
     //   console.info(id)
     useEffect(() => {
-        Apis.get(endpoints.recipes.recipeDetail(recipeId))
-            .then(res => setRecipe(res.data));
-        Apis.get(endpoints.recipes.emotion(recipeId))
-            .then(res => setEmotions(res.data));
+        const fetchData = async () => {
+            try {
+                // 1. Gọi API recipe
+                const resRecipe = await Apis.get(endpoints.recipes.recipeDetail(recipeId));
+                setRecipe(resRecipe.data);
+
+                // 2. Gọi API emotion counts
+                const resEmotions = await Apis.get(endpoints.recipes.reactions.emotionCounts(recipeId));
+                setEmotions(resEmotions.data);
+
+                // 3. Nếu có user, gọi API riêng có token
+                if (currentUser) {
+                    const api = await authApis();  // chỗ này gọi API instance có token
+                    const resCurrentEmotion = await api.get(endpoints.recipes.reactions.currentEmotion(recipeId));
+                    // const emotionId = resMyEmotion.data.emotion;
+                    setSelectedEmotion(resCurrentEmotion.data);
+                    // setSelectedEmotion(emotionTypes.find(emotion => emotion.id === emotionId)); // nếu bạn có state này
+                }
+            } catch (err) {
+                console.error("Lỗi khi load dữ liệu:", err);
+            }
+        };
+
+        fetchData();
     }, []);
 
     if (!recipe) return <div className="text-center py-10">Đang tải công thức...</div>;
 
     const handleGiveEmotion = async (emotionType) => {
+        console.info("handleGiveEmotion")
         try {
-
-            console.info(endpoints.reactions.reactions)
-            
             const api = await authApis();
 
             let response = await api.post(
@@ -69,8 +72,53 @@ const RecipeDetail = () => {
                 }
             );
 
+            if (selectedEmotion && selectedEmotion.emotion) {
+                const oldEmotionType = selectedEmotion.emotion.toString();
+                setEmotions(prev => ({
+                    ...prev,
+                    [oldEmotionType]: prev[oldEmotionType] - 1
+                }));
+            }
+
+            setSelectedEmotion(response.data)
+
+            const newEmotionType = response.data.emotion.toString();
+            setEmotions(prev => ({
+                ...prev,
+                [newEmotionType]: prev[newEmotionType] + 1
+            }));
+
         } catch (error) {
-            
+
+            // setSubmitSuccess(false);
+
+            // if (error.response && error.response.data && error.response.data.message) {
+            //     setSubmitError(error.response.data.message);
+            // } else {
+            //     setSubmitError("Đã xảy ra lỗi không xác định. Vui lòng thử lại sau.");
+            // }
+
+            console.error("Login error:", error.response || error.message);
+        }
+    }
+
+    const handleDeleteCurrentEmotion = async () => {
+        try {
+            const api = await authApis();
+            const reactionId = selectedEmotion.id
+
+            let response = await api.delete(
+                endpoints.reactions.reactionDetail(reactionId)
+            );
+
+            const oldEmotionType = selectedEmotion.emotion.toString();
+            setEmotions(prev => ({
+                ...prev,
+                [oldEmotionType]: prev[oldEmotionType] - 1
+            }));
+            setSelectedEmotion({})
+        } catch (error) {
+
             // setSubmitSuccess(false);
 
             // if (error.response && error.response.data && error.response.data.message) {
@@ -126,18 +174,18 @@ const RecipeDetail = () => {
 
                     <div
                         className="position-relative d-inline-block mt-3"
-                        onMouseEnter={() => setShowMenu(true)}
-                        onMouseLeave={() => setShowMenu(false)}
+                        onMouseEnter={() => setShowEmotionMenu(true)}
+                        onMouseLeave={() => setShowEmotionMenu(false)}
                     >
                         <button className="btn btn-light rounded-pill d-flex align-items-center gap-1 px-3 py-1">
-                            {selected ? <>
-                                <span>{selected.icon}</span> <span>{selected.label}</span>
-                            </> : <>
+                            {selectedEmotion && selectedEmotion.emotion ? <div onClick={handleDeleteCurrentEmotion}>
+                                <span>{EmotionType.getIcon(selectedEmotion.emotion)}</span> <span>{EmotionType.getLabel(selectedEmotion.emotion)}</span>
+                            </div> : <>
                                 <span><HiOutlineThumbUp /></span> <span>Thích</span>
                             </>}
                         </button>
 
-                        {showMenu && (
+                        {showEmotionMenu && (
                             <div
                                 className="position-absolute bg-white shadow-sm rounded-pill px-2 py-1 d-flex gap-2 mt-1"
                                 style={{
@@ -152,8 +200,8 @@ const RecipeDetail = () => {
                                         key={e.id}
                                         className="btn btn-sm bg-white border-0 fs-4"
                                         onClick={() => {
-                                            setSelected(e);
-                                            setShowMenu(false);
+                                            // setSelectedEmotion(e.id);
+                                            setShowEmotionMenu(false);
                                             handleGiveEmotion(e.id);
                                         }}
                                         title={e.label}
@@ -183,6 +231,16 @@ const RecipeDetail = () => {
                     </h5>
                     <IngredientList ingredients={recipe.ingredients} />
                 </div>
+            </div>
+
+            <div className="mt-2 p-2">
+                <h5 className="fw-bold mb-3 border-top p-2">
+                    <FaRegComment className="me-2" />
+                    Bình luận
+                </h5>
+                {/* <CommentInput onSubmit={handleAddComment}/> */}
+                {/* <CommentList recipeId={recipeId} /> */}
+                <CommentLayout recipeId={recipeId}/>
             </div>
         </>
 

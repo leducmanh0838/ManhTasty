@@ -1,7 +1,7 @@
 import json
 
 from django.contrib.contenttypes.models import ContentType
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Prefetch
 from rest_framework import parsers, mixins, viewsets
 from rest_framework.decorators import action
 
@@ -48,7 +48,7 @@ class RecipeViewSet(mixins.CreateModelMixin,
         return qs.filter(status=RecipeStatus.ACTIVE)
 
     def get_permissions(self):
-        if self.action == 'create':
+        if self.action in ['create', 'get_current_emotion']:
             return [IsAuthenticated()]
         elif self.action in ['create_step', 'submit_recipe']:
             return [IsAuthor()]
@@ -142,6 +142,27 @@ class RecipeViewSet(mixins.CreateModelMixin,
 
         return Response(emotion_counts)
 
+    @action(detail=True, methods=['get'], url_path='current-emotion')
+    def get_current_emotion(self, request, pk):
+        # recipe = self.get_object()
+        # self.check_object_permissions(request, recipe)
+
+        content_type = ContentType.objects.get_for_model(Recipe)
+        try:
+            reaction = Reaction.objects.get(
+                content_type=content_type,
+                object_id=pk,
+                user=request.user
+            )
+            # emotion = reaction.emotion
+        except Reaction.DoesNotExist:
+            return Response({})
+
+        return Response({
+            "emotion": reaction.emotion,
+            "id": reaction.id,
+
+        })
 
 class RecipeCommentViewSet(mixins.ListModelMixin,
                      mixins.CreateModelMixin,
@@ -160,9 +181,33 @@ class RecipeCommentViewSet(mixins.ListModelMixin,
             return StoreCommentListSerializer
         return StoreCommentListSerializer  # fallback
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+
+        if self.action == 'list':
+            context['request'] = self.request
+
+        return context
+
     def get_queryset(self):
-        recipe_id = self.kwargs['recipe_pk']
-        return Comment.objects.filter(recipe_id=recipe_id, parent__isnull=True).order_by('-id')
+        if self.action == 'list':
+            recipe_id = self.kwargs['recipe_pk']
+            comment_ct = ContentType.objects.get_for_model(Comment)
+
+            # Prefetch tất cả reaction cho comments
+            reactions = Reaction.objects.filter(content_type=comment_ct)
+
+            return Comment.objects.filter(
+                recipe_id=recipe_id,
+                parent__isnull=True
+            ).annotate(
+                reply_count=Count('replies')
+            ).prefetch_related(
+                Prefetch('reactions', queryset=reactions, to_attr='prefetched_reactions'),
+            ).select_related('user').order_by('-id')
+        if self.action == 'create':
+            recipe_id = self.kwargs['recipe_pk']
+            return Comment.objects.filter(recipe_id=recipe_id, parent__isnull=True).order_by('-id')
 
     def perform_create(self, serializer):
         recipe_id = self.kwargs['recipe_pk']

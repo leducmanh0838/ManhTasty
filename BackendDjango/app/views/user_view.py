@@ -24,7 +24,8 @@ class LoginViewSet(viewsets.ViewSet):
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
-            if avatar and login_type == LoginType.FACEBOOK:
+            # if avatar and login_type == LoginType.FACEBOOK:
+            if avatar:
                 avatar = upload_avatar_to_cloudinary(avatar)
             user = User.objects.create(
                 username=username,

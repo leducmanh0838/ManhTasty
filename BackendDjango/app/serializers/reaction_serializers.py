@@ -7,7 +7,7 @@ class ReactionCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reaction
-        fields = ['object_id', 'content_type', 'emotion']
+        fields = ['id','object_id', 'content_type', 'emotion']
 
     def validate_content_type(self, value):
         allowed_models = ['recipe', 'comment']

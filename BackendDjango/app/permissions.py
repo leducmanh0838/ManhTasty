@@ -3,6 +3,7 @@ from rest_framework import permissions
 from app.models import RecipeStatus
 
 
+
 class IsAuthor(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         # # Nếu là các method an toàn (GET, HEAD, OPTIONS) thì luôn cho phép
@@ -29,3 +30,8 @@ class CanEditRecipeStatusPermission(permissions.BasePermission):
             RecipeStatus.ACTIVE,
             RecipeStatus.INACTIVE,
         ]
+
+class IsOwnerOfReaction(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        # `obj` ở đây là một instance của Reaction
+        return obj.user == request.user

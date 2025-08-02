@@ -4,12 +4,12 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from app.models import Comment
 from app.paginations import CommentPagination
-from app.serializers.comment_serializers import StoreCommentCreateSerializer, CommentChildSerializer
+from app.serializers.comment_serializers import StoreCommentCreateSerializer, ChildCommentSerializer
 
 
 class CommentViewSet(viewsets.GenericViewSet):
     queryset = Comment.objects.all()
-    serializer_class = CommentChildSerializer
+    serializer_class = ChildCommentSerializer
     pagination_class = CommentPagination
 
     @action(detail=True, methods=['get'], url_path='replies')
@@ -19,9 +19,9 @@ class CommentViewSet(viewsets.GenericViewSet):
 
         page = self.paginate_queryset(replies)
         if page is not None:
-            serializer = CommentChildSerializer(page, many=True)
+            serializer = ChildCommentSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = CommentChildSerializer(replies, many=True)
+        serializer = ChildCommentSerializer(replies, many=True)
         return Response(serializer.data)
 

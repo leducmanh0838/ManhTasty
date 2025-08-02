@@ -10,7 +10,7 @@ const StepList = ({ steps }) => {
               src={step.image}
               alt={`Bước ${step.number}`}
               className="img-fluid rounded my-2"
-              style={{ maxHeight: "200px", objectFit: "cover" }}
+              style={{ width: "50%", objectFit: "cover" }}
             />
           )}
         </div>

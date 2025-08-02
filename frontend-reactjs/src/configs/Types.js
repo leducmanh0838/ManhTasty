@@ -61,12 +61,12 @@ export const EmotionType = {
   SAD: 6,
 
   labels: {
-    1: 'Like',
-    2: 'Love',
+    1: 'Thích',
+    2: 'Yêu thích',
     3: 'Haha',
     4: 'Wow',
-    5: 'Delicious',
-    6: 'Angry',
+    5: 'Thèm ăn',
+    6: 'Phẫn nộ',
   },
 
   icons: {

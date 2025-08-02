@@ -4,6 +4,7 @@ import { EmotionType } from "../../configs/Types";
 import EmotionItem from "./EmotionItem";
 
 const EmotionList = ({ emotions }) => {
+  console.info("emotions", emotions)
   return (
     <div className="d-flex flex-wrap">
       {/* {emotions.map((item, index) => (

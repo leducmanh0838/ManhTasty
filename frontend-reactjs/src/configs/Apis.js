@@ -14,11 +14,19 @@ export const endpoints = {
     },
     recipes:{
         recipeDetail: (recipeId) => `recipes/${recipeId}/`,
-        emotion: (recipeId) => `recipes/${recipeId}/emotion-counts/`,
+        reactions:{
+            emotionCounts: (recipeId) => `recipes/${recipeId}/emotion-counts/`,
+            currentEmotion: (recipeId) => `recipes/${recipeId}/current-emotion/`,
+        },
+        comments: (recipeId) => `recipes/${recipeId}/comments/`,
     },
     token: 'o/token/',
     reactions:{
-        reactions: 'reactions/'
+        reactions: 'reactions/',
+        reactionDetail: (reactionId) => `reactions/${reactionId}/`,
+    },
+    comments:{
+        replies: (commentId) => `comments/${commentId}/replies/`,
     }
 }
 
