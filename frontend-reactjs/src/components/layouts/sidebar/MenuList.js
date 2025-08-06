@@ -7,7 +7,7 @@ const MenuList = () => {
       <MenuItem icon={<FaHome />} label="Trang chủ" to="/" />
       <MenuItem icon={<FaSearch />} label="Khám phá" to="/explore" />
       <MenuItem icon={<FaLeaf />} label="Nguyên liệu" to="/ingredients" />
-      <MenuItem icon={<FaUtensils />} label="Thêm món mới" to="/create-recipes" />
+      <MenuItem icon={<FaUtensils />} label="Thêm món mới" to="/create-recipe" />
       <MenuItem icon={<FaBookmark />} label="Đã lưu" to="/saved" />
       <MenuItem icon={<FaCog />} label="Cài đặt" to="/settings" />
     </nav>

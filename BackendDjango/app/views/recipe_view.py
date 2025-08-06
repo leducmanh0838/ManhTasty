@@ -10,12 +10,14 @@ from app.paginations import RecipePagination, CommentPagination
 from app.permissions import IsAuthor
 from app.serializers.comment_serializers import StoreCommentCreateSerializer, StoreCommentListSerializer
 from app.serializers.recipe_media_serializers import RecipeMediaCreateSerializer
-from app.serializers.recipe_serializers import RecipeCreateSerializer, RecipeListSerializer, RecipeRetrieveSerializer
+from app.serializers.recipe_serializers import RecipeCreateSerializer, RecipeListSerializer, RecipeRetrieveSerializer, \
+    RecipeHomeSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 
 from app.serializers.step_serializers import StepCreateSerializer
+from app.utils.whoosh_utils import search_recipes
 
 
 class RecipeViewSet(mixins.CreateModelMixin,
@@ -69,6 +71,28 @@ class RecipeViewSet(mixins.CreateModelMixin,
         response = super().create(request, *args, **kwargs)
         recipe_id = response.data.get('id')  # hoặc sửa serializer để trả về id
         return Response({"message": "Recipe created successfully", "recipe_id": recipe_id}, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['get'], url_path='home')
+    def home_recipes(self, request):
+        keyword = request.query_params.get('keyword', '')
+        page = int(request.query_params.get('page', 1))
+
+        # Gọi hàm tìm kiếm
+        result = search_recipes(keyword, page)
+
+        # Truy vấn lại từ DB để lấy đầy đủ dữ liệu (ảnh, tags, v.v.)
+        ids = [r["id"] for r in result["recipes"]]
+        recipes = Recipe.objects.filter(id__in=ids)
+
+        # Serialize kết quả
+        serializer = RecipeHomeSerializer(recipes, many=True)
+
+        return Response({
+            "total": result["total"],
+            "total_pages": result["total_pages"],
+            "page": result["page"],
+            "recipes": serializer.data
+        }, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['post'], url_path='steps')
     def create_step(self, request, pk):

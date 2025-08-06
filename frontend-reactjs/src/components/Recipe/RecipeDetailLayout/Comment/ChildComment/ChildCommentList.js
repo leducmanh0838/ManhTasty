@@ -5,11 +5,12 @@ const ChildCommentList = ({ comments }) => {
         <>
             {comments.map((comment) => (
                 <ChildComment
+                    commentId={comment.id}
                     avatar={comment.user.avatar}
                     name={`${comment.user.first_name} ${comment.user.last_name}`}
                     date={comment.created_at}
                     content={comment.content}
-                    replyCount={comment.reply_count}
+                    // replyCount={comment.reply_count}
                 />
             ))}
         </>

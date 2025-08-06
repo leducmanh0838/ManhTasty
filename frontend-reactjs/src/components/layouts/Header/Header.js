@@ -9,7 +9,7 @@ import { useLogout } from "../../../utils/Auth";
 
 const Header = () => {
     const logout = useLogout();
-    const { currentUser, currentUserDispatch } = useContext(AppContext);
+    const { currentUser } = useContext(AppContext);
     // const currentUserInfo = currentUser.user
 
     const handleLogout = () => {
@@ -80,15 +80,15 @@ const Header = () => {
                             <Link to="/profile" className="profile-link text-decoration-none text-dark d-block">
                                 <div className="d-flex align-items-start">
                                     <img
-                                        src="https://res.cloudinary.com/dedsaxk7j/image/upload/v1749456346/wyppshgkujdyyeumsw4g.png"
+                                        src={currentUser.avatar}
                                         alt="Avatar"
                                         className="rounded-circle me-3"
                                         style={{ width: '48px', height: '48px', objectFit: 'cover' }}
                                     />
                                     <div className="flex-grow-1">
-                                        <div className="fw-bold">Mạnh Lê Đức</div>
+                                        <div className="fw-bold">{`${currentUser.last_name} ${currentUser.first_name}`}</div>
                                         {/* <div className="text-muted" style={{ fontSize: '0.85rem' }}>Personal</div> */}
-                                        <div className="text-muted" style={{ fontSize: '0.85rem' }}>2251012090manh@ou.edu.vn</div>
+                                        <div className="text-muted" style={{ fontSize: '0.85rem' }}>{currentUser.email}</div>
                                     </div>
                                     <div className="ms-2 text-success">✔️</div>
                                 </div>

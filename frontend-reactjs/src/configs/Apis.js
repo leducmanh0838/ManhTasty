@@ -2,6 +2,7 @@ import axios from "axios"
 import cookie from 'react-cookies'
 import { BASE_URL } from "./Values"
 import { getAccessToken } from "../utils/Auth"
+import { TagCategory } from "./Types"
 
 
 export const endpoints = {
@@ -13,11 +14,15 @@ export const endpoints = {
         recipes: 'recipes/'
     },
     recipes:{
+        recipes:'recipes/',
         recipeDetail: (recipeId) => `recipes/${recipeId}/`,
         reactions:{
             emotionCounts: (recipeId) => `recipes/${recipeId}/emotion-counts/`,
             currentEmotion: (recipeId) => `recipes/${recipeId}/current-emotion/`,
         },
+        steps: (recipeId) => `recipes/${recipeId}/steps/`,
+        medias: (recipeId) => `recipes/${recipeId}/medias/`,
+        submit: (recipeId) => `recipes/${recipeId}/submit/`,
         comments: (recipeId) => `recipes/${recipeId}/comments/`,
     },
     token: 'o/token/',
@@ -27,7 +32,13 @@ export const endpoints = {
     },
     comments:{
         replies: (commentId) => `comments/${commentId}/replies/`,
-    }
+    },
+    tags:{
+        selectByTagCategory: (TagCategoryId) =>`tags/?tag_category=${TagCategoryId}`
+    },
+    reports:{
+        reports: 'reports/'
+    },
 }
 
 export const authApis = async() => {

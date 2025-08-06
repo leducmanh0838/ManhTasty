@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import moment from 'moment';
 import 'moment/locale/vi';
-import { HiChevronDown, HiChevronUp, HiOutlineThumbUp } from 'react-icons/hi';
+import { HiChevronDown, HiChevronUp, HiOutlineFlag, HiOutlineThumbUp } from 'react-icons/hi';
 import Apis, { authApis, endpoints } from '../../../../configs/Apis';
 import ChildCommentList from './ChildComment/ChildCommentList';
 import { FaRegComment } from 'react-icons/fa';
@@ -10,6 +10,7 @@ import { EmotionType, emotionTypes } from '../../../../configs/Types';
 import EmotionList from '../../../Emotion/EmotionList';
 import { toast } from 'react-toastify';
 import { AppContext } from '../../../../provides/AppProvider';
+import ReportDialog from '../../../../dialogs/ReportDialog';
 const Comment = ({ recipeId, commentId, avatar, name, date, content, replyCount = 0, emotionCounts = {}, currentEmotion = {} }) => {
   const [replies, setReplies] = useState([]);
   const formattedDate = moment(date).fromNow();
@@ -19,6 +20,7 @@ const Comment = ({ recipeId, commentId, avatar, name, date, content, replyCount 
   const [selectedEmotion, setSelectedEmotion] = useState(currentEmotion);
   const [emotions, setEmotions] = useState(emotionCounts);
   const [showEmotionMenu, setShowEmotionMenu] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const { currentUser } = useContext(AppContext);
 
@@ -146,7 +148,7 @@ const Comment = ({ recipeId, commentId, avatar, name, date, content, replyCount 
         style={{ width: '40px', height: '40px', objectFit: 'cover' }}
       />
       <div>
-        <div className="bg-light rounded p-2">
+        <div className="bg-light rounded p-3 d-inline-block">
           <div className='d-flex flex-row align-items-center'>
             <p className="fw-semibold">{name}</p>
             <p className="text-muted d-block ms-3">{formattedDate}</p>
@@ -203,6 +205,16 @@ const Comment = ({ recipeId, commentId, avatar, name, date, content, replyCount 
                 ))}
               </div>
             )}
+          </div>
+
+          <div>
+            <button className="btn btn-light rounded-pill d-flex align-items-center gap-1 px-3 py-1 me-2"
+              onClick={() => {
+                setShowReportModal(true);
+              }}>
+              <span><HiOutlineFlag /></span> <span>Báo cáo vi phạm</span>
+            </button>
+            <ReportDialog objectId={commentId} showModal={showReportModal} setShowModal={setShowReportModal} contentType={"comment"} />
           </div>
 
         </div>

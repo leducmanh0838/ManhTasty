@@ -16,9 +16,9 @@ class LoginType(models.IntegerChoices):
 
 class ReasonType(models.IntegerChoices):
     SPAM = 1, 'Spam'
-    ABUSE = 2, 'Abuse'
-    INACCURATE = 3, 'Inaccurate'
-    OTHER = 4, 'Other'
+    UNSUITABLE = 2, 'Không phù hợp'
+    INACCURATE = 3, 'Sai sự thật'
+    OTHER = 4, 'Khác'
 
 class EmotionType(models.IntegerChoices):
     LIKE = 1, 'Like'
@@ -36,6 +36,17 @@ class RecipeStatus(models.IntegerChoices):
     INACTIVE = 3, 'Inactive'               # Không xóa, nhưng ẩn khỏi người dùng
     DELETED = 4, 'Delete'                # Đã đưa vào thùng rác
     LOCKED = 5, 'Locked'
+
+class TagCategory(models.IntegerChoices):
+    OTHER = 0, 'Khác'
+    TYPE = 1, 'Loại món'
+    OCCASION = 2, 'Dịp'
+    INGREDIENT = 3, 'Nguyên liệu chính'
+    DIET = 4, 'Chế độ ăn'
+    METHOD = 5, 'Cách chế biến'
+    REGION = 6, 'Vùng miền'
+    FLAVOR = 7, 'Hương vị'
+
 
 class MediaType(models.IntegerChoices):
     IMAGE = 1, 'Image'
@@ -61,7 +72,7 @@ class User(AbstractUser):
 
 # 2. Công thức
 class Recipe(TimeStampedModel):
-    status = models.SmallIntegerField(choices=RecipeStatus.choices, default=RecipeStatus.CREATING)
+    status = models.SmallIntegerField(choices=RecipeStatus.choices, default=RecipeStatus.CREATING, db_index=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
     image = CloudinaryField('image', null=True, blank=True)
@@ -101,6 +112,11 @@ class RecipeMedia(TimeStampedModel):
 # 4. Tag
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True, db_index=True)
+    tag_category = models.SmallIntegerField(choices=TagCategory.choices, default=TagCategory.OTHER)
+
+    def save(self, *args, **kwargs):
+        self.name = self.name.lower()  # chuyển về lowercase
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

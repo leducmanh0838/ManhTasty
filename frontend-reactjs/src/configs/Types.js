@@ -88,17 +88,43 @@ export const EmotionType = {
 };
 
 export const emotionTypes = [
-    { id: 1, label: 'Thích', icon: '👍' },
-    { id: 2, label: 'Yêu thích', icon: '❤️' },
-    { id: 3, label: 'Haha', icon: '😂' },
-    { id: 4, label: 'Wow', icon: '😮' },
-    { id: 5, label: 'Ngon', icon: '😋' },
-    { id: 6, label: 'Phẫn nộ', icon: '😡' },
+  { id: 1, label: 'Thích', icon: '👍' },
+  { id: 2, label: 'Yêu thích', icon: '❤️' },
+  { id: 3, label: 'Haha', icon: '😂' },
+  { id: 4, label: 'Wow', icon: '😮' },
+  { id: 5, label: 'Ngon', icon: '😋' },
+  { id: 6, label: 'Phẫn nộ', icon: '😡' },
 ];
 
+export const TagCategory = {
+  OTHER: 0,
+  TYPE: 1,
+  OCCASION: 2,
+  INGREDIENT: 3,
+  DIET: 4,
+  METHOD: 5,
+  REGION: 6,
+  FLAVOR: 7,
 
+  values: {
+    0: "Khác",
+    1: "Loại món",
+    2: "Dịp",
+    3: "Nguyên liệu chính",
+    4: "Chế độ ăn",
+    5: "Cách chế biến",
+    6: "Vùng miền",
+    7: "Hương vị",
+  },
 
-// class MediaType(models.IntegerChoices):
-//     IMAGE = 1, 'Image'
-//     GIF = 2, 'GIF'
-//     VIDEO = 3, 'Video'
+  getLabel(id) {
+    return TagCategory.values[id] || "Không rõ";
+  }
+};
+
+export const reportReasons = [
+  { value: 1, label: "Spam", sub: "Bài đăng bị lặp, không có nội dung, chứa liên kết quảng cáo" },
+  { value: 2, label: "Nội dung không phù hợp", sub: "Công thức không liên quan, sai chủ đề (ví dụ: quảng cáo, video không liên quan nấu ăn)" },
+  { value: 3, label: "Nội dung giả mạo / sai sự thật", sub: "Món ăn sai nguyên liệu, công thức gây hiểu nhầm, có thể gây hại nếu làm theo" },
+  { value: 4, label: "Khác", sub: "Không thuộc trường hợp trên" },
+];

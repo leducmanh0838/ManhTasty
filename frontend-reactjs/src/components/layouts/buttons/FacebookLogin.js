@@ -3,14 +3,17 @@ import { FACEBOOK_APP_ID } from '../../../configs/Values';
 import Apis, { endpoints } from '../../../configs/Apis';
 import { FaFacebookF } from 'react-icons/fa';
 import { useLogin } from '../../../utils/Auth';
+import { useState } from 'react';
 
 
 const FacebookLogin = ({ setShowModal }) => {
   const login = useLogin();
+  const [loading, setLoading] = useState(false);
   // const { currentUserDispatch, tokenDispatch} = useContext(AppContext);
   const handleSuccess = async (response) => {
     console.log('Login Success:', response);
     try {
+      setLoading(true);
       const accessToken = response.data.accessToken;
       const res = await Apis.post(endpoints.login.facebook, {
         accessToken,
@@ -44,6 +47,8 @@ const FacebookLogin = ({ setShowModal }) => {
       } else {
         console.error("Lỗi khi gửi yêu cầu:", error.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -58,32 +63,37 @@ const FacebookLogin = ({ setShowModal }) => {
       onReject={handleError}
       scope="email"
     >
-      <button
-        className="btn w-100 d-flex align-items-center rounded-pill px-0"
-        style={{
-          backgroundColor: '#1877F2',
-          color: 'white',
-          fontSize: '14px',
-          fontWeight: '400',
-          height: '40px',
-        }}
-      >
-        {/* Icon - sát trái */}
-        <div
-          className="bg-white d-flex align-items-center justify-content-center rounded-circle ms-0"
+      {loading ? (<>
+        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />
+        Đang đăng nhập...
+      </>) : (<>
+        <button
+          className="btn w-100 d-flex align-items-center rounded-pill px-0"
           style={{
-            width: '38px',
-            height: '38px',
+            backgroundColor: '#1877F2',
+            color: 'white',
+            fontSize: '14px',
+            fontWeight: '400',
+            height: '40px',
           }}
         >
-          <FaFacebookF color="#1877F2" size={20} />
-        </div>
+          {/* Icon - sát trái */}
+          <div
+            className="bg-white d-flex align-items-center justify-content-center rounded-circle ms-0"
+            style={{
+              width: '38px',
+              height: '38px',
+            }}
+          >
+            <FaFacebookF color="#1877F2" size={20} />
+          </div>
 
-        {/* Text - chiếm toàn bộ phần còn lại */}
-        <div className="flex-grow-1 text-center ">
-          Đăng nhập bằng Facebook
-        </div>
-      </button>
+          {/* Text - chiếm toàn bộ phần còn lại */}
+          <div className="flex-grow-1 text-center ">
+            Đăng nhập bằng Facebook
+          </div>
+        </button>
+      </>)}
     </LoginSocialFacebook>
   );
 };

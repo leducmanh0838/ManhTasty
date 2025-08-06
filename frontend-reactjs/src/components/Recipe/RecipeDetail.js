@@ -9,10 +9,8 @@ import { FaCarrot, FaRegComment, FaThumbsUp } from "react-icons/fa";
 import { GiKnifeFork } from "react-icons/gi";
 import EmotionList from "../Emotion/EmotionList";
 import { HiOutlineThumbUp } from "react-icons/hi";
-import { EmotionType, emotionTypes } from "../../configs/Types";
+import { EmotionType, emotionTypes, MediaType } from "../../configs/Types";
 import { AppContext } from "../../provides/AppProvider";
-import CommentList from "./RecipeDetailLayout/Comment/CommentList";
-import CommentInput from "./RecipeDetailLayout/Comment/CommentInput";
 import CommentLayout from "./RecipeDetailLayout/Comment/CommentLayout";
 import { toast } from "react-toastify";
 
@@ -144,7 +142,7 @@ const RecipeDetail = () => {
         <>
             <div className="row">
                 <div className="col-8">
-                    <RecipeGallery medias={recipe.medias} />
+                    <RecipeGallery medias={[...recipe.medias, { type: MediaType.IMAGE, src: recipe.image }]} />
                 </div>
                 <div className="col-4 py-4">
                     <h2
