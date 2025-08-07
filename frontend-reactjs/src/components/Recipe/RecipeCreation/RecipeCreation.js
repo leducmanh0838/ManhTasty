@@ -156,6 +156,7 @@ const RecipeCreation = () => {
         //     setErrors(validationErrors); // hiển thị lỗi từng phần
         //     return;
         // }
+        console.info('tags: ',tags)
 
         if (!currentUser) {
             toast.warning("Bạn cần đăng nhập để đăng món ăn!");
@@ -172,6 +173,7 @@ const RecipeCreation = () => {
             formDataRecipe.append("image", mainImage); // `mainImage` là File
             formDataRecipe.append("ingredients", JSON.stringify(ingredients));
             formDataRecipe.append("tags", JSON.stringify(tags));
+
 
             const res = await api.post(endpoints.recipes.recipes, formDataRecipe, {
                 headers: {

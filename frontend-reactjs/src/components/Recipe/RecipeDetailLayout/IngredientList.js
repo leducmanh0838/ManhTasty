@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 const IngredientList = ({ ingredients }) => {
+    const navigate = useNavigate();
     return (
         <div className="list-group">
             {ingredients.map((item, index) => (
@@ -6,7 +9,7 @@ const IngredientList = ({ ingredients }) => {
                     <span className="fw-bold text-danger me-2">
                         {item.quantity} {item.unit}
                     </span>
-                    <span>{item.name}</span>
+                    <span className="btn btn-light" onClick={()=>navigate(`/search?keyword=${item.name}`)}>{item.name}</span>
                 </div>
             ))}
         </div>

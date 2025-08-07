@@ -34,13 +34,12 @@ def update_index_for_recipe(recipe):
 
 PAGE_SIZE = 10
 
-
 def search_recipes(keyword, page=1):
     # Mở index
     ix = open_dir(INDEX_DIR)
 
     # Tạo parser tìm kiếm trên cả title và ingredients
-    parser = MultifieldParser(["title", "ingredients"], schema=ix.schema)
+    parser = MultifieldParser(["title", "ingredients", "tags"], schema=ix.schema)
 
     # Phân tích keyword
     query = parser.parse(keyword)
@@ -69,7 +68,8 @@ def search_recipes(keyword, page=1):
             recipes.append({
                 "id": hit["id"],
                 "title": hit["title"],
-                "ingredients": hit["ingredients"]
+                "ingredients": hit["ingredients"],
+                "tags": hit["tags"]
             })
 
         return {

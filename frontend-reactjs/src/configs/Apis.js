@@ -24,6 +24,7 @@ export const endpoints = {
         medias: (recipeId) => `recipes/${recipeId}/medias/`,
         submit: (recipeId) => `recipes/${recipeId}/submit/`,
         comments: (recipeId) => `recipes/${recipeId}/comments/`,
+        search: `recipes/search/`,
     },
     token: 'o/token/',
     reactions:{

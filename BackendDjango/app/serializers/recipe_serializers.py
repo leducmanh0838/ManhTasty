@@ -2,7 +2,9 @@
 from cloudinary.uploader import upload
 from rest_framework import serializers
 from app.models import Recipe, Ingredient, RecipeIngredient, Step, Tag, MediaType
+from app.serializers.ingredient_serializers import IngredientWithQuantitySerializer, IngredientSerializer
 from app.serializers.step_serializers import StepListSerializer
+from app.serializers.tag_serializers import TagSerializer
 from app.serializers.user_serializers import AvatarAndNameSerializer
 from app.utils.media import generate_public_id
 
@@ -167,7 +169,16 @@ class RecipeRetrieveSerializer(serializers.ModelSerializer):
         return None
 
 
-class RecipeHomeSerializer(serializers.ModelSerializer):
+class RecipeSearchSerializer(serializers.ModelSerializer):
+    ingredients = IngredientSerializer(many=True, read_only=True)
+    tags = TagSerializer(many=True, read_only=True)
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = Recipe
-        fields = ['id', 'title', 'image']
+        fields = ['id', 'title', 'image', 'ingredients', 'tags']
+
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url
+        return None

@@ -3,10 +3,10 @@ import { TagCategory } from "../../../configs/Types";
 import Apis, { endpoints } from "../../../configs/Apis";
 import "./TagLayout.css";
 
-const TagLayout = () => {
+const TagLayout = ({tags, setTags}) => {
 
   const [selectedTagCategory, setSelectedTagCategory] = useState(TagCategory.TYPE.toString());
-  const [tags, setTags] = useState([]);
+  // const [tags, setTags] = useState([]);
   const [tagCollection, setTagCollection] = useState({});
 
   useEffect(() => {
@@ -45,6 +45,7 @@ const TagLayout = () => {
   }
 
   const handleAddTag = (tagName) => {
+    console.info("tags: ",tags)
     if (!tags.some(tag => tag.name === tagName)) {
       setTags([...tags, { name: tagName }]);
     }

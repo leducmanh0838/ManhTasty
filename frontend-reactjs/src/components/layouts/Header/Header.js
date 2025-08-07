@@ -1,20 +1,46 @@
 import { FaBars } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 import { AppContext } from "../../../provides/AppProvider";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import LoginButtonWithDialog from "../../../dialogs/LoginButtonWithDialog";
 import { ActionType } from "../../../reducers/AuthReducer";
 import { useLogout } from "../../../utils/Auth";
 
+const keywordSuggestions = [
+        "Phở bò",
+        "Bún chả",
+        "Gà kho gừng",
+        "Canh chua",
+        "Trứng chiên",
+        "Bánh xèo",
+    ];
+
 const Header = () => {
     const logout = useLogout();
     const { currentUser } = useContext(AppContext);
+    const [keyword, setKeyword] = useState("");
+    const [showDropdown, setShowDropdown] = useState(false);
+    const navigate = useNavigate();
     // const currentUserInfo = currentUser.user
+
+    const [suggestions, setSuggestions] = useState(keywordSuggestions);
 
     const handleLogout = () => {
         // currentUserDispatch({ type: ActionType.LOGOUT });
         logout();
+    }
+
+    const handleSubmitKeyword = (e) => {
+        e.preventDefault();
+        // setShowDropdown(false);
+        if (keyword.trim()) {
+            navigate(`/search?keyword=${encodeURIComponent(keyword.trim())}`);
+        }
+    }
+
+    const handleSelectKeyword = (kw) =>{
+        navigate(`/search?keyword=${encodeURIComponent(kw)}`);
     }
     return (
         <header className="d-flex align-items-center justify-content-between p-3 shadow bg-white sticky-top mt-2 mx-2 rounded">
@@ -27,36 +53,46 @@ const Header = () => {
                 <FaBars size={20} />
             </button>
 
-            <input
+            {/* <input
                 type="text"
                 className="form-control flex-grow-1 me-3"
                 placeholder="Tìm món ăn, nguyên liệu..."
-            />
-
-            {/* <div className="dropdown">
-                <button
-                    className="btn btn-light dropdown-toggle d-flex align-items-center"
-                    type="button"
-                    id="dropdownMenuButton"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                >
-                    <img
-                        src="https://res.cloudinary.com/dedsaxk7j/image/upload/v1749456346/wyppshgkujdyyeumsw4g.png"
-                        alt="Avatar"
-                        className="rounded-circle me-2"
-                        style={{ width: '32px', height: '32px', objectFit: 'cover' }}
+            /> */}
+            <form onSubmit={handleSubmitKeyword} className="d-flex flex-grow-1 me-3">
+                <div className="position-relative flex-grow-1">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Tìm món ăn, nguyên liệu..."
+                        value={keyword}
+                        onFocus={() => setShowDropdown(true)}
+                        onBlur={() => setTimeout(() => setShowDropdown(false), 150)} // delay để click vào item
+                        onChange={(e) => setKeyword(e.target.value)}
                     />
-                    <span className="d-none d-md-inline">Mạnh</span>
-                </button>
+                    {showDropdown && suggestions.length > 0 && (
+                        <ul
+                            className="list-group position-absolute shadow"
+                            style={{
+                                zIndex: 999,
+                                top: "110%",
+                                width: "100%",
+                            }}
+                        >
+                            {suggestions.map((item, index) => (
+                                <li
+                                    key={index}
+                                    className="list-group-item list-group-item-action"
+                                    style={{ cursor: "pointer" }}
+                                    onMouseDown={() => handleSelectKeyword(item)}
+                                >
+                                    {item}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+            </form>
 
-                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                    <li><a className="dropdown-item" href="#">Hồ sơ</a></li>
-                    <li><a className="dropdown-item" href="#">Cài đặt</a></li>
-                    <li><hr className="dropdown-divider" /></li>
-                    <li><a className="dropdown-item text-danger" href="#">Đăng xuất</a></li>
-                </ul>
-            </div> */}
             {currentUser ? (<>
                 <div className="dropdown">
                     <button

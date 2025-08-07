@@ -11,12 +11,13 @@ from app.permissions import IsAuthor
 from app.serializers.comment_serializers import StoreCommentCreateSerializer, StoreCommentListSerializer
 from app.serializers.recipe_media_serializers import RecipeMediaCreateSerializer
 from app.serializers.recipe_serializers import RecipeCreateSerializer, RecipeListSerializer, RecipeRetrieveSerializer, \
-    RecipeHomeSerializer
+    RecipeSearchSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 
 from app.serializers.step_serializers import StepCreateSerializer
+from app.utils.mongodb import log_user_search_keyword, log_popular_keyword
 from app.utils.whoosh_utils import search_recipes
 
 
@@ -72,9 +73,14 @@ class RecipeViewSet(mixins.CreateModelMixin,
         recipe_id = response.data.get('id')  # hoặc sửa serializer để trả về id
         return Response({"message": "Recipe created successfully", "recipe_id": recipe_id}, status=status.HTTP_201_CREATED)
 
-    @action(detail=False, methods=['get'], url_path='home')
-    def home_recipes(self, request):
-        keyword = request.query_params.get('keyword', '')
+    @action(detail=False, methods=['get'], url_path='search')
+    def search_recipes(self, request):
+        keyword = request.query_params.get('keyword', '').strip()
+        print("keyword: ", keyword)
+        if keyword:
+            log_popular_keyword(keyword)
+            if request.user.is_authenticated:
+                log_user_search_keyword(user=request.user, keyword=keyword)
         page = int(request.query_params.get('page', 1))
 
         # Gọi hàm tìm kiếm
@@ -82,16 +88,16 @@ class RecipeViewSet(mixins.CreateModelMixin,
 
         # Truy vấn lại từ DB để lấy đầy đủ dữ liệu (ảnh, tags, v.v.)
         ids = [r["id"] for r in result["recipes"]]
-        recipes = Recipe.objects.filter(id__in=ids)
+        recipes = Recipe.objects.filter(id__in=ids).order_by('-id')
 
         # Serialize kết quả
-        serializer = RecipeHomeSerializer(recipes, many=True)
+        serializer = RecipeSearchSerializer(recipes, many=True)
 
         return Response({
-            "total": result["total"],
-            "total_pages": result["total_pages"],
-            "page": result["page"],
-            "recipes": serializer.data
+            "count": result["total"],
+            # "total_pages": result["total_pages"],
+            # "page": result["page"],
+            "results": serializer.data
         }, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['post'], url_path='steps')
@@ -236,3 +242,4 @@ class RecipeCommentViewSet(mixins.ListModelMixin,
     def perform_create(self, serializer):
         recipe_id = self.kwargs['recipe_pk']
         serializer.save(user=self.request.user, recipe_id=recipe_id)
+

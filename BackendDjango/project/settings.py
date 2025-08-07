@@ -108,6 +108,13 @@ DATABASES = {
     }
 }
 
+MONGODB_SETTINGS = {
+    'HOST': os.getenv('MONGO_DB_HOST'),
+    'PORT': int(os.getenv('MONGO_DB_PORT')),
+    'DB_NAME': os.getenv('MONGO_DB_NAME'),
+    # 'COLLECTION': 'search_keywords',
+}
+
 
 
 # Password validation

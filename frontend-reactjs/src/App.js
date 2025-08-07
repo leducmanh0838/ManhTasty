@@ -8,6 +8,7 @@ import { AppProvider } from './provides/AppProvider';
 import RecipeDetail from './components/Recipe/RecipeDetail';
 import { ToastContainer } from 'react-toastify';
 import RecipeCreation from './components/Recipe/RecipeCreation/RecipeCreation';
+import Search from './components/Search/Search';
 
 const App = () => {
 
@@ -43,6 +44,7 @@ const App = () => {
             <Route path="/settings" element={<SettingsPage />} /> */}
                 <Route path="/recipes/:idSlug" element={<RecipeDetail />} />
                 <Route path="/create-recipe" element={<RecipeCreation />} />
+                <Route path="/search" element={<Search />} />
               </Routes>
             </div>
 
