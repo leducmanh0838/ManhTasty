@@ -36,10 +36,8 @@ export const AppProvider = ({ children }) => {
     };
 
     return (
-        <GoogleOAuthProvider clientId={WEB_CLIENT_ID}>
-            <AppContext.Provider value={contextValue}>
-                {children}
-            </AppContext.Provider>
-        </GoogleOAuthProvider>
+        <AppContext.Provider value={contextValue}>
+            {children}
+        </AppContext.Provider>
     );
 }

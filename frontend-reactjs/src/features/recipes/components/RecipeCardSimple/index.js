@@ -1,11 +1,11 @@
-import "./RecipeItem.css";
+import "./RecipeCardSimple.css";
 import { BiDotsHorizontalRounded, BiShareAlt } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import { slugify } from "../../utils/Common";
 import { useState } from "react";
-import ReportDialog from "../../dialogs/ReportDialog";
+import { slugify } from "../../../../utils/Common";
+import ReportDialog from "../../../../dialogs/ReportDialog";
 
-const RecipeItem = ({ recipe }) => {
+const RecipeCardSimple = ({ recipe }) => {
     const [showActionMenu, setShowActionMenu] = useState(false);
     const navigate = useNavigate();
     const [showReportModal, setShowReportModal] = useState(false);
@@ -173,4 +173,4 @@ const RecipeItem = ({ recipe }) => {
     )
 }
 
-export default RecipeItem;
+export default RecipeCardSimple;

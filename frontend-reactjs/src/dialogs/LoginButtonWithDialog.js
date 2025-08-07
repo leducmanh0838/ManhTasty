@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Modal} from 'react-bootstrap'; // dùng react-bootstrap cho tiện
-import FacebookLogin from '../components/layouts/buttons/FacebookLogin';
 import MyGoogleLogin from '../components/layouts/buttons/MyGoogleLogin';
 
 const LoginButtonWithDialog = () => {
@@ -43,7 +42,6 @@ const LoginButtonWithDialog = () => {
             <span className="mx-2 text-muted">hoặc</span>
             <hr className="flex-grow-1" />
           </div> */}
-                    <FacebookLogin setShowModal={setShowModal}/>
 
                     {/* <button className="btn btn-light w-100 d-flex align-items-center justify-content-center border">
                         <i className="bi bi-facebook me-2"></i> Tiếp tục với Facebook

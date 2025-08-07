@@ -1,0 +1,5 @@
+.profile-link:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* nền nhạt hơn */
+  font-weight: 600;                      /* chữ đậm */
+  transition: background-color 0.2s ease;
+}
