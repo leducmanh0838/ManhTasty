@@ -1,10 +1,5 @@
 import { FaBars } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
-import { useContext, useState } from "react";
-import LoginButtonWithDialog from "../../dialogs/LoginButtonWithDialog";
-import { useLogout } from "../../utils/Auth";
-import { AppContext } from "../../provides/AppProvider";
 import SearchBar from "../../features/search/components/SearchBar";
 import HeaderAuth from "./HeaderAuth";
 

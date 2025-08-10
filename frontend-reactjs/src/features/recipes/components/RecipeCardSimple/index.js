@@ -2,26 +2,29 @@ import "./RecipeCardSimple.css";
 import { BiDotsHorizontalRounded, BiShareAlt } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { slugify } from "../../../../utils/Common";
-import ReportDialog from "../../../../dialogs/ReportDialog";
+import slugify from "../../../../utils/string/slugify"
+import downloadImage from "../../../../utils/file/downloadImage"
+import ReportDialogButton from "../../../reports/components/ReportDialogButton";
+import MenuItemWithIcon from "../../../../components/ui/MenuItemWithIcon";
+import { FiDownload } from "react-icons/fi";
 
 const RecipeCardSimple = ({ recipe }) => {
     const [showActionMenu, setShowActionMenu] = useState(false);
     const navigate = useNavigate();
     const [showReportModal, setShowReportModal] = useState(false);
 
-    const downloadImage = async () => {
-        const response = await fetch(recipe.image);
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
+    // const downloadImage = async () => {
+    //     const response = await fetch(recipe.image);
+    //     const blob = await response.blob();
+    //     const url = URL.createObjectURL(blob);
 
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = slugify(recipe.title);
-        link.click();
+    //     const link = document.createElement("a");
+    //     link.href = url;
+    //     link.download = slugify(recipe.title);
+    //     link.click();
 
-        URL.revokeObjectURL(url); // Dọn bộ nhớ
-    };
+    //     URL.revokeObjectURL(url); // Dọn bộ nhớ
+    // };
 
     return (
         <div
@@ -118,36 +121,17 @@ const RecipeCardSimple = ({ recipe }) => {
                                     minWidth: '120px',
                                 }}
                             >
-                                {/* <button className="btn btn-light btn-sm text-start w-100" >
-                                    🚩 Báo cáo
-                                </button> */}
-                                {/* <div onClick={(e) => e.stopPropagation()}>
-                                    <ReportDialog recipeId={recipe.id} />
-                                </div> */}
-
-                                <>
-                                    <button className="btn btn-light btn-sm text-start w-100"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            setShowReportModal(true);
-                                        }}
-                                    >
-                                        🚩 Báo cáo
-                                    </button>
-                                    <div onClick={(e) => e.stopPropagation()}>
-                                        <ReportDialog objectId={recipe.id} showModal={showReportModal} 
-                                        setShowModal={setShowReportModal} contentType={"recipe"}/>
-                                    </div>
-                                </>
+                                <div onClick={(e) => { e.stopPropagation() }}>
+                                    <ReportDialogButton objectId={recipe.id} contentType={"recipe"} className={"w-100"}/>
+                                </div>
 
                                 <a href={recipe.image} download="ten_anh.jpg">
                                     <button onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation(); // Ngăn click lan lên thẻ Link
-                                        downloadImage();     // Gọi hàm tải ảnh
+                                        downloadImage(recipe.image, recipe.title);     // Gọi hàm tải ảnh
                                     }} className="btn btn-light btn-sm text-start w-100">
-                                        ⬇️ Tải xuống
+                                        <MenuItemWithIcon icon={<FiDownload/>} label={"Tải xuống"}/>
                                     </button>
                                 </a>
                             </div>

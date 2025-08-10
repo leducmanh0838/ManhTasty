@@ -1,4 +1,4 @@
-import ManhTastyLogo from "../ManhTastyLogo";
+import ManhTastyLogo from "../ui/ManhTastyLogo";
 import SidebarMenuList from "./SidebarMenuList";
 
 const SidebarInfo = () => {

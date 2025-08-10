@@ -68,10 +68,10 @@ class RecipeViewSet(mixins.CreateModelMixin,
     #     serializer.save(author=self.request.user)
 
     # @action(detail=False, methods=['post'], url_path='creating')
-    def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
-        recipe_id = response.data.get('id')  # hoặc sửa serializer để trả về id
-        return Response({"message": "Recipe created successfully", "recipe_id": recipe_id}, status=status.HTTP_201_CREATED)
+    # def create(self, request, *args, **kwargs):
+    #     response = super().create(request, *args, **kwargs)
+    #     recipe_id = response.data.get('id')  # hoặc sửa serializer để trả về id
+    #     return Response({"message": "Recipe created successfully", "recipe_id": recipe_id}, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['get'], url_path='search')
     def search_recipes(self, request):
@@ -132,12 +132,6 @@ class RecipeViewSet(mixins.CreateModelMixin,
     def submit_recipe(self, request, pk=None):
         recipe = self.get_object()
         self.check_object_permissions(request, recipe)
-
-        # if recipe.status not in [RecipeStatus.CREATING, RecipeStatus.DRAFT]:
-        #     return Response(
-        #         {"detail": "Only recipes in 'Creating' or 'Draft' status can be submitted."},
-        #         status=status.HTTP_400_BAD_REQUEST
-        #     )
 
         if recipe.status != RecipeStatus.CREATING:
             return Response({"detail": "Recipe is not in CREATING status."}, status=400)

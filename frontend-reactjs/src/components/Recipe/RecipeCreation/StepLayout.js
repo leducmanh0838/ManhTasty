@@ -1,8 +1,22 @@
+import { useEffect } from "react";
 import { FaCamera, FaTrash } from "react-icons/fa";
+import UploadMediaInput from "../../../features/medias/components/UploadMediaInput";
 
 // export default StepLayout;
 
 const StepLayout = ({ steps, setSteps }) => {
+    const handleSetStepImage = (index, newImage) => {
+        console.info("newImage: ", newImage)
+        setSteps(prevSteps => {
+            const newSteps = [...prevSteps];
+            newSteps[index] = {
+                ...newSteps[index],
+                image: newImage,
+            };
+            return newSteps;
+        });
+    };
+
     const handleAddStep = () => {
         setSteps([...steps, { description: "", image: null }]);
     };
@@ -24,12 +38,12 @@ const StepLayout = ({ steps, setSteps }) => {
             <h5 className="mb-3">Các bước thực hiện</h5>
             {steps.map((step, idx) => (
                 <div className="d-flex">
-                    <div class="d-inline-flex justify-content-center align-items-center bg-dark text-white rounded-circle m-2" 
-                    style={{
-                        width:'30px',
-                        height:'30px',
-                    }}>
-                        {idx+1}
+                    <div class="d-inline-flex justify-content-center align-items-center bg-dark text-white rounded-circle m-2"
+                        style={{
+                            width: '30px',
+                            height: '30px',
+                        }}>
+                        {idx + 1}
                     </div>
                     <div key={idx} className="mb-3" style={{ flex: 1 }}>
                         <div className="d-flex align-items-center mb-2">
@@ -56,7 +70,8 @@ const StepLayout = ({ steps, setSteps }) => {
                         className="form-control mb-2"
                         onChange={(e) => handleStepChange(idx, "image", e.target.files[0])}
                     /> */}
-                        <div className="mb-2">
+                        <UploadMediaInput image={step.image} setImage={img => handleSetStepImage(index, img)} inputKey={index}/>
+                        {/* <div className="mb-2">
                             <input
                                 type="file"
                                 accept="image/*"
@@ -92,7 +107,7 @@ const StepLayout = ({ steps, setSteps }) => {
                                     </div>
                                 )}
                             </label>
-                        </div>
+                        </div> */}
 
                     </div>
                 </div>

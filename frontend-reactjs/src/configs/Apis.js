@@ -1,48 +1,59 @@
 import axios from "axios"
-import cookie from 'react-cookies'
 import { BASE_URL } from "./Values"
 import { getAccessToken } from "../utils/Auth"
-import { TagCategory } from "./Types"
-
 
 export const endpoints = {
-    login: {
-      google: 'login/google/',
-      facebook: 'login/facebook/',
+    auth: {
+        login: {
+            google: 'login/google/',
+            facebook: 'login/facebook/',
+        },
+        token: 'o/token/',
     },
-    home:{
-        recipes: 'recipes/'
+    home: {
+        recipesList: 'recipes/',
     },
-    recipes:{
-        recipes:'recipes/',
-        recipeDetail: (recipeId) => `recipes/${recipeId}/`,
-        reactions:{
-            emotionCounts: (recipeId) => `recipes/${recipeId}/emotion-counts/`,
-            currentEmotion: (recipeId) => `recipes/${recipeId}/current-emotion/`,
+    recipes: {
+        list: 'recipes/',
+        detail: (recipeId) => `recipes/${recipeId}/`,
+        search: 'recipes/search/',
+        draft: {
+            list: 'recipes-draft/',
+            detail: (draftId) => `recipes-draft/${draftId}/`,
+            lastest: 'recipes-draft/lastest/',
         },
         steps: (recipeId) => `recipes/${recipeId}/steps/`,
         medias: (recipeId) => `recipes/${recipeId}/medias/`,
         submit: (recipeId) => `recipes/${recipeId}/submit/`,
         comments: (recipeId) => `recipes/${recipeId}/comments/`,
-        search: `recipes/search/`,
+        reactions: {
+            emotionCounts: (recipeId) => `recipes/${recipeId}/emotion-counts/`,
+            currentEmotion: (recipeId) => `recipes/${recipeId}/current-emotion/`,
+        },
     },
-    token: 'o/token/',
-    reactions:{
-        reactions: 'reactions/',
-        reactionDetail: (reactionId) => `reactions/${reactionId}/`,
+    reactions: {
+        list: 'reactions/',
+        detail: (reactionId) => `reactions/${reactionId}/`,
     },
-    comments:{
+    comments: {
         replies: (commentId) => `comments/${commentId}/replies/`,
     },
-    tags:{
-        selectByTagCategory: (TagCategoryId) =>`tags/?tag_category=${TagCategoryId}`
+    tags: {
+        list: 'tags/',
+        byCategory: (tagCategoryId) => `tags/?tag_category=${tagCategoryId}`,
     },
-    reports:{
-        reports: 'reports/'
+    ingredients: {
+        list: 'ingredients/',
     },
-}
+    reports: {
+        list: 'reports/',
+    },
+    imageUpload:{
+        list: 'image-upload/',
+    },
+};
 
-export const authApis = async() => {
+export const authApis = async () => {
     const accessToken = await getAccessToken()
     return axios.create({
         baseURL: BASE_URL,

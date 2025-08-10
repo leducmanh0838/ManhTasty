@@ -2,7 +2,8 @@ from django.urls import path, include
 from rest_framework_nested import routers
 
 from app.views.comment_view import CommentViewSet
-from app.views.media_view import ImageUploadViewSet
+from app.views.ingredient_view import IngredientViewSet
+from app.views.media_view import MediaUploadViewSet
 from app.views.reaction_view import ReactionViewSet
 from app.views.recipe_views.recipe_draft_view import RecipeDraftViewSet
 from app.views.recipe_views.recipe_view import RecipeViewSet, RecipeCommentViewSet
@@ -19,25 +20,26 @@ router.register(r'users', UserViewSet, basename='users')
 router.register(r'search', SearchViewSet, basename='search')
 
 router.register(r'recipes', RecipeViewSet, basename='recipes')
-# router.register(r'draft-recipes', RecipeDraftViewSet, basename='draft-recipes')
+router.register(r'recipes-draft', RecipeDraftViewSet, basename='draft-recipes')
 # router.register(r'draft', RecipeDraftViewSet, basename='draft')
 router.register(r'reactions', ReactionViewSet, basename='reactions')
 router.register(r'comments', CommentViewSet, basename='comments')
 router.register(r'reports', ReportViewSet, basename='reports')
 router.register(r'tags', TagViewSet, basename='tags')
-router.register(r'image-upload', ImageUploadViewSet, basename='image-upload')
+router.register(r'ingredients', IngredientViewSet, basename='ingredients')
+router.register(r'image-upload', MediaUploadViewSet, basename='image-upload')
 
 # Tạo nested router cho comments theo từng recipe
 recipes_nested_router = routers.NestedSimpleRouter(router, r'recipes', lookup='recipe')
 recipes_nested_router.register(r'comments', RecipeCommentViewSet, basename='recipe-comments')
 
-recipes_router = routers.SimpleRouter()
-recipes_router.register(r'draft', RecipeDraftViewSet, basename='draft-recipes')
+# recipes_router = routers.SimpleRouter()
+# recipes_router.register(r'draft', RecipeDraftViewSet, basename='draft-recipes')
 
 urlpatterns = [
     path('api/', include(router.urls)),
     path('api/', include(recipes_nested_router.urls)),
-    path('api/recipes/', include(recipes_router.urls)),
+    # path('api/recipes/', include(recipes_router.urls)),
     # path('recipes/create/', RecipeAPIView.as_view(), name='recipe'),
     # path('auth/google/', GoogleLoginAPIView.as_view(), name='user'),
     # path('auth/facebook/', FacebookLoginAPIView.as_view(), name='user2'),

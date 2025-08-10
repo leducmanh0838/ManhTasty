@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from app.models import User, Tag, Report
+from app.models import User, Tag, Report, Ingredient, Recipe
 
 
 # Register your models here.
@@ -20,4 +20,6 @@ class TagAdmin(admin.ModelAdmin):
 
 admin.site.register(User, MyUserAdmin)
 admin.site.register(Tag, TagAdmin)
+admin.site.register(Ingredient)
+admin.site.register(Recipe)
 admin.site.register(Report)

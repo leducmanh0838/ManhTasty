@@ -1,12 +1,12 @@
 import { useState } from "react";
-import FacebookLogin from "../../../components/layouts/buttons/FacebookLogin";
-import MyGoogleLogin from "../../../components/layouts/buttons/MyGoogleLogin";
-import ManhTastyLogo from "../../../components/ManhTastyLogo"
 import { useLogin } from "../../../utils/Auth";
 import Apis, { endpoints } from "../../../configs/Apis";
 import MySpinner from "../../../components/ui/MySpinner";
+import MyGoogleLogin from "./MyGoogleLogin";
+import FacebookLogin from "./FacebookLogin";
+import ManhTastyLogo from "../../../components/ui/ManhTastyLogo";
 
-const Login = ({ setShowModal }) => {
+const Login = ({ setShowModal, message = "Đăng nhập" }) => {
     const login = useLogin();
     const [loading, setLoading] = useState(false);
     const hanldeSubmitSocialLogin = async (typeLogin, accessToken) => {
@@ -17,9 +17,9 @@ const Login = ({ setShowModal }) => {
             setLoading(true);
             let res;
             if (typeLogin === "google")
-                res = await Apis.post(endpoints.login.google, { idToken: accessToken });
+                res = await Apis.post(endpoints.auth.login.google, { idToken: accessToken });
             else if (typeLogin === "facebook")
-                res = await Apis.post(endpoints.login.facebook, { accessToken });
+                res = await Apis.post(endpoints.auth.login.facebook, { accessToken });
 
             login(res.data);
             setShowModal(false);
@@ -42,12 +42,12 @@ const Login = ({ setShowModal }) => {
     return (
         <div className="text-center">
             <div className="fw-bold fs-4 d-flex flex-column align-items-center mx-3">
-                <ManhTastyLogo link={false}/>
+                <ManhTastyLogo link={false} />
             </div>
-            <h5 className="mb-3">Đăng nhập</h5>
+            <h5 className="mb-3">{message}</h5>
 
-            {loading ? <MySpinner text="Đang đăng nhập..." /> : <><MyGoogleLogin
-                submitSocialLogin={hanldeSubmitSocialLogin} />
+            {loading ? <MySpinner text="Đang đăng nhập..." /> : <>
+                <MyGoogleLogin submitSocialLogin={hanldeSubmitSocialLogin} />
                 <FacebookLogin submitSocialLogin={hanldeSubmitSocialLogin} />
             </>}
         </div>

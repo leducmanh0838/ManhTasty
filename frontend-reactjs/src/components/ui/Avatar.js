@@ -16,4 +16,4 @@ const Avatar = ({ src, alt = "Avatar", size = 32, className = "" }) => {
   );
 };
 
-export default Avatar;
+export default React.memo(Avatar);

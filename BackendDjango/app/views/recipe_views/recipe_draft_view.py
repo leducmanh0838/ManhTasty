@@ -1,15 +1,21 @@
+import json
+
 from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from bson import ObjectId
+from bson import ObjectId, json_util
 from datetime import datetime
 
+from app.serializers.recipe_draft_serializers import CreateRecipeFromDraftSerializer
 from app.utils.mongodb import recipe_drafts_collection
 
 
 class RecipeDraftViewSet(viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated]
+    parser_classes = [JSONParser]
 
     def get_user_id(self):
         return self.request.user.id
@@ -33,7 +39,8 @@ class RecipeDraftViewSet(viewsets.GenericViewSet):
             "title": "",
             "description": "",
             "image": None,
-            "cover_image": None,
+            # "cover_image": None,
+            "medias": [],
             "tags": [],
             "ingredients": [],
             "steps": [],
@@ -43,6 +50,17 @@ class RecipeDraftViewSet(viewsets.GenericViewSet):
 
         result = recipe_drafts_collection.insert_one(data)
         return Response({"_id": str(result.inserted_id)}, status=status.HTTP_201_CREATED)
+
+
+    def retrieve(self, request, pk):
+        user_id = self.get_user_id()
+        draft = recipe_drafts_collection.find_one(
+            {
+                "_id": ObjectId(pk),
+                "user_id": user_id
+            }
+        )
+        return Response(json.loads(json_util.dumps(draft)), status=status.HTTP_200_OK)
 
     # PATCH /recipes/draft/{id}/
     def partial_update(self, request, pk=None):
@@ -76,3 +94,28 @@ class RecipeDraftViewSet(viewsets.GenericViewSet):
             return Response({"detail": "Draft not found"}, status=status.HTTP_404_NOT_FOUND)
 
         return Response({"message": "Draft updated"}, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['get'], url_path='lastest')
+    def get_latest_draft(self, request):
+        user_id = self.get_user_id()
+        draft = recipe_drafts_collection.find_one(
+            {'user_id': user_id},
+            sort=[('updated_at', -1)]
+        )
+        if not draft:
+            # return jsonify({'message': 'No draft found'}), 404
+            return Response({"_id": None}, status=status.HTTP_200_OK)
+        # return Response(json.loads(json_util.dumps(draft)), status=status.HTTP_200_OK)
+        return Response({"_id": str(draft['_id'])}, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['post'], url_path='submit')
+    def submit(self, request, pk):
+        serializer = CreateRecipeFromDraftSerializer(
+            data=request.data, context={
+                "request": request,
+                "draft_id": pk
+            })
+        if serializer.is_valid():
+            recipe = serializer.save()
+            return Response({"message": "Tạo recipe thành công", "id": recipe.id}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

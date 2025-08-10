@@ -7,7 +7,7 @@ import MySpinner from "../components/ui/MySpinner";
 const HomePage = () => {
     const [recipePage, setRecipePage] = useState(null);
     useEffect(() => {
-        Apis.get(endpoints.home.recipes)
+        Apis.get(endpoints.home.recipesList)
             .then(res => setRecipePage(res.data))
         // .then(setRecipes(prev => [...prev, ...x]))
     }, []);

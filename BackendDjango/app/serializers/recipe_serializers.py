@@ -1,5 +1,6 @@
 # $2b$12$by56vaFDxvQie8qU3jFQ6ulNL4EUqZVp.alJr6TrW3YztwBA3wrSO
 from cloudinary.uploader import upload
+from cloudinary.utils import cloudinary_url
 from rest_framework import serializers
 from app.models import Recipe, Ingredient, RecipeIngredient, Step, Tag, MediaType
 from app.serializers.ingredient_serializers import IngredientWithQuantitySerializer, IngredientSerializer
@@ -116,7 +117,7 @@ class RecipeListSerializer(serializers.ModelSerializer):
 class RecipeRetrieveSerializer(serializers.ModelSerializer):
     author = AvatarAndNameSerializer()
     ingredients = serializers.SerializerMethodField()
-    tags = serializers.SerializerMethodField()
+    tags = TagSerializer(many=True)
     medias = serializers.SerializerMethodField()
     steps = StepListSerializer(many=True)
     image = serializers.SerializerMethodField()
@@ -135,17 +136,17 @@ class RecipeRetrieveSerializer(serializers.ModelSerializer):
         recipe_ingredients = RecipeIngredient.objects.filter(recipe=obj).select_related('ingredient')
         return [
             {
+                'id': ri.ingredient.id,
                 'name': ri.ingredient.name,
                 'quantity': ri.quantity
             }
             for ri in recipe_ingredients
         ]
 
-    def get_tags(self, obj):
-        return [tag.name for tag in obj.tags.all()]
+    # def get_tags(self, obj):
+    #     return [tag.name for tag in obj.tags.all()]
 
     def get_medias(self, obj):
-        cloud_name = "dedsaxk7j"
         result = []
 
         for media in obj.medias.all().order_by('order'):
@@ -155,7 +156,12 @@ class RecipeRetrieveSerializer(serializers.ModelSerializer):
             # Tạm thời: nếu đuôi là mp4 => video, còn lại là image
             resource_type = "video" if media_type == MediaType.VIDEO else "image"
 
-            url = f"https://res.cloudinary.com/{cloud_name}/{resource_type}/upload/{public_id}"
+            url, options = cloudinary_url(
+                public_id,
+                resource_type=resource_type,  # 'image' hoặc 'video' hoặc 'raw'
+            )
+
+            # url = f"https://res.cloudinary.com/{cloud_name}/{resource_type}/upload/{public_id}"
             result.append({
                 'src': url,
                 'type': media_type

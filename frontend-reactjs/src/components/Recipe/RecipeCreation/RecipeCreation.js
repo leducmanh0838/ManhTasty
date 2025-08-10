@@ -7,7 +7,6 @@ import { AppContext } from "../../../provides/AppProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { slugify } from "../../../utils/Common";
-import LoadingSpinner from "../../layouts/Loading/LoadingSpinner";
 
 const RecipeCreation = () => {
     const { currentUser } = useContext(AppContext);
@@ -156,7 +155,7 @@ const RecipeCreation = () => {
         //     setErrors(validationErrors); // hiển thị lỗi từng phần
         //     return;
         // }
-        console.info('tags: ',tags)
+        console.info('tags: ', tags)
 
         if (!currentUser) {
             toast.warning("Bạn cần đăng nhập để đăng món ăn!");
