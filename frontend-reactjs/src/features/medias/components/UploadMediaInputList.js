@@ -5,7 +5,7 @@ import { isFileAccepted } from "../../../utils/file/isFileAccepted";
 import { getFileType } from "../utils/getFileType";
 import MediaView from "./MediaView";
 import { memo } from "react";
-import MySpinner from "../../../components/ui/MySpinner";
+import LoadingSpinner from "../../../components/ui/Spinner/LoadingSpinner";
 
 const UploadMediaInputList = ({ medias, setMedias, accept = "image/*", inputKey, size = 180, overrideAddMedia, overrideDeleteMedia, loading, isCloudinary=false }) => {
 
@@ -89,7 +89,7 @@ const UploadMediaInputList = ({ medias, setMedias, accept = "image/*", inputKey,
                         cursor: "pointer",
                     }}
                 >
-                    {loading ? <MySpinner text="Đang tải ảnh lên server..." /> : <><CameraInputUI /></>}
+                    {loading ? <LoadingSpinner text="Đang tải ảnh lên server..." /> : <><CameraInputUI /></>}
                 </label>
             </div>
         </div>

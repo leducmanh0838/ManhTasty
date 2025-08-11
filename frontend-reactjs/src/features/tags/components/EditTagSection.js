@@ -5,7 +5,7 @@ import { authApis, endpoints } from "../../../configs/Apis";
 import { handleDraftItemListChange, handleRemoveDraftItem } from "../../recipes/utils/draft-utils";
 import SearchAutocompleteSimple from "../../search/components/SearchAutocompleteSimple";
 
-const EditTagItemList = memo(({ tags, setTags, recipeId }) => {
+const EditTagItemList = memo(({ tags, setTags, recipeId, setSaving }) => {
     return (
         <div className="d-flex flex-wrap align-items-center gap-2 mb-2">
             {tags && tags.length > 0 && tags.map((tag, index) => (
@@ -16,7 +16,7 @@ const EditTagItemList = memo(({ tags, setTags, recipeId }) => {
                         className="btn-close btn-sm"
                         aria-label="Remove"
                         // onClick={() => handleRemoveTag(tag.name)}
-                        onClick={() => handleRemoveDraftItem(setTags, "tags", index, "id", tag.id, recipeId)}
+                        onClick={() => handleRemoveDraftItem(setTags, "tags", index, "id", tag.id, recipeId, setSaving)}
                     ></button>
                 </span>
             ))}
@@ -24,7 +24,7 @@ const EditTagItemList = memo(({ tags, setTags, recipeId }) => {
     )
 })
 
-const EditTagSection = ({ tags, setTags, recipeId }) => {
+const EditTagSection = ({ tags, setTags, recipeId, setSaving }) => {
 
     const handleGetResponseSuggestions = async (keyword) => {
         const api = await authApis();
@@ -34,7 +34,7 @@ const EditTagSection = ({ tags, setTags, recipeId }) => {
     const handleSelectTag = (selectedTag) => {
         const exists = tags.some(tag => tag.id === selectedTag.id);
         if (!exists)
-            handleDraftItemListChange(tags, setTags, "tags", tags.length, null, selectedTag, recipeId);
+            handleDraftItemListChange(tags, setTags, "tags", tags.length, null, selectedTag, recipeId, setSaving);
         // setTags(prev => [...prev, selectedTag])
     }
 
@@ -91,7 +91,7 @@ const EditTagSection = ({ tags, setTags, recipeId }) => {
             </div> */}
 
             <div className="mt-2">
-                <EditTagItemList tags={tags} setTags={setTags} recipeId={recipeId} />
+                <EditTagItemList tags={tags} setTags={setTags} recipeId={recipeId} setSaving={setSaving}/>
             </div>
         </>
 

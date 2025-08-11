@@ -1,31 +1,47 @@
-import { FaBars } from "react-icons/fa";
+// import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./Header.css";
-import SearchBar from "../../features/search/components/SearchBar";
-import HeaderAuth from "./HeaderAuth";
+import DefaultHeader from "./DefaultHeader";
 
 const Header = () => {
-    return (
-        <header className="d-flex align-items-center justify-content-between p-3 shadow bg-white sticky-top mt-2 mx-2 rounded">
-            {/* SidebarToggleButton */}
-            <button
-                className="btn btn-outline-secondary d-md-none me-2"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#mobileSidebar"
-            >
-                <FaBars size={20} />
-            </button>
-            <div className="d-flex w-100 align-items-center">
-                <div className="flex-grow-1 me-3">
-                    <SearchBar />
-                </div>
-                <div>
-                    <HeaderAuth />
-                </div>
-            </div>
+    const location = useLocation();
+    const headerConfig = {
+        "/recipes-draft": <></>,
+        // các route khác nếu cần
+    };
 
-        </header>
+    const prefixKey = Object.keys(headerConfig).find(key =>
+        location.pathname.startsWith(key)
+    );
+
+    const header = prefixKey ? headerConfig[prefixKey] : <DefaultHeader />;
+
+    // const showHeader = !location.pathname.startsWith('/profile');
+    return (
+        <>
+            {header}
+        </>
     )
 }
 
 export default Header;
+
+// import { useLocation } from 'react-router-dom';
+
+// const headerConfig = {
+//   "/": <HomeHeader />,
+//   "/profile": <ProfileHeader />,
+//   "/dashboard": <DashboardHeader />,
+//   // có thể thêm nhiều route và header tương ứng
+// };
+
+// const Header = () => {
+//   const location = useLocation();
+//   const header = headerConfig[location.pathname] || <DefaultHeader />;
+
+//   return (
+//     <header>
+//       {header}
+//     </header>
+//   );
+// };

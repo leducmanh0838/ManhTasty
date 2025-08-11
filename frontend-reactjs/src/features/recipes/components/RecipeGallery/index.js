@@ -5,26 +5,26 @@ import MediaView from "../../../medias/components/MediaView";
 
 const RecipeGallery = ({medias}) => {
 
-    const containerRef = useRef(null);
-    const itemRefs = useRef([]);
+    // const containerRef = useRef(null);
+    // const itemRefs = useRef([]);
 
-    const scrollToCenter = (index) => {
-        const container = containerRef.current;
-        const item = itemRefs.current[index];
+    // const scrollToCenter = (index) => {
+    //     const container = containerRef.current;
+    //     const item = itemRefs.current[index];
 
-        if (container && item) {
-            const containerRect = container.getBoundingClientRect();
-            const itemRect = item.getBoundingClientRect();
+    //     if (container && item) {
+    //         const containerRect = container.getBoundingClientRect();
+    //         const itemRect = item.getBoundingClientRect();
 
-            const offset = itemRect.left - containerRect.left;
-            const scroll = offset - (container.clientWidth / 2) + (item.clientWidth / 2);
+    //         const offset = itemRect.left - containerRect.left;
+    //         const scroll = offset - (container.clientWidth / 2) + (item.clientWidth / 2);
 
-            container.scrollBy({
-                left: scroll,
-                behavior: "smooth",
-            });
-        }
-    };
+    //         container.scrollBy({
+    //             left: scroll,
+    //             behavior: "smooth",
+    //         });
+    //     }
+    // };
 
     const [selectedMedia, setSelectedMedia] = useState(medias[0]);
 
@@ -35,18 +35,19 @@ const RecipeGallery = ({medias}) => {
             </div>
 
             {/* Thumbnails cuộn ngang */}
-            <div className="thumbnail-scroll d-flex gap-2 px-2 scroll-container"
-                ref={containerRef}
-                style={{
-                    overflowX: "auto",     // Cho phép cuộn ngang
-                    overflowY: "hidden",   // Ẩn cuộn dọc
-                }}
+            {/* <div className="thumbnail-scroll d-flex gap-2 px-2 scroll-container" */}
+            <div className="d-flex flex-wrap gap-2 px-2 "
+                // ref={containerRef}
+                // style={{
+                //     overflowX: "auto",     // Cho phép cuộn ngang
+                //     overflowY: "hidden",   // Ẩn cuộn dọc
+                // }}
             >
                 {medias.map((media, index) => (
                     <div
-                        ref={(el) => (itemRefs.current[index] = el)}
+                        // ref={(el) => (itemRefs.current[index] = el)}
                         onClick={() => {
-                            scrollToCenter(index);
+                            // scrollToCenter(index);
                             setSelectedMedia(media);
                         }
                         }

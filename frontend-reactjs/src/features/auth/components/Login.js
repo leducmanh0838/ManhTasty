@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useLogin } from "../../../utils/Auth";
 import Apis, { endpoints } from "../../../configs/Apis";
-import MySpinner from "../../../components/ui/MySpinner";
+import LoadingSpinner from "../../../components/ui/Spinner/LoadingSpinner";
 import MyGoogleLogin from "./MyGoogleLogin";
 import FacebookLogin from "./FacebookLogin";
 import ManhTastyLogo from "../../../components/ui/ManhTastyLogo";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({ setShowModal, message = "Đăng nhập" }) => {
+const Login = ({ setShowModal, message = "Đăng nhập", to}) => {
     const login = useLogin();
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const hanldeSubmitSocialLogin = async (typeLogin, accessToken) => {
         console.info("typeLogin: ", typeLogin);
@@ -22,6 +24,7 @@ const Login = ({ setShowModal, message = "Đăng nhập" }) => {
                 res = await Apis.post(endpoints.auth.login.facebook, { accessToken });
 
             login(res.data);
+            to && navigate(to);
             setShowModal(false);
         } catch (error) {
             if (error.response && error.response.data && error.response.data.message) {
@@ -46,7 +49,7 @@ const Login = ({ setShowModal, message = "Đăng nhập" }) => {
             </div>
             <h5 className="mb-3">{message}</h5>
 
-            {loading ? <MySpinner text="Đang đăng nhập..." /> : <>
+            {loading ? <LoadingSpinner text="Đang đăng nhập..." /> : <>
                 <MyGoogleLogin submitSocialLogin={hanldeSubmitSocialLogin} />
                 <FacebookLogin submitSocialLogin={hanldeSubmitSocialLogin} />
             </>}

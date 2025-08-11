@@ -4,6 +4,7 @@ from rest_framework import serializers
 
 from app.models import Recipe, Ingredient, Step, Tag, RecipeStatus, RecipeTag, RecipeIngredient, RecipeMedia
 from app.utils.mongodb import recipe_drafts_collection
+from app.utils.validate import validate_recipe_data
 
 
 class CreateRecipeFromDraftSerializer(serializers.Serializer):
@@ -18,9 +19,10 @@ class CreateRecipeFromDraftSerializer(serializers.Serializer):
         draft = recipe_drafts_collection.find_one(
             {
                 "_id": ObjectId(draft_id),
-                # "user_id": user.id
+                "user_id": user.id
             }
         )
+        validate_recipe_data(draft)
             # draft = RecipeDraft.objects.get(pk=draft_id)
         if not draft:
             raise serializers.ValidationError("Bản nháp không tồn tại")
@@ -74,15 +76,20 @@ class CreateRecipeFromDraftSerializer(serializers.Serializer):
         RecipeMedia.objects.bulk_create([
             RecipeMedia(
                 recipe=recipe,
-                media_type=media["type"],
-                file=media["src"],
+                media_type=media.get("type"),
+                file=media.get("src"),
                 order=index
             )
             # for media in draft.medias
             for index, media in enumerate(draft["medias"])
         ])
         #
-        # # 7. Xóa bản nháp
-        # draft.delete()
+        # 7. Xóa bản nháp
+        recipe_drafts_collection.delete_one(
+            {
+                "_id": ObjectId(draft_id),
+                "user_id": user.id
+            }
+        )
 
         return recipe

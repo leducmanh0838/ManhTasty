@@ -21,7 +21,7 @@ const SidebarMenuItem = ({ icon, label, to, requireLogin = false, messageLogin }
       <Link to={to} onClick={handleClick} className="text-decoration-none text-dark mb-3">
         <MenuItemWithIcon icon={icon} label={label} />
       </Link>
-      {requireLogin && <LoginDialog {...{showModal, setShowModal}} message = {messageLogin}/>}
+      {requireLogin && <LoginDialog {...{showModal, setShowModal, to}} message = {messageLogin}/>}
     </>
   )
 }

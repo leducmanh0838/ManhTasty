@@ -1,4 +1,4 @@
-export const TITLE_VALIDATION_REGEX = /^[\w\s\-_\.,!?\(\)]+$/;
+export const TITLE_VALIDATION_REGEX = /^[\p{L}\p{N}\s\-_\.,!?\(\)]+$/u;
 
 export const VIETNAMESE_NAME_REGEX = /^[\p{L}\p{M}\d\s\-_\.,!?\(\)]+$/u;
 

@@ -12,6 +12,7 @@ from datetime import datetime
 from app.serializers.recipe_draft_serializers import CreateRecipeFromDraftSerializer
 from app.utils.mongodb import recipe_drafts_collection
 
+ALLOWED_FIELDS = {"title", "description", "image", "medias", "tags", "ingredients", "steps"}
 
 class RecipeDraftViewSet(viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated]
@@ -60,9 +61,48 @@ class RecipeDraftViewSet(viewsets.GenericViewSet):
                 "user_id": user_id
             }
         )
+        if not draft:
+            return Response({"detail": "Draft not found"}, status=status.HTTP_404_NOT_FOUND)
         return Response(json.loads(json_util.dumps(draft)), status=status.HTTP_200_OK)
 
     # PATCH /recipes/draft/{id}/
+    # def partial_update(self, request, pk=None):
+    #     user_id = self.get_user_id()
+    #     raw_data = request.data
+    #     update_query = {}
+    #     now = datetime.now()
+    #
+    #     def filter_fields(obj):
+    #         """Lọc chỉ giữ field hợp lệ"""
+    #         return {k: v for k, v in obj.items() if k in ALLOWED_FIELDS}
+    #
+    #     # Hỗ trợ $push / $pull
+    #     if "$push" in raw_data:
+    #         update_query["$push"] = filter_fields(raw_data["$push"])
+    #
+    #     if "$pull" in raw_data:
+    #         update_query["$pull"] = filter_fields(raw_data["$pull"])
+    #
+    #     # Hỗ trợ $set
+    #     if "$set" in raw_data:
+    #         update_query["$set"] = filter_fields(raw_data["$set"])
+    #     elif not update_query:
+    #         # Nếu không có $push/$pull/$set thì mặc định dùng $set toàn bộ
+    #         update_query["$set"] = filter_fields(raw_data)
+    #
+    #     # Luôn cập nhật thời gian
+    #     update_query.setdefault("$set", {})["updated_at"] = now
+    #
+    #     result = recipe_drafts_collection.update_one(
+    #         {"_id": ObjectId(pk), "user_id": user_id},
+    #         update_query
+    #     )
+    #
+    #     if result.matched_count == 0:
+    #         return Response({"detail": "Draft not found"}, status=status.HTTP_404_NOT_FOUND)
+    #
+    #     return Response({"message": "Draft updated"}, status=status.HTTP_200_OK)
+
     def partial_update(self, request, pk=None):
         user_id = self.get_user_id()
         data = request.data
@@ -117,5 +157,5 @@ class RecipeDraftViewSet(viewsets.GenericViewSet):
             })
         if serializer.is_valid():
             recipe = serializer.save()
-            return Response({"message": "Tạo recipe thành công", "id": recipe.id}, status=status.HTTP_201_CREATED)
+            return Response({"message": "Tạo recipe thành công", "id": recipe.id, "title": recipe.title}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

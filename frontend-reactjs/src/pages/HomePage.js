@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./Home.css";
 import Apis, { endpoints } from "../configs/Apis";
 import RecipeCardSimpleList from "../features/recipes/components/RecipeCardSimpleList";
-import MySpinner from "../components/ui/MySpinner";
+import LoadingSpinner from "../components/ui/Spinner/LoadingSpinner";
 
 const HomePage = () => {
     const [recipePage, setRecipePage] = useState(null);
@@ -16,7 +16,7 @@ const HomePage = () => {
         recipePage && recipePage.results ? (
             <RecipeCardSimpleList recipes={recipePage.results} />
         ) : (
-            <MySpinner/>
+            <LoadingSpinner/>
         )
     )
 }

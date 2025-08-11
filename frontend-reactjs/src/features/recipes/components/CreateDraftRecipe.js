@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { authApis, endpoints } from '../../../configs/Apis';
-import MySpiner from '../../../components/ui/MySpinner'
+import MySpiner from '../../../components/ui/Spinner/LoadingSpinner'
 import { useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from '../../../provides/AppProvider';
 import { toast } from 'react-toastify';

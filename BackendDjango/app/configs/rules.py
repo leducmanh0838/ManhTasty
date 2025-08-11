@@ -1,0 +1,31 @@
+import regex
+
+class RecipeRule:
+    class Title:
+        MIN_TITLE_LENGTH = 5
+        MAX_TITLE_LENGTH = 50
+        TITLE_VALIDATION_REGEX = regex.compile(r'^[\p{L}\p{N}\s\-_\.,!?\(\)]+$', regex.UNICODE)
+
+    class Description:
+        MIN_DESCRIPTION_LENGTH = 10
+        MAX_DESCRIPTION_LENGTH = 300
+
+    class Step:
+        MIN_STEP_DESCRIPTION_LENGTH = 3
+        MAX_STEP_DESCRIPTION_LENGTH = 50
+        MIN_STEPS = 2
+        MAX_STEPS = 5
+
+    class Media:
+        MAX_MEDIAS = 5
+
+    class Tag:
+        MAX_TAGS = 10
+
+    class Ingredient:
+        MIN_INGREDIENTS = 2
+        MAX_INGREDIENTS = 10
+        MIN_INGREDIENT_NAME_LENGTH = 2
+        MAX_INGREDIENT_NAME_LENGTH = 15
+        MIN_INGREDIENT_QUANTITY_LENGTH = 1
+        MAX_INGREDIENT_QUANTITY_LENGTH = 10

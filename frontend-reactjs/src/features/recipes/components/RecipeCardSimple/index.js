@@ -11,8 +11,6 @@ import { FiDownload } from "react-icons/fi";
 const RecipeCardSimple = ({ recipe }) => {
     const [showActionMenu, setShowActionMenu] = useState(false);
     const navigate = useNavigate();
-    const [showReportModal, setShowReportModal] = useState(false);
-
     // const downloadImage = async () => {
     //     const response = await fetch(recipe.image);
     //     const blob = await response.blob();

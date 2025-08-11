@@ -6,7 +6,7 @@ import { AppContext } from "../../../provides/AppProvider";
 import { MediaType } from "../../medias/constants/mediaType";
 import Avatar from "../../../components/ui/Avatar"
 import GridTagSimpleList from "../../tags/components/GridTagSimpleList";
-import MySpinner from "../../../components/ui/MySpinner"
+import LoadingSpinner from "../../../components/ui/Spinner/LoadingSpinner"
 import GridReactionSimpleList from "../../reactions/components/GridReactionSimpleList";
 import ReactionPickerButton from "../../reactions/components/ReactionPickerButton";
 import { GiKnifeFork } from "react-icons/gi";
@@ -54,11 +54,12 @@ const PublicRecipeDetailPage = () => {
     return (
         <>
             {recipe ? <>
-                <div className="row">
-                    <div className="col-8">
-                        {recipe && <RecipeGallery medias={[...recipe.medias, { type: MediaType.IMAGE.value, src: recipe.image }]} />}
-                    </div>
-                    <div className="col-4 py-4">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-8">
+                            {recipe && <RecipeGallery medias={[...recipe.medias, { type: MediaType.IMAGE.value, src: recipe.image }]} />}
+                        </div>
+                        <div className="col-4 py-4">
                         <h2
                             className="fw-bold"
                         //   style={{ fontFamily: "'Lobster', cursive", fontSize: '2rem' }}
@@ -73,7 +74,7 @@ const PublicRecipeDetailPage = () => {
                             </div>
                         </div>
                         <div className="mt-1">{recipe?.description}</div>
-                        {/* <h3>Tags</h3> */}
+                        
                         {recipe && <GridTagSimpleList tags={recipe.tags} />}
 
                         <GridReactionSimpleList emotions={emotions} />
@@ -82,21 +83,24 @@ const PublicRecipeDetailPage = () => {
                             <ReactionPickerButton {...{ emotions, setEmotions, selectedEmotion, setSelectedEmotion, objectId: recipeId, contentType: "recipe" }} />
                         </div>
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col-8">
-                        <h5 className="fw-bold mb-3 border-bottom pb-2">
-                            <GiKnifeFork className="me-2" />
-                            Hướng dẫn cách làm
-                        </h5>
-                        <StepItemList steps={recipe.steps} />
                     </div>
-                    <div className="col-4">
-                        <h5 className="fw-bold mb-3 border-bottom pb-2">
-                            <FaCarrot className="me-2" />
-                            Nguyên liệu
-                        </h5>
-                        <IngredientItemList ingredients={recipe.ingredients} />
+                </div>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-8">
+                            <h5 className="fw-bold mb-3 border-bottom pb-2">
+                                <GiKnifeFork className="me-2" />
+                                Hướng dẫn cách làm
+                            </h5>
+                            <StepItemList steps={recipe.steps} />
+                        </div>
+                        <div className="col-4">
+                            <h5 className="fw-bold mb-3 border-bottom pb-2">
+                                <FaCarrot className="me-2" />
+                                Nguyên liệu
+                            </h5>
+                            <IngredientItemList ingredients={recipe.ingredients} />
+                        </div>
                     </div>
                 </div>
 
@@ -110,7 +114,7 @@ const PublicRecipeDetailPage = () => {
                     {/* <CommentList recipeId={recipeId} /> */}
                     {/* <CommentLayout recipeId={recipeId} /> */}
                 </div>
-            </> : <MySpinner text="Đang tải món ăn..." />}
+            </> : <LoadingSpinner text="Đang tải món ăn..." />}
         </>
     )
 }

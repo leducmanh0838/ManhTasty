@@ -2,13 +2,14 @@ import { memo, useState } from "react"
 import UploadMediaInput from "./UploadMediaInput";
 import Apis, { authApis, endpoints } from "../../../configs/Apis";
 import { compressImage } from "../../../utils/file/compressImage";
-import MySpinner from "../../../components/ui/MySpinner";
+import LoadingSpinner from "../../../components/ui/Spinner/LoadingSpinner";
 import { handleDraftChange } from "../../recipes/utils/draft-utils";
 
-const EditRecipeMainImageSection = ({ image, setImage, accept = "image/*", inputKey, size = 180, parentType, recipeId }) => {
+const EditRecipeMainImageSection = ({ image, setImage, accept = "image/*", inputKey, size = 180, parentType, recipeId, setSaving }) => {
     const [loading, setLoading] = useState(false);
     const overrideAddMedia = async (e) => {
         try {
+            setSaving(true)
             setLoading(true);
             const fileCompression = await compressImage(e.target.files[0])
             const formData = new FormData();
@@ -21,18 +22,19 @@ const EditRecipeMainImageSection = ({ image, setImage, accept = "image/*", input
                 }
             })
             // setImage(res.data.src);
-            handleDraftChange(setImage, "image", res.data.src, recipeId)
+            handleDraftChange(setImage, "image", res.data.src, recipeId, setSaving)
             // handleDraftItemListChange(image, setImage, "medias", medias.length, null, res.data, recipeId)
         } catch (err) {
 
         } finally {
+            setSaving(false)
             setLoading(false);
         }
     }
 
     return (
         <>
-            {loading ? <MySpinner text="Đang tải ảnh"/>: <UploadMediaInput {...{ image, setImage, accept, inputKey, size, overrideAddMedia }} isCloudinary={true}/>}
+            {loading ? <LoadingSpinner text="Đang tải ảnh"/>: <UploadMediaInput {...{ image, setImage, accept, inputKey, size, overrideAddMedia }} isCloudinary={true}/>}
         </>
     )
 }

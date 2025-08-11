@@ -34,18 +34,16 @@ const App = () => {
           <div className="flex-grow-1 ms-0 ms-md-1" style={{ marginLeft: '0px' }}>
             {/* Header */}
             <Header />
-            <div className='p-2'>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/dev" element={<Dev />} />
-                <Route path="/recipes/:idSlug" element={<PublicRecipeDetailPage />}/>
-                <Route path="/recipes-draft" element={<CreateDraftRecipe />}/>
-                <Route path="/recipes-draft/:recipeId/edit" element={<EditRecipePage />}/>
-                {/* <Route path="/recipes/:idSlug" element={<RecipeDetail />} />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/dev" element={<Dev />} />
+              <Route path="/recipes/:idSlug" element={<PublicRecipeDetailPage />} />
+              <Route path="/recipes-draft" element={<CreateDraftRecipe />} />
+              <Route path="/recipes-draft/:recipeId/edit" element={<EditRecipePage />} />
+              {/* <Route path="/recipes/:idSlug" element={<RecipeDetail />} />
                 <Route path="/create-recipe" element={<RecipeCreation />} />
                 <Route path="/search" element={<Search />} /> */}
-              </Routes>
-            </div>
+            </Routes>
 
             {/* Recipe Grid */}
 

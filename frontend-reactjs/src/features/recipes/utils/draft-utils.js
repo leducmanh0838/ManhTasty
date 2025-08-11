@@ -2,8 +2,9 @@ import { authApis, endpoints } from "../../../configs/Apis";
 import { printErrors } from "../../../utils/printErrors";
 
 // onBlur={(e) => handleDraftChange(steps, setSteps, "steps", index, "description", e.target.value, recipeId)}
-export async function handleDraftItemListChange(items, setItems, field, index, subField, value, recipeId) {
+export async function handleDraftItemListChange(items, setItems, field, index, subField, value, recipeId, setSaving) {
     try {
+        setSaving(true);
         const api = await authApis();
         const keyField = [field, index, subField]
             .filter(v => v !== null && v !== undefined && v !== "")
@@ -17,12 +18,13 @@ export async function handleDraftItemListChange(items, setItems, field, index, s
     } catch (err) {
         printErrors(err);
     } finally {
-
+        setSaving(false);
     }
 }
 
-export async function handleDraftChange(setItems, field, value, recipeId) {
+export async function handleDraftChange(setItems, field, value, recipeId, setSaving) {
     try {
+        setSaving(true);
         const api = await authApis();
         // const keyField = [field, index, subField]
         //     .filter(v => v !== null && v !== undefined && v !== "")
@@ -40,13 +42,38 @@ export async function handleDraftChange(setItems, field, value, recipeId) {
     } catch (err) {
         printErrors(err);
     } finally {
-
+        setSaving(false);
     }
 }
 
 // handleRemoveDraftItem(setSteps, "steps", index, "description", step.description, recipeId)
-export async function handleRemoveDraftItem(setItems, field, index, subField, value, recipeId) {
+export async function handleAddDraftItem(setItems, field, value, recipeId, setSaving) {
     try {
+        setSaving(true)
+        console.info({
+            "$push": {
+                [field]: value
+            }
+        })
+        const api = await authApis();
+        const res = await api.patch(endpoints.recipes.draft.detail(recipeId),
+            {
+                "$push": {
+                    [field]: value
+                }
+            })
+        setItems(prev=>[...prev, value])
+    } catch (err) {
+        printErrors(err)
+    } finally {
+        setSaving(false);
+    }
+
+}
+
+export async function handleRemoveDraftItem(setItems, field, index, subField, value, recipeId, setSaving) {
+    try {
+        setSaving(true)
         console.info(JSON.stringify({
             "$pull": {
                 [field]: {
@@ -66,6 +93,8 @@ export async function handleRemoveDraftItem(setItems, field, index, subField, va
         handleRemoveItem(index, setItems)
     } catch (err) {
         printErrors(err)
+    } finally {
+        setSaving(false);
     }
 
 }

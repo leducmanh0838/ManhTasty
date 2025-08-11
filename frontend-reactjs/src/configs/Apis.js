@@ -21,6 +21,7 @@ export const endpoints = {
             list: 'recipes-draft/',
             detail: (draftId) => `recipes-draft/${draftId}/`,
             lastest: 'recipes-draft/lastest/',
+            submit: (draftId) => `recipes-draft/${draftId}/submit/`,
         },
         steps: (recipeId) => `recipes/${recipeId}/steps/`,
         medias: (recipeId) => `recipes/${recipeId}/medias/`,

@@ -2,7 +2,7 @@ import { memo, useState } from "react"
 import UploadMediaInput from "./UploadMediaInput";
 import Apis, { authApis, endpoints } from "../../../configs/Apis";
 import { compressImage } from "../../../utils/file/compressImage";
-import MySpinner from "../../../components/ui/MySpinner";
+import LoadingSpinner from "../../../components/ui/Spinner/LoadingSpinner";
 
 const UploadServerMediaInput = ({ image, setImage, accept = "image/*", inputKey, size = 180, parentType, isCloudinary=false }) => {
     const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ const UploadServerMediaInput = ({ image, setImage, accept = "image/*", inputKey,
 
     return (
         <>
-            {loading ? <MySpinner text="Đang tải ảnh"/>: <UploadMediaInput {...{ image, setImage, accept, inputKey, size, overrideAddMedia, isCloudinary }} />}
+            {loading ? <LoadingSpinner text="Đang tải ảnh"/>: <UploadMediaInput {...{ image, setImage, accept, inputKey, size, overrideAddMedia, isCloudinary }} />}
         </>
     )
 }

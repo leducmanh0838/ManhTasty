@@ -1,6 +1,5 @@
 import { memo, useEffect, useState } from "react";
 import FloatingInput from "../../../components/ui/FloatingInput";
-import { authApis, endpoints } from "../../../configs/Apis";
 import { printErrors } from "../../../utils/printErrors";
 
 const SearchAutocompleteSimple = ({handleSelectItem, handleGetResponseSuggestions}) => {
@@ -30,7 +29,7 @@ const SearchAutocompleteSimple = ({handleSelectItem, handleGetResponseSuggestion
     useEffect(() => {
         let timer = setTimeout(() => {
             kwSearch && loadSearchTagList(kwSearch);
-        }, 1000);
+        }, 750);
 
         return () => clearTimeout(timer);
     }, [kwSearch]);

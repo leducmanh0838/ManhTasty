@@ -1,11 +1,11 @@
 import { memo, useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { handleDraftItemListChange, handleRemoveDraftItem } from "../../recipes/utils/draft-utils";
+import { handleAddDraftItem, handleDraftItemListChange, handleRemoveDraftItem } from "../../recipes/utils/draft-utils";
 import FloatingInput from "../../../components/ui/FloatingInput";
 import { authApis, endpoints } from "../../../configs/Apis";
 import { printErrors } from "../../../utils/printErrors";
 
-const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredients, recipeId }) => {
+const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredients, recipeId, setSaving }) => {
     console.info("render EditIngredientSection")
     const [temp, setTemp] = useState({})
 
@@ -39,7 +39,7 @@ const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredient
 
     const handleSelectIngredient = (selectedIngredient) => {
         console.info("selectedIngredient: ", selectedIngredient)
-        handleDraftItemListChange(ingredients, setIngredients, "ingredients", index, "name", selectedIngredient.name, recipeId);
+        handleDraftItemListChange(ingredients, setIngredients, "ingredients", index, "name", selectedIngredient.name, recipeId, setSaving);
         setTemp(prev=>({...prev, "name": selectedIngredient.name}))
         // const exists = tags.some(tag => tag.id === selectedIngredient.id);
         // if (!exists)
@@ -50,7 +50,7 @@ const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredient
     useEffect(() => {
         let timer = setTimeout(() => {
             kwSearch && loadSearchIngredientList(kwSearch);
-        }, 1000);
+        }, 750);
 
         return () => clearTimeout(timer);
     }, [kwSearch]);
@@ -77,7 +77,7 @@ const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredient
                             }
                         }}
                         onBlur={(e) => {
-                            handleDraftItemListChange(ingredients, setIngredients, "ingredients", index, "name", e.target.value, recipeId);
+                            handleDraftItemListChange(ingredients, setIngredients, "ingredients", index, "name", e.target.value, recipeId, setSaving);
                             setTimeout(() => {
                                 setShowDropdown(false);
                             }, 200);
@@ -120,7 +120,7 @@ const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredient
                             ...prev,
                             quantity: e.target.value
                         }))}
-                        onBlur={(e) => handleDraftItemListChange(ingredients, setIngredients, "ingredients", index, "quantity", e.target.value, recipeId)}
+                        onBlur={(e) => handleDraftItemListChange(ingredients, setIngredients, "ingredients", index, "quantity", e.target.value, recipeId, setSaving)}
                     // value={ingredient.quantity}
                     // onChange={(e) => handleChange(index, "quantity", e.target.value)}
                     />
@@ -128,7 +128,7 @@ const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredient
             </div>
             <button
                 className="btn btn-light text-dark"
-                onClick={() => handleRemoveDraftItem(setIngredients, "ingredients", index, "name", ingredient.name, recipeId)}
+                onClick={() => handleRemoveDraftItem(setIngredients, "ingredients", index, "name", ingredient.name, recipeId, setSaving)}
                 // onClick={() => handleRemove(index)}
                 title="Xoá"
             >
@@ -138,16 +138,17 @@ const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredient
     )
 })
 
-const EditIngredientSection = ({ ingredients, setIngredients, recipeId }) => {
+const EditIngredientSection = ({ ingredients, setIngredients, recipeId, setSaving }) => {
     console.info("render EditIngredientSection")
     const handleAddIngredient = () => {
-        setIngredients([...ingredients, { name: "", quantity: "" }]);
+        // setIngredients([...ingredients, { name: "", quantity: "" }]);
+        handleAddDraftItem(setIngredients, "ingredients", { name: "", quantity: "" }, recipeId, setSaving);
     };
 
     return (
         <div className="mb-3">
             {ingredients.map((ingredient, index) => (
-                <EditIngredientItem {...{ ingredients, setIngredients, index, ingredient, recipeId }} />
+                <EditIngredientItem {...{ ingredients, setIngredients, index, ingredient, recipeId, setSaving }} />
             ))}
             <div>
                 <button className="btn btn-outline-primary btn-sm" onClick={handleAddIngredient}>

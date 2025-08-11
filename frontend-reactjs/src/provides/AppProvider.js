@@ -25,8 +25,8 @@ export const AppProvider = ({ children }) => {
     const [currentUser, currentUserDispatch] = useReducer(CurrentUserReducer, null, initCurrentUser);
     const [token, tokenDispatch] = useReducer(TokenReducer, null, initToken);
 
-    console.info(JSON.stringify(token, null, 2))
-    console.info(JSON.stringify(currentUser, null, 2))
+    // console.info(JSON.stringify(token, null, 2))
+    // console.info(JSON.stringify(currentUser, null, 2))
 
     const contextValue = {
         currentUser,

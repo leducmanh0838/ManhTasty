@@ -1,6 +1,7 @@
 const slugify = (text) => {
   return text
     .toLowerCase()
+    .replace(/đ/g, "d")
     .normalize("NFD")                   // Bỏ dấu tiếng Việt
     .replace(/[\u0300-\u036f]/g, "")   // Bỏ ký tự Unicode dư
     .replace(/[^a-z0-9\s-]/g, "")      // Bỏ ký tự đặc biệt

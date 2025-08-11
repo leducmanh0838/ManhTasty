@@ -4,18 +4,19 @@ import { compressImage } from "../../../utils/file/compressImage";
 import { authApis, endpoints } from "../../../configs/Apis";
 import { handleDraftItemListChange, handleRemoveDraftItem } from "../../recipes/utils/draft-utils";
 
-const EditRecipeMediasSection = ({ medias, setMedias, accept = "image/*", inputKey, size = 180, parentType, recipeId }) => {
+const EditRecipeMediasSection = ({ medias, setMedias, accept = "image/*", inputKey, size = 180, parentType, recipeId, setSaving }) => {
     const [loading, setLoading] = useState(false);
     // const [tempMedias, setTempMedias] = useState(false);
 
     const overrideDeleteMedia = async (index, value) => {
-        handleRemoveDraftItem(setMedias, "medias", index, "src", value, recipeId)
+        handleRemoveDraftItem(setMedias, "medias", index, "src", value, recipeId, setSaving)
     }
 
     const overrideAddMedia = async (e) => {
         if (!e.target.files[0])
             return;
         try {
+            setSaving(true);
             setLoading(true);
             const fileCompression = await compressImage(e.target.files[0])
             const formData = new FormData();
@@ -31,11 +32,12 @@ const EditRecipeMediasSection = ({ medias, setMedias, accept = "image/*", inputK
             //     "src": res.data.src,
             //     "type": res.data.type,
             // }])
-            handleDraftItemListChange(medias, setMedias, "medias", medias.length, null, res.data, recipeId)
+            handleDraftItemListChange(medias, setMedias, "medias", medias.length, null, res.data, recipeId, setSaving)
         } catch (err) {
 
         } finally {
             setLoading(false);
+            setSaving(false);
         }
     }
 

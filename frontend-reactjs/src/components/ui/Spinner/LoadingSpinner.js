@@ -1,6 +1,6 @@
 import React from "react";
 
-const MySpinner = ({ size = "md", text = "Đang tải dữ liệu..." }) => {
+const LoadingSpinner = ({ size = "md", text = "Đang tải dữ liệu..." }) => {
   const sizeClass = {
     sm: "spinner-border spinner-border-sm",
     md: "spinner-border",
@@ -26,4 +26,4 @@ const MySpinner = ({ size = "md", text = "Đang tải dữ liệu..." }) => {
   );
 };
 
-export default React.memo(MySpinner);
+export default React.memo(LoadingSpinner);

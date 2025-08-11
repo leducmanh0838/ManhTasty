@@ -1,0 +1,10 @@
+.col-4, .col-8 {
+  border: 1px solid red; /* dễ nhìn kích thước */
+  overflow-x: hidden; /* ẩn tràn ngang tạm */
+  background-color: blue;
+}
+
+.container {
+  max-width: 100%;
+  overflow-x: hidden; /* ẩn tràn ngang */
+}
