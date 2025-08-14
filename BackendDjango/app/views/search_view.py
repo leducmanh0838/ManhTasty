@@ -11,4 +11,6 @@ class SearchViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['get'], url_path='popular-keywords')
     def get_popular_keywords(self, request):
-        return Response(get_recent_popular_keywords(10, datetime.now() - timedelta(days=1)))
+        keyword = request.query_params.get('keyword')
+        since_date = datetime.now() - timedelta(days=7)
+        return Response(get_recent_popular_keywords(since=since_date, limit=15, kw=keyword))

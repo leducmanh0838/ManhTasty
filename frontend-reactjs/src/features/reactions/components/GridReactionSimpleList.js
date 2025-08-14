@@ -9,7 +9,7 @@ const GridReactionSimple = ({ icon, count }) => (
 );
 
 const GridReactionSimpleList = ({ emotions }) => {
-    console.info("render GridReactionSimpleList ", Math.random())
+
     const list = EmotionTypeList
         .map(emotion => ({
             ...emotion,

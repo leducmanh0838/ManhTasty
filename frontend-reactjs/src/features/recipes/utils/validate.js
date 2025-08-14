@@ -1,6 +1,6 @@
 import { toast } from "react-toastify"
 import { validateString, validateStringWithMessage } from "../../../utils/validate/validateString"
-import { MAX_DESCRIPTION_LENGTH, MAX_INGREDIENT_NAME_LENGTH, MAX_INGREDIENT_QUANTITY_LENGTH, MAX_INGREDIENTS, MAX_MEDIAS, MAX_STEP_DESCRIPTION_LENGTH, MAX_TAGS, MAX_TITLE_LENGTH, MIN_DESCRIPTION_LENGTH, MIN_INGREDIENT_NAME_LENGTH, MIN_INGREDIENT_QUANTITY_LENGTH, MIN_INGREDIENTS, MIN_STEP_DESCRIPTION_LENGTH, MIN_STEPS, MIN_TITLE_LENGTH } from "../constants/recipeRule"
+import { MAX_DESCRIPTION_LENGTH, MAX_INGREDIENT_NAME_LENGTH, MAX_INGREDIENT_QUANTITY_LENGTH, MAX_INGREDIENTS, MAX_MEDIAS, MAX_STEP_DESCRIPTION_LENGTH, MAX_STEPS, MAX_TAGS, MAX_TITLE_LENGTH, MIN_DESCRIPTION_LENGTH, MIN_INGREDIENT_NAME_LENGTH, MIN_INGREDIENT_QUANTITY_LENGTH, MIN_INGREDIENTS, MIN_STEP_DESCRIPTION_LENGTH, MIN_STEPS, MIN_TITLE_LENGTH } from "../constants/recipeRule"
 import { TITLE_VALIDATION_REGEX } from "../constants/validateRegex"
 
 export function validateSubmitRecipe(title, description, image, medias, tags, ingredients, steps) {
@@ -34,8 +34,8 @@ export function validateSubmitRecipe(title, description, image, medias, tags, in
         return false;
     }
 
-    if (steps.length > MAX_MEDIAS) {
-        toast.warning(`Số bước làm không được quá ${MAX_MEDIAS} bước`);
+    if (steps.length > MAX_STEPS) {
+        toast.warning(`Số bước làm không được quá ${MAX_STEPS} bước`);
         return false;
     }
 

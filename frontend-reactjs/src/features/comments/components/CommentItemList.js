@@ -13,38 +13,37 @@ import { AppContext } from '../../../provides/AppProvider';
 import { toast } from 'react-toastify';
 import Apis, { authApis, endpoints } from '../../../configs/Apis';
 import { HiChevronDown, HiChevronUp } from 'react-icons/hi';
+import { FiCornerDownRight } from 'react-icons/fi';
+import LoadingSpinner from '../../../components/ui/Spinner/LoadingSpinner';
+import usePagination from '../../../hooks/usePagination';
 
 const CommentItem = ({ comment, recipeId, parent }) => {
     console.info("render CommentItem ", Math.random())
     const { currentUser } = useContext(AppContext);
 
-    const [emotions, setEmotions] = useState(comment.emotion_counts?comment.emotion_counts:{});
+    const [emotions, setEmotions] = useState(comment.emotion_counts ? comment.emotion_counts : {});
     const [selectedEmotion, setSelectedEmotion] = useState(comment.current_emotion);
 
     const [showInputReply, setShowInputReply] = useState(false);
-    const [replyPage, setReplyPage] = useState({
-        "count": 0,
-        "next": null,
-        "previous": null,
-        "results": []
-    });
-    const [showReplies, setShowReplies] = useState(false);
-    const [localReplyCount, setLocalReplyCount] = useState(comment.reply_count?comment.reply_count:0);
-    // const [replies, setReplies] = useState([]);
 
-    const fetchChildCommentList = async () => {
-        try {
-            let response = await Apis.get(endpoints.comments.replies(comment.id));
-            setReplyPage(response.data)
-        } catch (error) {
-            console.error("Login error:", error.response || error.message);
-        }
-    }
+    const {
+        resultData: replies,
+        setResultData: setReplies,
+        loading,
+        loadMore,
+        refresh,
+        hasMore,
+        page,
+    } = usePagination({ endpoint: endpoints.comments.replies(comment.id), isLoadFirstData: false });
+    const [showReplies, setShowReplies] = useState(false);
+    const [localReplyCount, setLocalReplyCount] = useState(comment.reply_count ? comment.reply_count : 0);
+
 
     const hanldeShowReplies = async () => {
         setShowReplies(prev => !prev);
-        if (replyPage.results.length === 0) {
-            await fetchChildCommentList();
+        if (replies && replies.length === 0) {
+            // await fetchChildCommentList();
+            loadMore();
         }
     }
 
@@ -66,11 +65,12 @@ const CommentItem = ({ comment, recipeId, parent }) => {
             );
 
             // setCommentPage([response.data, ...commentPage]);
-            setReplyPage(prev => ({
-                ...prev, // giữ nguyên count, next, previous
-                count: prev.count + 1, // tăng số lượng comment
-                results: [response.data, ...prev.results] // thêm comment mới lên đầu
-            }));
+            // setReplyPage(prev => ({
+            //     ...prev, // giữ nguyên count, next, previous
+            //     count: prev.count + 1, // tăng số lượng comment
+            //     results: [response.data, ...prev.results] // thêm comment mới lên đầu
+            // }));
+            setReplies(prev=>([response.data, ...prev ]))
             setLocalReplyCount(prev => prev + 1)
 
         } catch (error) {
@@ -125,7 +125,9 @@ const CommentItem = ({ comment, recipeId, parent }) => {
                         )}
 
                         {showReplies && (
-                            <CommentItemList comments={replyPage.results} recipeId={recipeId} />
+                            <CommentItemList comments={replies} recipeId={recipeId} 
+                            isLoadingMore={loading} loadMore={loadMore} hasMoreComments = {hasMore}
+                            />
                             // <ChildCommentList comments={replies} />
                         )}
                     </>}
@@ -137,7 +139,7 @@ const CommentItem = ({ comment, recipeId, parent }) => {
     )
 }
 
-const CommentItemList = ({ comments, recipeId, parent = false }) => {
+const CommentItemList = ({ comments, recipeId, parent = false, loadMore, isLoadingMore, hasMoreComments }) => {
     console.info("render CommentItemList ", Math.random())
     return (
         <>
@@ -148,6 +150,18 @@ const CommentItemList = ({ comments, recipeId, parent = false }) => {
                     parent={parent}
                 />
             ))}
+            {hasMoreComments && <>
+                {isLoadingMore ? <LoadingSpinner size='sm' text='Đang tải bình luận...' /> : <button
+                    onClick={loadMore}
+                    className="btn btn-light-blue text-primary py-1 px-3 d-flex align-items-center text-decoration-none text-primary"
+                    style={{ gap: "5px" }}
+                >
+                    <FiCornerDownRight size={18} />
+                    Hiện thêm phản hồi
+                </button>}
+            </>
+            }
+
         </>
     );
 };

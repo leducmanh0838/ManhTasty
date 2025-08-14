@@ -1,14 +1,28 @@
-import React, { memo, useContext, useEffect, useState } from 'react';
+import { memo, useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { AppContext } from '../../../provides/AppProvider';
 import CommentInput from './CommentInput';
-import Apis, { authApis, endpoints } from '../../../configs/Apis';
+import  { authApis, endpoints } from '../../../configs/Apis';
 import CommentItemList from './CommentItemList';
+import usePagination from '../../../hooks/usePagination';
 
 const CommentSection = ({ recipeId }) => {
     console.info("render CommentSection ", Math.random())
-    const [commentPage, setCommentPage] = useState({});
+
+    const {
+        resultData: comments,
+        setResultData: setComments,
+        loading,
+        loadMore,
+        refresh,
+        hasMore,
+        page,
+    } = usePagination({ endpoint: endpoints.recipes.comments(recipeId), isLoadFirstData: true });
     const { currentUser } = useContext(AppContext);
+
+    useEffect(() => {
+        console.info("comments: ", JSON.stringify(comments, null, 2));
+    }, [comments])
 
     const handleAddComment = async (newCommentText) => {
         if (!currentUser) {
@@ -27,42 +41,24 @@ const CommentSection = ({ recipeId }) => {
             );
 
             // setCommentPage([response.data, ...commentPage]);
-            setCommentPage(prev => ({
-                ...prev, // giữ nguyên count, next, previous
-                count: prev.count + 1, // tăng số lượng comment
-                results: [response.data, ...prev.results] // thêm comment mới lên đầu
-            }));
+            setComments(prev => [response.data, ...prev])
+            // setCommentPage(prev => ({
+            //     ...prev, // giữ nguyên count, next, previous
+            //     count: prev.count + 1, // tăng số lượng comment
+            //     results: [response.data, ...prev.results] // thêm comment mới lên đầu
+            // }));
 
         } catch (error) {
             console.error("Login error:", error.response || error.message);
         }
     };
 
-
-    // console.info('recipeId: ', recipeId)
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                let api;
-                if (currentUser)
-                    api = await authApis();
-                else
-                    api = Apis;
-                // 1. Gọi API recipe
-                const resComments = await api.get(endpoints.recipes.comments(recipeId));
-                setCommentPage(resComments.data);
-            } catch (err) {
-                console.error("Lỗi khi load dữ liệu:", err);
-            }
-        };
-
-        fetchData();
-    }, []);
     return (
         <>
             <CommentInput onSubmit={handleAddComment} />
-            {commentPage && commentPage.results && 
-            <CommentItemList comments={commentPage.results} recipeId={recipeId} parent={true}/>}
+            {comments && <CommentItemList isLoadingMore={loading} loadMore={loadMore} 
+            comments={comments} recipeId={recipeId} parent={true} 
+            hasMoreComments = {hasMore}/>}
         </>
     )
 }

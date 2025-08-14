@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from pymongo import MongoClient
 from django.conf import settings
@@ -6,8 +6,7 @@ from django.conf import settings
 client = MongoClient(host=settings.MONGODB_SETTINGS['HOST'], port=settings.MONGODB_SETTINGS['PORT'])
 db = client[settings.MONGODB_SETTINGS['DB_NAME']]
 # collection
-user_search_collection = db['user_search_keywords']
-popular_keywords_collection = db['popular_search_keywords']
+search_collection = db['search_collection']
 recipe_drafts_collection = db['recipe_drafts']
 
 def log_user_search_keyword(user, keyword: str):
@@ -27,6 +26,7 @@ def log_user_search_keyword(user, keyword: str):
 
     """
     if user:
+        now = datetime.now()
         # lọc theo keyword và user
         filter_query = {
             "keyword": keyword,
@@ -34,11 +34,12 @@ def log_user_search_keyword(user, keyword: str):
         }
         # cập nhật thời gian và đếm số lượt
         update_query = {
-            "$set": {"searched_at": datetime.now()},
+            "$set": {"last_seen": now},
+            "$setOnInsert": {"first_seen": now},
             "$inc": {"count": 1}
         }
         # Nếu chưa có bản ghi thì tự động thêm mới
-        user_search_collection.update_one(
+        search_collection.update_one(
             filter_query,
             update_query,
             upsert=True  # Nếu chưa có thì tạo mới
@@ -61,79 +62,56 @@ def get_user_search_keywords(user, limit=10):
 
     user_id = str(user.id)
 
-    cursor = user_search_collection.find(
+    cursor = search_collection.find(
         {"user_id": user_id}
-    ).sort("searched_at", -1).limit(limit)
+    ).sort("last_seen", -1).limit(limit)
 
     return [
         {
             "keyword": doc.get("keyword"),
             "count": doc.get("count", 1),
-            "searched_at": doc.get("searched_at")
+            "last_seen": doc.get("last_seen")
         }
         for doc in cursor
     ]
 
 
-def log_popular_keyword(keyword: str):
-    """
-        Ghi nhận và cập nhật từ khóa phổ biến trong hệ thống.
-
-        - Nếu từ khóa đã tồn tại:
-            + Tăng số lượt tìm kiếm (`count`)
-            + Cập nhật thời điểm tìm kiếm gần nhất (`last_seen`)
-        - Nếu từ khóa chưa từng tồn tại:
-            + Tạo mới với `count = 1`
-            + Ghi lại thời điểm xuất hiện đầu tiên (`first_seen`)
-
-        Tham số:
-            keyword (str): Từ khóa mà người dùng vừa tìm kiếm
-    """
-    now = datetime.now()
-
-    filter_query = {"keyword": keyword}
-    update_query = {
-        "$inc": {"count": 1},
-        "$set": {"last_seen": now},
-        "$setOnInsert": {"first_seen": now}
+def get_recent_popular_keywords(since: datetime, limit: int = 10, kw: str = None):
+    match_stage = {
+        "last_seen": {"$gte": since}
     }
-
-    popular_keywords_collection.update_one(
-        filter_query,
-        update_query,
-        upsert=True
-    )
-
-def get_recent_popular_keywords(limit: int, since: datetime):
-    """
-    Truy vấn danh sách từ khóa phổ biến và gần đây nhất.
-
-    Điều kiện:
-        - last_seen >= since
-    Sắp xếp:
-        - Giảm dần theo last_seen (mới nhất trước)
-
-    Tham số:
-        limit (int): Số lượng từ khóa muốn lấy
-        since (datetime): Mốc thời gian lọc từ khóa
-        collection (Collection): Collection MongoDB cần truy vấn
-
-    Trả về:
-        List[dict]: Danh sách từ khóa kèm thông tin count và thời gian
-    """
-
-    cursor = popular_keywords_collection.find(
-        {"last_seen": {"$gte": since}}
-    ).sort("count", -1).limit(limit)
-
-    return [
+    if kw:
+        match_stage["keyword"] = {"$regex": kw, "$options": "i"}
+    pipeline = [
         {
-            "keyword": doc.get("keyword"),
-            "count": doc.get("count", 1),
-            "first_seen": doc.get("first_seen"),
-            "last_seen": doc.get("last_seen"),
+            "$match": match_stage
+        },
+        {
+            "$group": {
+                "_id": "$keyword",
+                "total_count": {"$sum": "$count"},
+                "unique_users": {"$addToSet": "$user_id"}
+            }
+        },
+        {
+            "$addFields": {
+                "user_count": {"$size": "$unique_users"}
+            }
+        },
+        {
+            "$sort": {"total_count": -1}
+        },
+        {
+            "$limit": limit
+        },
+        {
+            "$project": {
+                "keyword": "$_id",
+                "total_count": 1,
+                "user_count": 1,
+                "_id": 0
+            }
         }
-        for doc in cursor
     ]
 
-# print(get_recent_popular_keywords(10,datetime.now()))
+    return list(search_collection.aggregate(pipeline))

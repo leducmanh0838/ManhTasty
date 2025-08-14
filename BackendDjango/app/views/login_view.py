@@ -1,4 +1,5 @@
 import json
+import traceback
 from datetime import timedelta
 
 import requests
@@ -67,6 +68,7 @@ class LoginViewSet(viewsets.ViewSet):
                 "scope": "read write",
             },
             "current_user": {
+                "id": user.id,
                 "username": user.username,
                 "email": user.email,
                 "first_name": user.first_name,
@@ -83,22 +85,37 @@ class LoginViewSet(viewsets.ViewSet):
             return Response({"error": "Missing id_token"}, status=400)
 
         try:
+            print("id_token_str: ", id_token_str)
             # ✅ Xác thực với Google
             idinfo = id_token.verify_oauth2_token(
                 id_token_str,
                 google_request.Request(),
-                os.environ.get("GOOGLE_WEB_CLIENT_ID")
+                os.environ.get("GOOGLE_WEB_CLIENT_ID"),
+                clock_skew_in_seconds=10
             )
 
+            print("idinfo: ", idinfo)
             email = idinfo["email"]
             first_name = idinfo.get("given_name", "")
             last_name = idinfo.get("family_name", "")
             picture = idinfo.get("picture", "")
 
+
             return self.handle_social_login(username=f'google_{email}',email=email, first_name=first_name, last_name=last_name, avatar = picture, login_type=LoginType.GOOGLE)
 
-        except ValueError:
-            return Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
+
+        except ValueError as ve:
+            # In chi tiết ValueError
+            print("ValueError:", ve)
+            traceback.print_exc()
+            return Response({"error": f"Invalid token: {str(ve)}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+        except Exception as e:
+            # Bắt các lỗi khác nếu có
+            print("Exception:", e)
+            traceback.print_exc()
+            return Response({"error": f"Unexpected error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(detail=False, methods=['post'], url_path='facebook')
     def login_facebook(self, request, pk=None):

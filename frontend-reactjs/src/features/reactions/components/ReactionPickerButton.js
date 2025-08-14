@@ -7,7 +7,7 @@ import { EmotionTypeList } from "../constrants/emotionType";
 import MenuItemWithIcon from "../../../components/ui/MenuItemWithIcon";
 
 const ReactionPickerButton = ({ emotions, setEmotions, selectedEmotion, setSelectedEmotion, objectId, contentType }) => {
-    console.info("render ReactionPickerButton ", Math.random())
+
     const { currentUser } = useContext(AppContext);
 
     const [showEmotionMenu, setShowEmotionMenu] = useState(false);

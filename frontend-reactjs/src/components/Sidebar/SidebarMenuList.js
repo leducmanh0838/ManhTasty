@@ -31,8 +31,8 @@ const SidebarMenuList = () => {
   return (
     <nav className="nav flex-column">
       <SidebarMenuItem icon={<FaHome />} label="Trang chủ" to="/" />
-      <SidebarMenuItem icon={<FaSearch />} label="Khám phá" to="/explore" />
-      <SidebarMenuItem icon={<FaLeaf />} label="Nguyên liệu" to="/ingredients" />
+      {/* <SidebarMenuItem icon={<FaSearch />} label="Khám phá" to="/explore" />
+      <SidebarMenuItem icon={<FaLeaf />} label="Nguyên liệu" to="/ingredients" /> */}
       <SidebarMenuItem icon={<FaUtensils />} label="Thêm món mới" to="/recipes-draft" requireLogin={!currentUser} messageLogin={"Đăng ký hoặc đăng nhập để thêm món mới!!"}/>
       <SidebarMenuItem icon={<FaBookmark />} label="Đã lưu" to="/saved" />
       <SidebarMenuItem icon={<FaCog />} label="Cài đặt" to="/settings" />

@@ -1,0 +1,10 @@
+.recipe-extend-grid {
+  column-gap: 1rem;
+  column-width: 300px; /* mặc định cho mobile */
+}
+
+@media (min-width: 768px) {
+  .recipe-extend-grid {
+    column-width: 500px; /* cho tablet trở lên */
+  }
+}

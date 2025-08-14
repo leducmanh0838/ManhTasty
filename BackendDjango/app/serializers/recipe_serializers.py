@@ -94,25 +94,25 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
 
         return recipe
 
-class RecipeListSerializer(serializers.ModelSerializer):
-    ingredients = serializers.SerializerMethodField()
-    tags = serializers.SerializerMethodField()
+class RecipeBasicSerializer(serializers.ModelSerializer):
+    # ingredients = serializers.SerializerMethodField()
+    # tags = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
-        fields = ['id', 'title', 'image', 'ingredients', 'tags']
+        fields = ['id', 'title', 'image']
 
     def get_image(self, obj):
         if obj.image:
             return obj.image.url  # CloudinaryField tự sinh URL
         return None
 
-    def get_ingredients(self, obj):
-        return [ing.name for ing in obj.ingredients.all()[:3]]
-        # return list(obj.ingredients.values_list('name', flat=True)[:3])
-    def get_tags(self, obj):
-        return [tag.name for tag in obj.tags.all()]
+    # def get_ingredients(self, obj):
+    #     return [ing.name for ing in obj.ingredients.all()[:3]]
+    #     # return list(obj.ingredients.values_list('name', flat=True)[:3])
+    # def get_tags(self, obj):
+    #     return [tag.name for tag in obj.tags.all()]
 
 class RecipeRetrieveSerializer(serializers.ModelSerializer):
     author = AvatarAndNameSerializer()
@@ -175,7 +175,7 @@ class RecipeRetrieveSerializer(serializers.ModelSerializer):
         return None
 
 
-class RecipeSearchSerializer(serializers.ModelSerializer):
+class RecipeSummarySerializer(serializers.ModelSerializer):
     ingredients = IngredientSerializer(many=True, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     image = serializers.SerializerMethodField()

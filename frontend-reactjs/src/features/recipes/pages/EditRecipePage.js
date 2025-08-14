@@ -10,6 +10,7 @@ import { handleDraftChange } from "../utils/draft-utils";
 import EditIngredientSection from "../../ingredients/components/EditIngredientSection";
 import EditTagSection from "../../tags/components/EditTagSection";
 import SavingSpinner from "../../../components/ui/Spinner/SavingSpinner";
+import LoadingSpinner from "../../../components/ui/Spinner/LoadingSpinner";
 import { FaCheck } from "react-icons/fa";
 import slugify from "../../../utils/string/slugify";
 import { validateSubmitRecipe } from "../utils/validate";
@@ -20,6 +21,7 @@ const EditRecipePage = () => {
     const [recipeExist, setRecipeExist] = useState(false);
 
     const [saving, setSaving] = useState(false);
+    const [loading, setLoading] = useState(false);
     // recipe
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -83,13 +85,14 @@ const EditRecipePage = () => {
             return;
         }
         try {
+            setLoading(true);
             const api = await authApis();
             const res = await api.post(endpoints.recipes.draft.submit(recipeId))
             navigate(`/recipes/${res.data.id}-${slugify(res.data.title)}`);
         } catch (err) {
             printErrors(err);
         } finally {
-
+            setLoading(false);
         }
     }
 
@@ -107,11 +110,11 @@ const EditRecipePage = () => {
                                 </>}
                             </div>
                             <div>
-                                <button disabled={saving} className="btn btn-primary" onClick={handleSubmitRecipe}>Đăng món ăn</button>
+                                <button disabled={saving} className="btn btn-primary" onClick={handleSubmitRecipe}> {loading ? <>Đang đăng món ăn...</> : <>Đăng món ăn</>}</button>
                             </div>
                         </div>
                     </header>
-                    <div className="container">
+                    <div className="container p-2">
                         <div className="row">
                             <div className="col-7">
                                 <div className="mb-1">Ảnh chính</div>
@@ -120,6 +123,7 @@ const EditRecipePage = () => {
                                 <div className="mb-1">Ảnh và video khác</div>
                                 <EditRecipeMediasSection inputKey="medias" {...{ medias, setMedias, recipeId, setSaving }} accept={"image/*,video/*"} parentType={"step"} />
 
+                                <div className="mb-1">Các bước thực hiện</div>
                                 <EditStepSection {...{ steps, setSteps, recipeId, setSaving }} />
                             </div>
                             <div className="col-5">

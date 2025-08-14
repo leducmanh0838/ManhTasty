@@ -1,12 +1,11 @@
-import datetime
-from uuid import uuid4
-
-import cloudinary
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+
+from app.utils.whoosh_utils.update_index import update_index_for_recipe
+
 
 # Create your models here.
 class LoginType(models.IntegerChoices):
@@ -82,6 +81,11 @@ class Recipe(TimeStampedModel):
     ingredients = models.ManyToManyField('Ingredient', through='RecipeIngredient', related_name='recipes')
     reactions = GenericRelation('Reaction')
     reports = GenericRelation('Report')
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # lưu model
+        # Thực hiện các thao tác khác sau khi lưu, ví dụ cập nhật index
+        update_index_for_recipe(self)
 
     def __str__(self):
         return self.title

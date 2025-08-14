@@ -18,8 +18,9 @@ const Login = ({ setShowModal, message = "Đăng nhập", to}) => {
         try {
             setLoading(true);
             let res;
-            if (typeLogin === "google")
+            if (typeLogin === "google"){
                 res = await Apis.post(endpoints.auth.login.google, { idToken: accessToken });
+            }
             else if (typeLogin === "facebook")
                 res = await Apis.post(endpoints.auth.login.facebook, { accessToken });
 

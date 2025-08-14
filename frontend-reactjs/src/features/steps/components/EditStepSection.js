@@ -78,7 +78,6 @@ const EditStepSection = ({ steps, setSteps, recipeId, setSaving }) => {
 
     return (
         <div className="mb-3">
-            <h5 className="mb-3">Các bước thực hiện</h5>
             {steps.map((step, index) => (
                 <EditStepItem {...{ step, steps, setSteps, index, recipeId, setSaving }} />
             ))}

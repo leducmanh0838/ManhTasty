@@ -11,18 +11,6 @@ import { FiDownload } from "react-icons/fi";
 const RecipeCardSimple = ({ recipe }) => {
     const [showActionMenu, setShowActionMenu] = useState(false);
     const navigate = useNavigate();
-    // const downloadImage = async () => {
-    //     const response = await fetch(recipe.image);
-    //     const blob = await response.blob();
-    //     const url = URL.createObjectURL(blob);
-
-    //     const link = document.createElement("a");
-    //     link.href = url;
-    //     link.download = slugify(recipe.title);
-    //     link.click();
-
-    //     URL.revokeObjectURL(url); // Dọn bộ nhớ
-    // };
 
     return (
         <div

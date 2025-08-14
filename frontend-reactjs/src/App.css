@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+
+.btn-light-blue:hover {
+  background-color: rgba(13, 110, 253, 0.1); /* xanh nhạt */
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

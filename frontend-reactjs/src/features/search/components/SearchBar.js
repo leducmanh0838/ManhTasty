@@ -1,70 +1,64 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const keywordSuggestions = [
-        "Phở bò",
-        "Bún chả",
-        "Gà kho gừng",
-        "Canh chua",
-        "Trứng chiên",
-        "Bánh xèo",
-    ];
+import SearchAutocompleteSimple from "./SearchAutocompleteSimple";
+import { AppContext } from "../../../provides/AppProvider";
+import Apis, { authApis, endpoints } from "../../../configs/Apis";
+import { MdHistory, MdSearch } from "react-icons/md";
+import moment from 'moment';
+import 'moment/locale/vi';
 
 const SearchBar = () => {
-    const [keyword, setKeyword] = useState("");
-    const [showDropdown, setShowDropdown] = useState(false);
+    const { currentUser } = useContext(AppContext);
     const navigate = useNavigate();
-    // const currentUserInfo = currentUser.user
-
-    const [suggestions, setSuggestions] = useState(keywordSuggestions);
-
-    const handleSubmitKeyword = (e) => {
-        e.preventDefault();
-        // setShowDropdown(false);
-        if (keyword.trim()) {
-            navigate(`/search?keyword=${encodeURIComponent(keyword.trim())}`);
-        }
+    const [userSearch, setUserSearch] = useState(null);
+    const handleSelectItem = (suggestionItem) => {
+        navigate(`/search?keyword=${suggestionItem.keyword}`)
     }
 
-    const handleSelectKeyword = (kw) => {
-        navigate(`/search?keyword=${encodeURIComponent(kw)}`);
+    useEffect(() => {
+        const fetchData = async () => {
+            if (currentUser) {
+                const api = await authApis();
+                const res = await api.get(endpoints.currentUser.recentKeywords)
+                // {moment(comment.created_at).fromNow()}
+                const dataWithIcons = res.data.map(item => ({
+                    ...item,
+                    icon: <MdHistory />,
+                    text: item.last_seen ? moment(item.last_seen).fromNow() : ""
+                }))
+                setUserSearch(dataWithIcons)
+            } else {
+                setUserSearch([]);
+            }
+        }
+        fetchData();
+    }, [currentUser])
+
+    const handleGetResponseSuggestions = async (keyword) => {
+        const res = await Apis.get(`${endpoints.search.popularKeywords}?keyword=${keyword}`);
+        console.info("kw: ", res.data)
+        const dataWithIcons = res.data.map(item => ({ 
+            ...item, 
+            icon: <MdSearch />,
+            text: item.total_count ? `${item.total_count} lượt tìm kiếm` : ""
+        }))
+        return dataWithIcons;
+        // if (currentUser) {
+        //     const api = await authApis();
+        //     const res = await api.get(endpoints.currentUser.recentKeywords)
+        //     return res.data;
+        // }
+    }
+
+    const handleSubmit = (keyword) => {
+        navigate(`/search?keyword=${keyword}`)
     }
     return (
-        // <form onSubmit={handleSubmitKeyword} className="d-flex flex-grow-1 me-3">
-        <form onSubmit={handleSubmitKeyword}>
-            <div className="position-relative flex-grow-1">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Tìm món ăn, nguyên liệu..."
-                    value={keyword}
-                    onFocus={() => setShowDropdown(true)}
-                    onBlur={() => setTimeout(() => setShowDropdown(false), 150)} // delay để click vào item
-                    onChange={(e) => setKeyword(e.target.value)}
-                />
-                {showDropdown && suggestions.length > 0 && (
-                    <ul
-                        className="list-group position-absolute shadow"
-                        style={{
-                            zIndex: 999,
-                            top: "110%",
-                            width: "100%",
-                        }}
-                    >
-                        {suggestions.map((item, index) => (
-                            <li
-                                key={index}
-                                className="list-group-item list-group-item-action"
-                                style={{ cursor: "pointer" }}
-                                onMouseDown={() => handleSelectKeyword(item)}
-                            >
-                                {item}
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </div>
-        </form>
+        <>
+            {userSearch && <SearchAutocompleteSimple label="Tìm kiếm món ăn, nguyên liệu, dịp, chế độ ăn, vùng miền,..." keyword={"keyword"} onSubmit={handleSubmit} 
+            {...{ handleSelectItem, handleGetResponseSuggestions }} defaultKeywords={userSearch} />}
+        </>
     )
 }
+
 export default SearchBar;

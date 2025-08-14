@@ -52,6 +52,17 @@ export const endpoints = {
     imageUpload:{
         list: 'image-upload/',
     },
+    currentUser:{
+        recentKeywords:'current-user/search/recent-keywords/',
+        recipes:'current-user/recipes/',
+    },
+    user:{
+        recipes: (userId) => `users/${userId}/recipes/`,
+        detail: (userId) => `users/${userId}/`,
+    },
+    search:{
+        popularKeywords: 'search/popular-keywords/'
+    }
 };
 
 export const authApis = async () => {

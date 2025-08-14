@@ -50,7 +50,7 @@ const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredient
     useEffect(() => {
         let timer = setTimeout(() => {
             kwSearch && loadSearchIngredientList(kwSearch);
-        }, 750);
+        }, 500);
 
         return () => clearTimeout(timer);
     }, [kwSearch]);

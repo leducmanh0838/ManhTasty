@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Apis, { authApis, endpoints } from "../../../configs/Apis";
 import RecipeGallery from "../components/RecipeGallery";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../../../provides/AppProvider";
 import { MediaType } from "../../medias/constants/mediaType";
 import Avatar from "../../../components/ui/Avatar"
@@ -14,17 +14,39 @@ import { FaCarrot, FaRegComment } from "react-icons/fa";
 import StepItemList from "../../steps/components/StepItemList";
 import IngredientItemList from "../../ingredients/components/IngredientItemList";
 import CommentSection from "../../comments/components/CommentSection";
+import ReportDialogButton from "../../reports/components/ReportDialogButton";
 
 const PublicRecipeDetailPage = () => {
-    console.info("render PublicRecipeDetailPage ", Math.random())
+
     const { idSlug } = useParams();
     const recipeId = idSlug.split("-")[0];
+    const nav = useNavigate();
 
     const { currentUser } = useContext(AppContext);
 
     const [recipe, setRecipe] = useState(null);
     const [emotions, setEmotions] = useState({});
     const [selectedEmotion, setSelectedEmotion] = useState({});
+    const [showComments, setShowComments] = useState(false);
+
+    const loaderRef = useRef(null);
+
+    useEffect(() => {
+        if (!loaderRef.current || !recipe) return;
+
+        const observer = new IntersectionObserver(
+            entries => {
+                if (entries[0].isIntersecting) {
+                    console.log("Chạm cuối → Gọi API load thêm dữ liệu");
+                    setShowComments(true);
+                }
+            },
+            { threshold: 0 }
+        );
+
+        observer.observe(loaderRef.current);
+        return () => observer.disconnect();
+    }, [recipe]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -60,29 +82,30 @@ const PublicRecipeDetailPage = () => {
                             {recipe && <RecipeGallery medias={[...recipe.medias, { type: MediaType.IMAGE.value, src: recipe.image }]} />}
                         </div>
                         <div className="col-4 py-4">
-                        <h2
-                            className="fw-bold"
-                        //   style={{ fontFamily: "'Lobster', cursive", fontSize: '2rem' }}
-                        >
-                            {recipe?.title}
-                        </h2>
-                        <div className="d-flex py-3">
-                            <Avatar src={recipe?.author.avatar} size={40} />
-                            <div>
-                                <div className="fw-bold">{`${recipe?.author.last_name} ${recipe?.author.first_name}`}</div>
-                                <div className="text-muted small">Được đăng bởi</div>
+                            <h2
+                                className="fw-bold"
+                            //   style={{ fontFamily: "'Lobster', cursive", fontSize: '2rem' }}
+                            >
+                                {recipe?.title}
+                            </h2>
+                            <div className="d-flex py-3 cursor-pointer" onClick={() => recipe?.author && nav(`/users/${recipe.author.id}/recipes`)}>
+                                <Avatar src={recipe?.author.avatar} size={40} />
+                                <div>
+                                    <div className="fw-bold">{`${recipe?.author.last_name} ${recipe?.author.first_name}`}</div>
+                                    <div className="text-muted small">Được đăng bởi</div>
+                                </div>
+                            </div>
+                            <div className="mt-1">{recipe?.description}</div>
+
+                            {recipe && <GridTagSimpleList tags={recipe.tags} />}
+
+                            <GridReactionSimpleList emotions={emotions} />
+
+                            <div className="d-flex flex-row align-items-center p-1 mt-2">
+                                <ReactionPickerButton {...{ emotions, setEmotions, selectedEmotion, setSelectedEmotion, objectId: recipeId, contentType: "recipe" }} />
+                                <ReportDialogButton objectId={recipeId} contentType={"recipe"} className={"rounded-pill gap-1 px-3 py-1 me-2 border"} />
                             </div>
                         </div>
-                        <div className="mt-1">{recipe?.description}</div>
-                        
-                        {recipe && <GridTagSimpleList tags={recipe.tags} />}
-
-                        <GridReactionSimpleList emotions={emotions} />
-
-                        <div className="mt-2">
-                            <ReactionPickerButton {...{ emotions, setEmotions, selectedEmotion, setSelectedEmotion, objectId: recipeId, contentType: "recipe" }} />
-                        </div>
-                    </div>
                     </div>
                 </div>
                 <div className="container">
@@ -103,18 +126,16 @@ const PublicRecipeDetailPage = () => {
                         </div>
                     </div>
                 </div>
-
-                <div className="mt-2 p-2">
-                    <h5 className="fw-bold mb-3 border-top p-2">
-                        <FaRegComment className="me-2" />
-                        Bình luận
-                    </h5>
-                    <CommentSection recipeId={recipeId} />
-                    {/* <CommentInput onSubmit={handleAddComment}/> */}
-                    {/* <CommentList recipeId={recipeId} /> */}
-                    {/* <CommentLayout recipeId={recipeId} /> */}
-                </div>
+                {/* <div className="bg-dark" ref={loaderRef} style={{ height: "20px" }}></div> */}
             </> : <LoadingSpinner text="Đang tải món ăn..." />}
+            <div ref={loaderRef} className="mt-2 p-2">
+
+                <h5 className="fw-bold mb-3 border-top p-2">
+                    <FaRegComment className="me-2" />
+                    Bình luận
+                </h5>
+                {showComments && <CommentSection recipeId={recipeId} />}
+            </div>
         </>
     )
 }

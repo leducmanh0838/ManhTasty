@@ -28,7 +28,8 @@ const EditTagSection = ({ tags, setTags, recipeId, setSaving }) => {
 
     const handleGetResponseSuggestions = async (keyword) => {
         const api = await authApis();
-        return await api.get(`${endpoints.tags.list}?keyword=${keyword}&page_size=15`)
+        const res = await api.get(`${endpoints.tags.list}?keyword=${keyword}&page_size=15`)
+        return res.data.results;
     }
 
     const handleSelectTag = (selectedTag) => {

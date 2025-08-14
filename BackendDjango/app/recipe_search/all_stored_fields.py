@@ -58,15 +58,15 @@
 #         return recipe_ids
 
 
-from whoosh.index import open_dir
-from whoosh.qparser import QueryParser
-
-INDEX_DIR = "../static/recipe_index"
-
-# Mở thư mục chứa chỉ mục
-ix = open_dir(INDEX_DIR)
-
-# Mở searcher để duyệt các document
-with ix.searcher() as searcher:
-    for doc in searcher.all_stored_fields():
-        print(doc)
+# from whoosh.index import open_dir
+# from whoosh.qparser import QueryParser
+#
+# INDEX_DIR = "../static/recipe_index"
+#
+# # Mở thư mục chứa chỉ mục
+# ix = open_dir(INDEX_DIR)
+#
+# # Mở searcher để duyệt các document
+# with ix.searcher() as searcher:
+#     for doc in searcher.all_stored_fields():
+#         print(doc)

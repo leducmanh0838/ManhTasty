@@ -8,8 +8,8 @@ const Avatar = ({ src, alt = "Avatar", size = 32, className = "" }) => {
       alt={alt}
       className={`rounded-circle me-2 ${className}`}
       style={{
-        width: `${size}px`,
-        height: `${size}px`,
+        width: size,
+        height: size,
         objectFit: "cover",
       }}
     />

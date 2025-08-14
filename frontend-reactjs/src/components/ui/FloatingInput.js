@@ -2,6 +2,7 @@ import React from "react";
 
 const FloatingInput = ({
   id,
+  name = "defaultName",
   label,
   type = 'text',
   placeholder = '',
@@ -15,9 +16,11 @@ const FloatingInput = ({
   return (
     <div className={`form-floating ${className}`}>
       <input
+        autoComplete="off"
         type={type}
         className="form-control"
         id={id}
+        name={name}
         placeholder={placeholder || label}
         value={value}
         onChange={onChange}

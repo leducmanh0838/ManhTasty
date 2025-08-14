@@ -1,5 +1,3 @@
-import json
-
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q, Count, Prefetch
 from rest_framework import parsers, mixins, viewsets
@@ -10,15 +8,16 @@ from app.paginations import RecipePagination, CommentPagination
 from app.permissions import IsAuthor
 from app.serializers.comment_serializers import StoreCommentCreateSerializer, StoreCommentListSerializer
 from app.serializers.recipe_media_serializers import RecipeMediaCreateSerializer
-from app.serializers.recipe_serializers import RecipeCreateSerializer, RecipeListSerializer, RecipeRetrieveSerializer, \
-    RecipeSearchSerializer
+from app.serializers.recipe_serializers import RecipeCreateSerializer, RecipeBasicSerializer, RecipeRetrieveSerializer, \
+    RecipeSummarySerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 
 from app.serializers.step_serializers import StepCreateSerializer
-from app.utils.mongodb import log_user_search_keyword, log_popular_keyword
-from app.utils.whoosh_utils import search_recipes
+from app.utils.mongodb import log_user_search_keyword
+from app.utils.paginationUtils import get_pagination_links
+from app.utils.whoosh_utils.common_whoosh_utils import search_recipes
 
 
 class RecipeViewSet(mixins.CreateModelMixin,
@@ -30,10 +29,10 @@ class RecipeViewSet(mixins.CreateModelMixin,
         if self.action == 'create':
             return RecipeCreateSerializer
         elif self.action == 'list':
-            return RecipeListSerializer
+            return RecipeBasicSerializer
         elif self.action == 'retrieve':
             return RecipeRetrieveSerializer
-        return RecipeListSerializer  # fallback
+        return RecipeBasicSerializer  # fallback
     parser_classes = [parsers.MultiPartParser]
 
     def get_queryset(self):
@@ -78,7 +77,6 @@ class RecipeViewSet(mixins.CreateModelMixin,
         keyword = request.query_params.get('keyword', '').strip()
         print("keyword: ", keyword)
         if keyword:
-            log_popular_keyword(keyword)
             if request.user.is_authenticated:
                 log_user_search_keyword(user=request.user, keyword=keyword)
         page = int(request.query_params.get('page', 1))
@@ -88,15 +86,26 @@ class RecipeViewSet(mixins.CreateModelMixin,
 
         # Truy vấn lại từ DB để lấy đầy đủ dữ liệu (ảnh, tags, v.v.)
         ids = [r["id"] for r in result["recipes"]]
+
         recipes = Recipe.objects.filter(id__in=ids).order_by('-id')
 
+        if not recipes.exists():
+            return Response({
+                    "detail": "Invalid page."
+                }, status=status.HTTP_404_NOT_FOUND)
+
+        total_pages = result["total_pages"]
+
+        pagination_links=get_pagination_links(base_url=request.build_absolute_uri(request.path), total_pages=total_pages, **request.query_params.dict())
+        print("pagination_links: ", pagination_links)
+
         # Serialize kết quả
-        serializer = RecipeSearchSerializer(recipes, many=True)
+        serializer = RecipeSummarySerializer(recipes, many=True)
 
         return Response({
             "count": result["total"],
-            # "total_pages": result["total_pages"],
-            # "page": result["page"],
+            "next": pagination_links["next"],
+            "previous": pagination_links["previous"],
             "results": serializer.data
         }, status=status.HTTP_200_OK)
 

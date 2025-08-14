@@ -10,6 +10,9 @@ import Sidebar from './components/Sidebar';
 import PublicRecipeDetailPage from './features/recipes/pages/PublicRecipeDetailPage';
 import EditRecipePage from './features/recipes/pages/EditRecipePage';
 import CreateDraftRecipe from './features/recipes/components/CreateDraftRecipe';
+import SearchPage from './features/search/pages/SearchPage';
+import ProfilePage from './features/profile/pages/ProfilePage';
+import UserRecipePage from './features/profile/pages/UserRecipePage';
 
 const App = () => {
 
@@ -40,9 +43,10 @@ const App = () => {
               <Route path="/recipes/:idSlug" element={<PublicRecipeDetailPage />} />
               <Route path="/recipes-draft" element={<CreateDraftRecipe />} />
               <Route path="/recipes-draft/:recipeId/edit" element={<EditRecipePage />} />
-              {/* <Route path="/recipes/:idSlug" element={<RecipeDetail />} />
-                <Route path="/create-recipe" element={<RecipeCreation />} />
-                <Route path="/search" element={<Search />} /> */}
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              {/* CurrentUserRecipePage */}
+              <Route path="/users/:userId/recipes" element={<UserRecipePage />} />
             </Routes>
 
             {/* Recipe Grid */}
