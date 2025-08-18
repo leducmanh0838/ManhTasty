@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from bson import ObjectId, json_util
 from datetime import datetime
 
-from app.serializers.recipe_draft_serializers import CreateRecipeFromDraftSerializer
+from app.serializers.recipe_serializers.recipe_draft_serializers import CreateRecipeFromDraftSerializer
 from app.utils.mongodb import recipe_drafts_collection
 
 ALLOWED_FIELDS = {"title", "description", "image", "medias", "tags", "ingredients", "steps"}
@@ -39,12 +39,14 @@ class RecipeDraftViewSet(viewsets.GenericViewSet):
             "user_id": user_id,
             "title": "",
             "description": "",
+            "servings": "",
+            "cooking_time": "",
             "image": None,
             # "cover_image": None,
             "medias": [],
             "tags": [],
-            "ingredients": [],
-            "steps": [],
+            "ingredients": [{"name": "", "quantity": ""}],
+            "steps": [{"description": "", "image": ""}],
             "created_at": now,
             "updated_at": now,
         }
@@ -64,44 +66,6 @@ class RecipeDraftViewSet(viewsets.GenericViewSet):
         if not draft:
             return Response({"detail": "Draft not found"}, status=status.HTTP_404_NOT_FOUND)
         return Response(json.loads(json_util.dumps(draft)), status=status.HTTP_200_OK)
-
-    # PATCH /recipes/draft/{id}/
-    # def partial_update(self, request, pk=None):
-    #     user_id = self.get_user_id()
-    #     raw_data = request.data
-    #     update_query = {}
-    #     now = datetime.now()
-    #
-    #     def filter_fields(obj):
-    #         """Lọc chỉ giữ field hợp lệ"""
-    #         return {k: v for k, v in obj.items() if k in ALLOWED_FIELDS}
-    #
-    #     # Hỗ trợ $push / $pull
-    #     if "$push" in raw_data:
-    #         update_query["$push"] = filter_fields(raw_data["$push"])
-    #
-    #     if "$pull" in raw_data:
-    #         update_query["$pull"] = filter_fields(raw_data["$pull"])
-    #
-    #     # Hỗ trợ $set
-    #     if "$set" in raw_data:
-    #         update_query["$set"] = filter_fields(raw_data["$set"])
-    #     elif not update_query:
-    #         # Nếu không có $push/$pull/$set thì mặc định dùng $set toàn bộ
-    #         update_query["$set"] = filter_fields(raw_data)
-    #
-    #     # Luôn cập nhật thời gian
-    #     update_query.setdefault("$set", {})["updated_at"] = now
-    #
-    #     result = recipe_drafts_collection.update_one(
-    #         {"_id": ObjectId(pk), "user_id": user_id},
-    #         update_query
-    #     )
-    #
-    #     if result.matched_count == 0:
-    #         return Response({"detail": "Draft not found"}, status=status.HTTP_404_NOT_FOUND)
-    #
-    #     return Response({"message": "Draft updated"}, status=status.HTTP_200_OK)
 
     def partial_update(self, request, pk=None):
         user_id = self.get_user_id()
@@ -134,6 +98,22 @@ class RecipeDraftViewSet(viewsets.GenericViewSet):
             return Response({"detail": "Draft not found"}, status=status.HTTP_404_NOT_FOUND)
 
         return Response({"message": "Draft updated"}, status=status.HTTP_200_OK)
+
+    def destroy(self, request, pk):
+        user_id = request.user.id  # hoặc request.user._id nếu bạn map user trong Mongo
+        try:
+            result = recipe_drafts_collection.delete_one({
+                "_id": ObjectId(pk),
+                "user_id": user_id
+            })
+
+            if result.deleted_count == 0:
+                return Response({"detail": "Draft not found or not owned by user."}, status=status.HTTP_404_NOT_FOUND)
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        except Exception as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['get'], url_path='lastest')
     def get_latest_draft(self, request):

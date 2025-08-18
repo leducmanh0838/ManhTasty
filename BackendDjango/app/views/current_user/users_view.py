@@ -1,7 +1,6 @@
 from rest_framework import viewsets, mixins
 
 from app.models import User
-from app.serializers.recipe_serializers import RecipeBasicSerializer
 from app.serializers.user_serializers import AvatarAndNameSerializer
 
 

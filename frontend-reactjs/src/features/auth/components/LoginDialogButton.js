@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { Modal} from 'react-bootstrap'; // dùng react-bootstrap cho tiện
-import Login from './Login'
 import LoginDialog from './LoginDialog';
 
 const LoginDialogButton = () => {

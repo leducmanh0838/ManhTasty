@@ -11,7 +11,7 @@ import ReportDialogButton from '../../reports/components/ReportDialogButton';
 import CommentInput from './CommentInput';
 import { AppContext } from '../../../provides/AppProvider';
 import { toast } from 'react-toastify';
-import Apis, { authApis, endpoints } from '../../../configs/Apis';
+import { authApis, endpoints } from '../../../configs/Apis';
 import { HiChevronDown, HiChevronUp } from 'react-icons/hi';
 import { FiCornerDownRight } from 'react-icons/fi';
 import LoadingSpinner from '../../../components/ui/Spinner/LoadingSpinner';

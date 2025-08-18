@@ -31,6 +31,13 @@ export const endpoints = {
             emotionCounts: (recipeId) => `recipes/${recipeId}/emotion-counts/`,
             currentEmotion: (recipeId) => `recipes/${recipeId}/current-emotion/`,
         },
+        recommend: (recipeId) => `recipes/${recipeId}/recommend/`,
+        views: (recipeId) => `recipes/${recipeId}/views/`,
+        reviews: {
+            list: (recipeId) => `recipes/${recipeId}/reviews/`,
+            stats: (recipeId) => `recipes/${recipeId}/reviews/stats/`,
+            myReview: (recipeId) => `recipes/${recipeId}/reviews/my-review/`,
+        }
     },
     reactions: {
         list: 'reactions/',
@@ -62,6 +69,9 @@ export const endpoints = {
     },
     search:{
         popularKeywords: 'search/popular-keywords/'
+    },
+    reviews:{
+        detail: (reviewId) => `reviews/${reviewId}/`,
     }
 };
 

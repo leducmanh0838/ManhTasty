@@ -24,7 +24,7 @@ const RecipeCardSimpleList = ({ recipes, loadMore, isLoadingRecipes, hasMoreReci
         return () => observer.disconnect();
     }, [recipes]);
     return (
-        <main className="py-4 px-3 recipe-grid">
+        <main className="p-2 recipe-grid">
             {recipes?.map((recipe) => (
                 <RecipeCardSimp recipe={recipe} />
             ))}

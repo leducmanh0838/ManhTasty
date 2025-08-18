@@ -35,3 +35,9 @@ class IsOwnerOfReaction(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         # `obj` ở đây là một instance của Reaction
         return obj.user == request.user
+
+
+class IsReviewOwner(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        # Chỉ cho phép nếu user hiện tại là chủ của review
+        return obj.user == request.user

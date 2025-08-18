@@ -75,8 +75,13 @@ class Recipe(TimeStampedModel):
     title = models.CharField(max_length=255)
     description = models.TextField()
     image = CloudinaryField('image', null=True, blank=True)
-    # cover_image = CloudinaryField('cover_image', null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes')
+    servings = models.PositiveIntegerField(default=1, help_text="Số người ăn")
+    cooking_time = models.PositiveIntegerField(help_text="Thời gian nấu (phút)", null=True)
+    view_count = models.PositiveIntegerField(default=0)
+    rating_sum = models.PositiveIntegerField(default=0)  # Tổng số sao
+    rating_count = models.PositiveIntegerField(default=0)  # Số lượt đánh giá
+
     tags = models.ManyToManyField('Tag', through='RecipeTag', related_name='tags')
     ingredients = models.ManyToManyField('Ingredient', through='RecipeIngredient', related_name='recipes')
     reactions = GenericRelation('Reaction')
@@ -90,17 +95,6 @@ class Recipe(TimeStampedModel):
     def __str__(self):
         return self.title
 
-    # def upload_image(self, file):
-    #     today = datetime.date.today()
-    #     folder = f"recipes/{today.year}/{today.month:02}"
-    #     result = cloudinary.uploader.upload(
-    #         file,
-    #         public_id=f"{folder}/{self.id or uuid4()}",
-    #         overwrite=True
-    #     )
-    #     self.image = result["public_id"]
-    #     self.image_url = result["secure_url"]
-    #     self.save()
 # 3 Media của công thức
 class RecipeMedia(TimeStampedModel):
 
@@ -117,6 +111,12 @@ class RecipeMedia(TimeStampedModel):
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True, db_index=True)
     tag_category = models.SmallIntegerField(choices=TagCategory.choices, default=TagCategory.OTHER)
+    image = models.ImageField(
+        upload_to='tags/',  # Ảnh sẽ lưu trong MEDIA_ROOT/tags/
+        null=True,
+        blank=True
+    )
+    is_featured = models.BooleanField("Nổi bật",default=False)
 
     def save(self, *args, **kwargs):
         self.name = self.name.lower()  # chuyển về lowercase
@@ -209,3 +209,29 @@ class Report(TimeStampedModel):
 
     def __str__(self):
         return f"{self.reporter} báo cáo {self.content_type} #{self.object_id}"
+
+# 12. View
+class RecipeView(TimeStampedModel):
+    recipe = models.ForeignKey("Recipe", on_delete=models.CASCADE, related_name="views")
+    ip_address = models.GenericIPAddressField()
+    count = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together = ("recipe", "ip_address")
+# class View(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+#     created_at = models.DateTimeField(auto_now_add=True, editable=False)
+#
+#     class Meta:
+#         unique_together = ('recipe', 'user')
+
+# 13. Đánh giá và bình luận
+class RecipeReview(TimeStampedModel):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="reviews")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.PositiveSmallIntegerField(choices=[(i, i) for i in range(1, 6)])  # 1 đến 5 sao
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        unique_together = ('recipe', 'user')  # Mỗi user chỉ được đánh giá 1 lần / recipe

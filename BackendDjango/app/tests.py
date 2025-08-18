@@ -14,7 +14,9 @@ django.setup()
 #     for doc in searcher.all_stored_fields():
 #         print(doc)  # doc là dict chứa các trường được lưu
 #
-from app.models import Ingredient, TagCategory, Tag
+from app.models import Ingredient, TagCategory, Tag, Recipe
+from django.db.models import Count, Q, F
+from app.dao.content_based_filtering import get_recipe_recommend
 
 
 def create_200_ingredients():
@@ -132,7 +134,22 @@ def suggest_keywords(keyword, limit=10):
 
 
 # Test
-from app.utils.whoosh_utils.common_whoosh_utils import search_recipes
+from django.core.cache import cache
 if __name__ == "__main__":
-    print(search_recipes(keyword="trứng", page=1))
+    # print(search_recipes(keyword="trứng", page=1))
     # print(suggest_keywords("gà"))
+
+    cache.set('my_key', 'Hello Django!', timeout=60)  # timeout = 60 giây
+
+    # Lấy dữ liệu từ cache
+    value = cache.get('my_key')
+    print("Giá trị cache:", value)
+
+    # Nếu key không tồn tại, trả về giá trị mặc định
+    missing_value = cache.get('unknown_key', 'Not Found')
+    print("Key không tồn tại:", missing_value)
+
+    # Xóa cache
+    cache.delete('my_key')
+    deleted_value = cache.get('my_key', 'Đã xóa')
+    print("Sau khi xóa:", deleted_value)

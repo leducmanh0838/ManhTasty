@@ -3,14 +3,13 @@ import FloatingInput from "../../../components/ui/FloatingInput";
 import EditStepSection from "../../steps/components/EditStepSection";
 import { useNavigate, useParams } from "react-router-dom";
 import { printErrors } from "../../../utils/printErrors";
-import Apis, { authApis, endpoints } from "../../../configs/Apis";
+import { authApis, endpoints } from "../../../configs/Apis";
 import EditRecipeMediasSection from "../../medias/components/EditRecipeMediasSection";
 import EditRecipeMainImageSection from "../../medias/components/EditRecipeMainImageSection";
 import { handleDraftChange } from "../utils/draft-utils";
 import EditIngredientSection from "../../ingredients/components/EditIngredientSection";
 import EditTagSection from "../../tags/components/EditTagSection";
 import SavingSpinner from "../../../components/ui/Spinner/SavingSpinner";
-import LoadingSpinner from "../../../components/ui/Spinner/LoadingSpinner";
 import { FaCheck } from "react-icons/fa";
 import slugify from "../../../utils/string/slugify";
 import { validateSubmitRecipe } from "../utils/validate";
@@ -25,25 +24,13 @@ const EditRecipePage = () => {
     // recipe
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [servings, setServings] = useState('');
+    const [cookingTime, setCookingTime] = useState('');
     const [image, setImage] = useState(null);
     const [medias, setMedias] = useState([]);
     const [tags, setTags] = useState([]);
     const [ingredients, setIngredients] = useState([]);
     const [steps, setSteps] = useState([]);
-
-    // useEffect(() => {
-    //     console.info("ingredients: ", JSON.stringify(ingredients, null, 2))
-    // }, [ingredients])
-
-    // useEffect(() => {
-    //     console.info("tags: ", JSON.stringify(tags, null, 2))
-    // }, [tags])
-    // useEffect(() => {
-    //     console.info("steps: ", JSON.stringify(steps, null, 2))
-    // }, [steps])
-    // useEffect(() => {
-    //     console.info("mainImage: ", image)
-    // }, [image])
 
     const handleTitleChange = (e) => {
         handleDraftChange(setTitle, "title", e.target.value, recipeId, setSaving)
@@ -96,6 +83,17 @@ const EditRecipePage = () => {
         }
     }
 
+    const handleDeleteRecipeDraft = async () => {
+        try {
+            const api = await authApis();
+            const res = await api.delete(endpoints.recipes.draft.detail(recipeId))
+            navigate(`/profile/recipes`)
+
+        } catch (err) {
+            printErrors(err);
+        }
+    }
+
     return (
         <>
             {recipeExist ?
@@ -110,7 +108,8 @@ const EditRecipePage = () => {
                                 </>}
                             </div>
                             <div>
-                                <button disabled={saving} className="btn btn-primary" onClick={handleSubmitRecipe}> {loading ? <>Đang đăng món ăn...</> : <>Đăng món ăn</>}</button>
+                                <button disabled={saving} className="btn btn-danger ms-2" onClick={handleDeleteRecipeDraft}> Xóa bản nháp</button>
+                                <button disabled={saving} className="btn btn-primary ms-2" onClick={handleSubmitRecipe}> {loading ? <>Đang đăng món ăn...</> : <>Đăng món ăn</>}</button>
                             </div>
                         </div>
                     </header>
@@ -124,6 +123,7 @@ const EditRecipePage = () => {
                                 <EditRecipeMediasSection inputKey="medias" {...{ medias, setMedias, recipeId, setSaving }} accept={"image/*,video/*"} parentType={"step"} />
 
                                 <div className="mb-1">Các bước thực hiện</div>
+
                                 <EditStepSection {...{ steps, setSteps, recipeId, setSaving }} />
                             </div>
                             <div className="col-5">
@@ -148,7 +148,22 @@ const EditRecipePage = () => {
                                     />
                                 </div>
 
+                                <FloatingInput id="cooking_time" label="Thời gian nấu (phút)"
+                                    type="number" value={cookingTime}
+                                    onChange={(e) => setCookingTime(e.target.value)}
+                                    onBlur={(e) => handleDraftChange(setCookingTime, "cooking_time", e.target.value, recipeId, setSaving)}
+                                    className="mb-1"
+                                />
+
+                                <FloatingInput id="servings" label="Số người ăn"
+                                    type="number" value={servings}
+                                    onChange={(e) => setServings(e.target.value)}
+                                    onBlur={(e) => handleDraftChange(setServings, "servings", e.target.value, recipeId, setSaving)}
+                                    className="mb-1"
+                                />
+
                                 <EditTagSection {...{ tags, setTags, recipeId, setSaving }} />
+
                                 <div>
                                     <div className="mb-1">Nguyên liệu</div>
                                     <EditIngredientSection {...{ ingredients, setIngredients, recipeId, setSaving }} />

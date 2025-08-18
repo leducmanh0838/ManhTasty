@@ -1,2 +1,8 @@
 class TokenValue:
     ACCESS_TOKEN_EXPIRE_SECONDS = 36000
+
+class CacheTimeout:
+    HOME_CACHE_TIMEOUT = 60  # 1 phút
+    RECIPE_RECOMMEND_CACHE_TIMEOUT = 60 * 15  # 15 phút
+    RECIPE_DETAIL_TIMEOUT = 60 * 15  # 15 phút
+    RECIPE_LIST_TIMEOUT = 60  # 15 phút

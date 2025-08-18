@@ -38,15 +38,6 @@ const ReportDialog = ({ objectId, showModal, setShowModal, contentType }) => {
 
     return (
         <>
-            {/* <button className="btn btn-light btn-sm text-start w-100"
-                onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setShowModal(true);
-                }}
-            >
-                🚩 Báo cáo
-            </button> */}
             <Modal show={showModal} onHide={() => setShowModal(false)} centered>
                 <Modal.Header closeButton>
                     <Modal.Title className="fw-bold">Báo cáo</Modal.Title>
@@ -96,7 +87,7 @@ const ReportDialog = ({ objectId, showModal, setShowModal, contentType }) => {
                     {isSuccess ? <Button variant="success" onClick={() => setShowModal(false)}>
                         Ok
                     </Button> : <Button variant="danger" onClick={handleSubmit}>
-                        Báo cáo
+                        Đánh giá
                     </Button>}
 
                 </Modal.Footer>

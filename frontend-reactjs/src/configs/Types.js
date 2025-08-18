@@ -1,7 +1,3 @@
-import { FaThumbsUp, FaLaughSquint, FaSurprise, FaAngry } from 'react-icons/fa';
-import { AiFillHeart } from 'react-icons/ai';
-import { GiCook } from 'react-icons/gi';
-
 export const LoginType = {
   SYSTEM: 1,
   GOOGLE: 2,

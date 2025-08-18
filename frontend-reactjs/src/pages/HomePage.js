@@ -4,6 +4,7 @@ import Apis, { endpoints } from "../configs/Apis";
 import RecipeCardSimpleList from "../features/recipes/components/RecipeCardSimpleList";
 import LoadingSpinner from "../components/ui/Spinner/LoadingSpinner";
 import usePagination from "../hooks/usePagination";
+import GridTagCategorySimpleList from "../features/tags/components/GridTagCategorySimpleList";
 
 const HomePage = () => {
     // const [recipePage, setRecipePage] = useState(null);
@@ -17,18 +18,19 @@ const HomePage = () => {
         page,
     } = usePagination({ endpoint: endpoints.recipes.list, isLoadFirstData: true });
 
-    // useEffect(() => {
-    //     Apis.get(endpoints.home.recipesList)
-    //         .then(res => setRecipePage(res.data))
-    //     // .then(setRecipes(prev => [...prev, ...x]))
-    // }, []);
-
     return (
-        recipes ? (
-            <RecipeCardSimpleList recipes={recipes} loadMore={loadMore} isLoadingRecipes={loading} hasMoreRecipes={hasMore} />
-        ) : (
-            <LoadingSpinner/>
-        )
+        <>
+            <div className="p-2">
+                <GridTagCategorySimpleList />
+                {
+                    recipes ? (
+                        <RecipeCardSimpleList recipes={recipes} loadMore={loadMore} isLoadingRecipes={loading} hasMoreRecipes={hasMore} />
+                    ) : (
+                        <LoadingSpinner />
+                    )
+                }
+            </div>
+        </>
     )
 }
 

@@ -7,7 +7,6 @@ import "./SearchPage.css"
 import NotFoundRecipe from "./NotFoundRecipe";
 import usePagination from "../../../hooks/usePagination";
 import LoadingSpinner from "../../../components/ui/Spinner/LoadingSpinner";
-import { refresh } from "@cloudinary/url-gen/qualifiers/artisticFilter";
 
 const SearchPage = () => {
     const { currentUser } = useContext(AppContext);

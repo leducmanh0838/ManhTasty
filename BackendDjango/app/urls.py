@@ -8,7 +8,9 @@ from app.views.ingredient_view import IngredientViewSet
 from app.views.media_view import MediaUploadViewSet
 from app.views.reaction_view import ReactionViewSet
 from app.views.recipe_views.recipe_draft_view import RecipeDraftViewSet
+from app.views.recipe_views.recipe_review_view import RecipeReviewViewSet, ReviewViewSet
 from app.views.recipe_views.recipe_view import RecipeViewSet, RecipeCommentViewSet
+from app.views.recipe_views.recipe_view_view import RecipeViewViewSet
 from app.views.report_view import ReportViewSet
 from app.views.search_view import SearchViewSet
 from app.views.tag_view import TagViewSet
@@ -29,6 +31,8 @@ router.register(r'reports', ReportViewSet, basename='reports')
 router.register(r'tags', TagViewSet, basename='tags')
 router.register(r'ingredients', IngredientViewSet, basename='ingredients')
 router.register(r'users', UserViewSet, basename='users')
+router.register(r'reviews', ReviewViewSet, basename='reviews')
+# router.register(r'views', RecipeViewViewSet, basename='views')
 router.register(r'image-upload', MediaUploadViewSet, basename='image-upload')
 
 router.register(r'current-user/search', CurrentUserSearchViewSet, basename='current-user-search')
@@ -37,9 +41,13 @@ router.register(r'current-user/recipes', UserRecipesViewSet, basename='current-u
 # Tạo nested router cho comments theo từng recipe
 recipes_nested_router = routers.NestedSimpleRouter(router, r'recipes', lookup='recipe')
 recipes_nested_router.register(r'comments', RecipeCommentViewSet, basename='recipe-comments')
+recipes_nested_router.register(r'reviews', RecipeReviewViewSet, basename='recipe-reviews')
+recipes_nested_router.register(r"views", RecipeViewViewSet, basename="recipe-views")
 
 users_nested_router = routers.NestedSimpleRouter(router, r'users', lookup='user')
 users_nested_router.register(r'recipes', UserRecipesViewSet, basename='user-recipe')
+
+
 
 # recipes_router = routers.SimpleRouter()
 # recipes_router.register(r'draft', RecipeDraftViewSet, basename='draft-recipes')

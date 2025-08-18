@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'oauth2_provider',
     'corsheaders',
+    'django_q',
 ]
 
 MIDDLEWARE = [
@@ -105,6 +106,17 @@ DATABASES = {
         'USER': os.getenv('DB_USER'),
         'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': os.getenv('DB_HOST'),
+    }
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "manh-tasty-cache",  # tên định danh cache
+        "TIMEOUT": 3600,  # thời gian hết hạn cache (giây)
+        "OPTIONS": {
+            "MAX_ENTRIES": 1000  # số lượng mục cache tối đa
+        }
     }
 }
 
@@ -177,3 +189,17 @@ AUTH_USER_MODEL = 'app.User'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+Q_CLUSTER = {
+    'name': 'DjangoQ',
+    'workers': 1,             # chỉ cần 1 worker để test
+    'recycle': 500,
+    'timeout': 60,
+    'queue_limit': 50,
+    'bulk': 10,
+    'poll': 10,
+    'orm': 'default',         # dùng database mặc định
+}
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # => ảnh sẽ nằm trong: media/tags/

@@ -12,6 +12,8 @@ import EditRecipePage from './features/recipes/pages/EditRecipePage';
 import CreateDraftRecipe from './features/recipes/components/CreateDraftRecipe';
 import SearchPage from './features/search/pages/SearchPage';
 import ProfilePage from './features/profile/pages/ProfilePage';
+import ProfileOverview from './features/profile/components/ProfileOverview';
+import ProfileRecipes from './features/profile/components/ProfileRecipes'
 import UserRecipePage from './features/profile/pages/UserRecipePage';
 
 const App = () => {
@@ -44,7 +46,11 @@ const App = () => {
               <Route path="/recipes-draft" element={<CreateDraftRecipe />} />
               <Route path="/recipes-draft/:recipeId/edit" element={<EditRecipePage />} />
               <Route path="/search" element={<SearchPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
+              
+              <Route path="/profile" element={<ProfilePage />} >
+                <Route index element={<ProfileOverview />} />
+                <Route path="recipes" element={<ProfileRecipes />} />
+              </Route>
               {/* CurrentUserRecipePage */}
               <Route path="/users/:userId/recipes" element={<UserRecipePage />} />
             </Routes>
