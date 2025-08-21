@@ -5,6 +5,8 @@ import requests
 import uuid
 from datetime import datetime
 
+from cloudinary.utils import cloudinary_url
+
 from app.models import MediaType
 
 
@@ -33,3 +35,15 @@ def detect_media_type(file):
     elif content_type.startswith("video/"):
         return MediaType.VIDEO
     return -1
+
+def full_media_url_by_public_id(public_id, media_type):
+    print("public_id: ", str(public_id))
+    # Tạm thời: nếu đuôi là mp4 => video, còn lại là image
+    resource_type = "video" if media_type == MediaType.VIDEO else "image"
+
+    url, options = cloudinary_url(
+        str(public_id),
+        resource_type=resource_type,  # 'image' hoặc 'video' hoặc 'raw'
+    )
+    print("url: ", str(url))
+    return url

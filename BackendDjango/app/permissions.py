@@ -6,11 +6,6 @@ from app.models import RecipeStatus
 
 class IsAuthor(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        # # Nếu là các method an toàn (GET, HEAD, OPTIONS) thì luôn cho phép
-        # if request.method in permissions.SAFE_METHODS:
-        #     return True
-        #
-        # # Nếu là POST, PATCH, DELETE thì kiểm tra chủ sở hữu
         return obj.author == request.user
 
 class CanEditRecipeStatusPermission(permissions.BasePermission):

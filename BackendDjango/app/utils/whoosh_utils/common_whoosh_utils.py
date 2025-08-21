@@ -69,7 +69,7 @@ def build_index():
 
 RECIPE_SEARCH_PAGE_SIZE = 10
 
-def search_recipes(keyword, page=1):
+def search_recipes(keyword):
     # Mở index
     ix = open_dir(INDEX_DIR)
 
@@ -82,24 +82,25 @@ def search_recipes(keyword, page=1):
     # Tìm kiếm với phân trang và sắp xếp id giảm dần
     with ix.searcher() as searcher:
         # Sort theo id giảm dần
-        sorted_by_id = FieldFacet("id", reverse=True)
+        # sorted_by_id = FieldFacet("id", reverse=True)
 
         # Kết quả trang
-        start = (page - 1) * RECIPE_SEARCH_PAGE_SIZE
-        end = start + RECIPE_SEARCH_PAGE_SIZE
+        # start = (page - 1) * RECIPE_SEARCH_PAGE_SIZE
+        # end = start + RECIPE_SEARCH_PAGE_SIZE
 
         # Thực hiện truy vấn
-        results = searcher.search(query, limit=None, sortedby=sorted_by_id)
+        # results = searcher.search(query, limit=None, sortedby=sorted_by_id)
+        results = searcher.search(query, limit=None)
 
         # Tổng số trang
-        total_pages = math.ceil(len(results) / RECIPE_SEARCH_PAGE_SIZE)
+        # total_pages = math.ceil(len(results) / RECIPE_SEARCH_PAGE_SIZE)
 
         # Lấy kết quả phân trang
-        paginated = results[start:end]
+        # paginated = results[start:end]
 
         # Hiển thị kết quả
         recipes = []
-        for hit in paginated:
+        for hit in results:
             recipes.append({
                 "id": hit["id"],
                 "title": hit["title"],
@@ -107,9 +108,11 @@ def search_recipes(keyword, page=1):
                 "tags": hit["tags"]
             })
 
-        return {
-            "total": len(results),
-            "total_pages": total_pages,
-            "page": page,
-            "recipes": recipes
-        }
+        print("recipes: ", recipes)
+        return recipes
+        # return {
+        #     "total": len(results),
+        #     "total_pages": total_pages,
+        #     "page": page,
+        #     "recipes": recipes
+        # }

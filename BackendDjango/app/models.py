@@ -28,13 +28,20 @@ class EmotionType(models.IntegerChoices):
     ANGRY = 6, 'Angry'
 
 class RecipeStatus(models.IntegerChoices):
-    CREATING = -1, 'Creating'
-    DRAFT = 0, 'Draft'                # Người dùng chưa đăng
-    PENDING = 1, 'Pending'             # Admin sẽ kiểm duyệt (nếu có)
-    ACTIVE = 2, 'Active'              # Công khai, mọi người thấy
-    INACTIVE = 3, 'Inactive'               # Không xóa, nhưng ẩn khỏi người dùng
-    DELETED = 4, 'Delete'                # Đã đưa vào thùng rác
-    LOCKED = 5, 'Locked'
+    CREATING = -1, 'Đang tạo'
+    DRAFT = 0, 'Nháp'                # Người dùng chưa đăng
+    PENDING = 1, 'Đang chờ'             # Admin sẽ kiểm duyệt (nếu có)
+    ACTIVE = 2, 'Đang hoạt động'              # Công khai, mọi người thấy
+    INACTIVE = 3, 'Không hoạt động'               # Không xóa, nhưng ẩn khỏi người dùng
+    DELETED = 4, 'Bị xóa'                # Đã đưa vào thùng rác
+    LOCKED = 5, 'Bị khóa'
+
+class ReportStatus(models.IntegerChoices):           # Người dùng chưa đăng
+    PENDING = 1, "Chờ xử lý"
+    REVIEWED = 2, "Đã xem xét"
+    ACCEPTED = 3, "Hợp lệ"
+    REJECTED = 4, "Không hợp lệ"
+    RESOLVED = 5, "Đã giải quyết"
 
 class TagCategory(models.IntegerChoices):
     OTHER = 0, 'Khác'
@@ -61,7 +68,7 @@ class TimeStampedModel(models.Model):
 
 # 1. User
 class User(AbstractUser):
-    login_type = models.SmallIntegerField(choices=LoginType.choices, default=LoginType.SYSTEM)
+    login_type = models.SmallIntegerField(choices=LoginType.choices, default=LoginType.SYSTEM, verbose_name="Kiểu đăng nhập")
     # avatar_url = models.URLField(blank=True, null=True)
     avatar = models.URLField(null=True, blank=True)
 
@@ -71,21 +78,21 @@ class User(AbstractUser):
 
 # 2. Công thức
 class Recipe(TimeStampedModel):
-    status = models.SmallIntegerField(choices=RecipeStatus.choices, default=RecipeStatus.CREATING, db_index=True)
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    image = CloudinaryField('image', null=True, blank=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes')
-    servings = models.PositiveIntegerField(default=1, help_text="Số người ăn")
-    cooking_time = models.PositiveIntegerField(help_text="Thời gian nấu (phút)", null=True)
-    view_count = models.PositiveIntegerField(default=0)
-    rating_sum = models.PositiveIntegerField(default=0)  # Tổng số sao
-    rating_count = models.PositiveIntegerField(default=0)  # Số lượt đánh giá
+    status = models.SmallIntegerField(choices=RecipeStatus.choices, default=RecipeStatus.CREATING, db_index=True, verbose_name="Trạng thái")
+    title = models.CharField(max_length=255, verbose_name="Tiêu đề")
+    description = models.TextField(verbose_name="Mô tả")
+    image = CloudinaryField('Ảnh', null=True, blank=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes', verbose_name="Tác giả")
+    servings = models.PositiveIntegerField(null = True, verbose_name="Số người ăn")
+    cooking_time = models.PositiveIntegerField(null=True, verbose_name="Thời gian nấu (phút)")
+    view_count = models.PositiveIntegerField(default=0, verbose_name="Lượt xem")
+    rating_sum = models.PositiveIntegerField(default=0, verbose_name="Tổng sao")  # Tổng số sao
+    rating_count = models.PositiveIntegerField(default=0, verbose_name="Số lượt đánh giá")  # Số lượt đánh giá
 
     tags = models.ManyToManyField('Tag', through='RecipeTag', related_name='tags')
-    ingredients = models.ManyToManyField('Ingredient', through='RecipeIngredient', related_name='recipes')
-    reactions = GenericRelation('Reaction')
-    reports = GenericRelation('Report')
+    ingredients = models.ManyToManyField('Ingredient', through='RecipeIngredient', related_name='recipes', verbose_name="Nguyên liệu")
+    reactions = GenericRelation('Reaction', verbose_name="Phản ứng")
+    reports = GenericRelation('Report', verbose_name="Báo cáo")
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)  # lưu model
@@ -94,6 +101,10 @@ class Recipe(TimeStampedModel):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = "Công thức"  # tên số ít
+        verbose_name_plural = "Các công thức"  # tên số nhiều
 
 # 3 Media của công thức
 class RecipeMedia(TimeStampedModel):
@@ -107,14 +118,19 @@ class RecipeMedia(TimeStampedModel):
     def __str__(self):
         return f'{self.recipe.title} - {self.media_type}'
 
+    class Meta:
+        verbose_name = "Media"  # tên số ít
+        verbose_name_plural = "Các media"  # tên số nhiều
+
 # 4. Tag
 class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=True, db_index=True)
-    tag_category = models.SmallIntegerField(choices=TagCategory.choices, default=TagCategory.OTHER)
+    name = models.CharField(max_length=50, unique=True, db_index=True, verbose_name="tên")
+    tag_category = models.SmallIntegerField(choices=TagCategory.choices, default=TagCategory.OTHER, verbose_name="Thể loại tag")
     image = models.ImageField(
         upload_to='tags/',  # Ảnh sẽ lưu trong MEDIA_ROOT/tags/
         null=True,
-        blank=True
+        blank=True,
+        verbose_name="Ảnh"
     )
     is_featured = models.BooleanField("Nổi bật",default=False)
 
@@ -125,6 +141,10 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Tag"  # tên số ít
+        verbose_name_plural = "Các tag"  # tên số nhiều
+
 # 5. Bảng trung gian của công thức và tag
 class RecipeTag(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
@@ -132,16 +152,20 @@ class RecipeTag(models.Model):
 
 # 6. Nguyên liệu
 class Ingredient(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, verbose_name="Tên")
 
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Nguyên liệu"  # tên số ít
+        verbose_name_plural = "Các nguyên liệu"  # tên số nhiều
+
 # 7.Trung gian của nguyên liệu và công thức
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    quantity = models.CharField(max_length=100)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, verbose_name="Nguyên liệu")
+    quantity = models.CharField(max_length=100, verbose_name="Số lượng")
 
     def __str__(self):
         return f"{self.quantity} of {self.ingredient.name} for {self.recipe.title}"
@@ -152,20 +176,22 @@ class RecipeIngredient(models.Model):
 # 8. Các bước nấu ăn
 class Step(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='steps')
-    order = models.PositiveSmallIntegerField()
-    description = models.TextField()
-    image = CloudinaryField('image', null=True, blank=True)
+    order = models.PositiveSmallIntegerField(verbose_name="Bước")
+    description = models.TextField(verbose_name="Mô tả")
+    image = CloudinaryField('ảnh', null=True, blank=True)
 
     class Meta:
         ordering = ['order']
+        verbose_name = "Bước"  # tên số ít
+        verbose_name_plural = "Các bước"  # tên số nhiều
 
 # 9. Bình luận
 class Comment(TimeStampedModel):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
-    reactions = GenericRelation('Reaction')
-    reports = GenericRelation('Report')
+    content = models.TextField(verbose_name="nội dung")
+    reactions = GenericRelation('Reaction', verbose_name="Phản ứng")
+    reports = GenericRelation('Report', verbose_name="Báo cáo")
 
     parent = models.ForeignKey(
         'self',
@@ -180,6 +206,10 @@ class Comment(TimeStampedModel):
 
     def __str__(self):
         return f"{self.user} - {'Reply' if self.is_reply() else 'Comment'}"
+
+    class Meta:
+        verbose_name = "Bình luận"  # tên số ít
+        verbose_name_plural = "Các bình luận"  # tên số nhiều
 
 # 10. Phản ứng
 class Reaction(TimeStampedModel):
@@ -200,12 +230,13 @@ class Report(TimeStampedModel):
     reporter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reports')
     reason = models.SmallIntegerField(choices=ReasonType.choices)
     description = models.TextField(blank=True)  # lý do chi tiết nếu cần
+    status = models.SmallIntegerField(choices=ReportStatus.choices, default=ReportStatus.PENDING, db_index=True)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')  # liên kết tới Recipe hoặc Comment
 
-    is_resolved = models.BooleanField(default=False)  # xử lý chưa
+    # is_resolved = models.BooleanField(default=False)  # xử lý chưa
 
     def __str__(self):
         return f"{self.reporter} báo cáo {self.content_type} #{self.object_id}"

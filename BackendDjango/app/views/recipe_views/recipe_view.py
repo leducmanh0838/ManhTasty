@@ -1,9 +1,10 @@
 from django.contrib.contenttypes.models import ContentType
-from django.db.models import Q, Count, Prefetch
+from django.db.models import Q, Count, Prefetch, ExpressionWrapper, F, FloatField
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from rest_framework import parsers, mixins, viewsets
+from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
 
 from app.configs.values import CacheTimeout
 from app.dao.content_based_filtering import get_recipe_recommend
@@ -12,31 +13,33 @@ from app.paginations import RecipePagination, CommentPagination
 from app.permissions import IsAuthor
 from app.serializers.comment_serializers import StoreCommentCreateSerializer, StoreCommentListSerializer
 from app.serializers.recipe_serializers.recipe_recommend_serializers import RecipeRecommendSerializer
-from app.serializers.recipe_serializers.recipe_serializers import RecipeCreateSerializer, RecipeBasicSerializer, RecipeRetrieveSerializer, \
-    RecipeSummarySerializer
+from app.serializers.recipe_serializers.recipe_serializers import RecipeBasicSerializer, RecipeRetrieveSerializer, \
+    RecipeSummarySerializer, RecipeUpdateSerializer, RecipeOriginalRetrieveSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 
+from app.utils.cacheUtils import conditional_cache_page
 from app.utils.mongodb import log_user_search_keyword
-from app.utils.paginationUtils import get_pagination_links
 from app.utils.whoosh_utils.common_whoosh_utils import search_recipes
 
 
-class RecipeViewSet(mixins.CreateModelMixin,
-                    mixins.ListModelMixin,
+class RecipeViewSet(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
                     viewsets.GenericViewSet):
     pagination_class = RecipePagination
     def get_serializer_class(self):
-        if self.action == 'create':
-            return RecipeCreateSerializer
-        elif self.action == 'list':
+        if self.action == 'list':
             return RecipeBasicSerializer
         elif self.action == 'retrieve':
             return RecipeRetrieveSerializer
+        elif self.action in ['update', 'partial_update']:
+            return RecipeUpdateSerializer
+        elif self.action in ['search_recipes']:
+            return RecipeSummarySerializer
         return RecipeBasicSerializer  # fallback
-    parser_classes = [parsers.MultiPartParser]
+    # parser_classes = [parsers.MultiPartParser]
 
     def get_queryset(self):
         user = self.request.user
@@ -55,7 +58,8 @@ class RecipeViewSet(mixins.CreateModelMixin,
     def get_permissions(self):
         if self.action in ['create', 'get_current_emotion']:
             return [IsAuthenticated()]
-        elif self.action in ['create_step', 'submit_recipe']:
+        elif self.action in ['create_step', 'submit_recipe', 'update',
+                             'partial_update', 'move_to_trash', 'restore']:
             return [IsAuthor()]
         else:
             return [AllowAny()]
@@ -65,10 +69,16 @@ class RecipeViewSet(mixins.CreateModelMixin,
         print(r"Đã truy vấn /recipes/")
         return super().list(request, *args, **kwargs)
 
-    @method_decorator(cache_page(CacheTimeout.RECIPE_DETAIL_TIMEOUT))
+    # @method_decorator(cache_page(CacheTimeout.RECIPE_DETAIL_TIMEOUT, key_prefix='recipe_detail'))
+    @method_decorator(conditional_cache_page(CacheTimeout.RECIPE_DETAIL_TIMEOUT, key_prefix="recipe_detail"))
     def retrieve(self, request, *args, **kwargs):
         print(r"Đã truy vấn /recipes/{id}/")
         return super().retrieve(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        response = super().partial_update(request, *args, **kwargs)
+
+        return response
 
     @method_decorator(cache_page(CacheTimeout.RECIPE_RECOMMEND_CACHE_TIMEOUT))
     @action(detail=True, methods=['get'], url_path='recommend')
@@ -77,43 +87,52 @@ class RecipeViewSet(mixins.CreateModelMixin,
         serializer = RecipeRecommendSerializer(get_recipe_recommend(pk, 5), many=True)
         return Response(serializer.data)
 
+    @action(detail=True, methods=['get'], url_path='original')
+    def get_original_recipe(self, request, pk):
+        recipe = self.get_object()
+        serializer = RecipeOriginalRetrieveSerializer(recipe)
+        return Response(serializer.data)
 
     @action(detail=False, methods=['get'], url_path='search')
     def search_recipes(self, request):
         keyword = request.query_params.get('keyword', '').strip()
-        print("keyword: ", keyword)
+        sort_by = request.query_params.get('sort_by', '-id').strip()
         if keyword:
-            if request.user.is_authenticated:
-                log_user_search_keyword(user=request.user, keyword=keyword)
-        page = int(request.query_params.get('page', 1))
+            log_user_search_keyword(user=request.user, keyword=keyword)
+        # page = int(request.query_params.get('page', 1))
 
         # Gọi hàm tìm kiếm
-        result = search_recipes(keyword, page)
+        result = search_recipes(keyword)
 
         # Truy vấn lại từ DB để lấy đầy đủ dữ liệu (ảnh, tags, v.v.)
-        ids = [r["id"] for r in result["recipes"]]
+        ids = [r["id"] for r in result]
 
-        recipes = Recipe.objects.filter(id__in=ids).order_by('-id')
+        print("ids: ", ids)
 
-        if not recipes.exists():
-            return Response({
-                    "detail": "Invalid page."
-                }, status=status.HTTP_404_NOT_FOUND)
+        recipes = Recipe.objects.filter(id__in=ids, status=RecipeStatus.ACTIVE)
 
-        total_pages = result["total_pages"]
+        if sort_by:
+            if sort_by == '-avg_rating':
+                # Tính trường trung bình trước khi sắp xếp
+                recipes = recipes.annotate(
+                    avg_rating=ExpressionWrapper(
+                        F('rating_sum') * 1.0 / F('rating_count'),
+                        output_field=FloatField()
+                    )
+                ).order_by(sort_by)
+            else:
+                # Sắp xếp theo các trường bình thường
+                recipes = recipes.order_by(sort_by)
 
-        pagination_links=get_pagination_links(base_url=request.build_absolute_uri(request.path), total_pages=total_pages, **request.query_params.dict())
-        print("pagination_links: ", pagination_links)
+        paginator = PageNumberPagination()
+        paginator.page_size = 10  # số item trên 1 trang
+        result_page = paginator.paginate_queryset(recipes, request)
 
-        # Serialize kết quả
-        serializer = RecipeSummarySerializer(recipes, many=True)
+        serializer = self.get_serializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
-        return Response({
-            "count": result["total"],
-            "next": pagination_links["next"],
-            "previous": pagination_links["previous"],
-            "results": serializer.data
-        }, status=status.HTTP_200_OK)
+        # serializer = RecipeSummarySerializer(recipes, many=True)
+        # return Response(serializer.data , status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['get'], url_path='emotion-counts')
     def emotion_counts(self, request, pk):
@@ -155,6 +174,42 @@ class RecipeViewSet(mixins.CreateModelMixin,
             "id": reaction.id,
 
         })
+
+    @action(detail=True, methods=["post"], url_path="trash")
+    def move_to_trash(self, request, pk=None):
+        recipe = self.get_object()
+
+        # ✅ Chỉ cho phép khi recipe đang ACTIVE
+        if recipe.status != RecipeStatus.ACTIVE:
+            return Response(
+                {"detail": "Chỉ có thể chuyển recipe ACTIVE vào thùng rác."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        
+        recipe.status = RecipeStatus.DELETED
+        recipe.save()
+        return Response(
+            {"message": f"Recipe {recipe.id} đã được chuyển vào thùng rác."},
+            status=status.HTTP_200_OK
+        )
+
+    @action(detail=True, methods=["post"], url_path="restore")
+    def restore(self, request, pk=None):
+        recipe = self.get_object()
+
+        # ✅ Chỉ cho phép khi recipe đang ACTIVE
+        if recipe.status != RecipeStatus.DELETED:
+            return Response(
+                {"detail": "Chỉ có thể chuyển khôi phục recipe có trạng thái DELETED."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        recipe.status = RecipeStatus.ACTIVE
+        recipe.save(update_fields=["status"])
+        return Response(
+            {"message": f"Recipe {recipe.id} đã được khôi phục."},
+            status=status.HTTP_200_OK
+        )
 
 class RecipeCommentViewSet(mixins.ListModelMixin,
                      mixins.CreateModelMixin,

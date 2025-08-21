@@ -28,9 +28,10 @@ def log_user_search_keyword(user, keyword: str):
     if user:
         now = datetime.now()
         # lọc theo keyword và user
+        user_id = user.id if user.is_authenticated else 0
         filter_query = {
             "keyword": keyword,
-            "user_id": str(user.id)
+            "user_id": str(user_id)
         }
         # cập nhật thời gian và đếm số lượt
         update_query = {

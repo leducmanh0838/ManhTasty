@@ -31,3 +31,8 @@ class StepListSerializer(serializers.ModelSerializer):
         if obj.image:
             return obj.image.url
         return None
+
+class StepListForRecipeOriginalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Step
+        fields = ['order', 'description', 'image']
