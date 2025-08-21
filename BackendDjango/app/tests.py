@@ -133,23 +133,16 @@ def suggest_keywords(keyword, limit=10):
     return [s for s in suggestions if s]
 
 
-# Test
-from django.core.cache import cache
+from django.apps import apps
+from django.contrib.contenttypes.models import ContentType
+
+def main():
+    all_models = apps.get_models()  # Lấy tất cả các model
+    print(f"{'App':20} {'Model':20} {'ContentType ID':15}")
+    print("-"*60)
+    for model in all_models:
+        ct = ContentType.objects.get_for_model(model)
+        print(f"{model._meta.app_label:20} {model._meta.model_name:20} {ct.id:15}")
+
 if __name__ == "__main__":
-    # print(search_recipes(keyword="trứng", page=1))
-    # print(suggest_keywords("gà"))
-
-    cache.set('my_key', 'Hello Django!', timeout=60)  # timeout = 60 giây
-
-    # Lấy dữ liệu từ cache
-    value = cache.get('my_key')
-    print("Giá trị cache:", value)
-
-    # Nếu key không tồn tại, trả về giá trị mặc định
-    missing_value = cache.get('unknown_key', 'Not Found')
-    print("Key không tồn tại:", missing_value)
-
-    # Xóa cache
-    cache.delete('my_key')
-    deleted_value = cache.get('my_key', 'Đã xóa')
-    print("Sau khi xóa:", deleted_value)
+    main()

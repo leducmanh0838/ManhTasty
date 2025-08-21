@@ -26,7 +26,7 @@ class CanEditRecipeStatusPermission(permissions.BasePermission):
             RecipeStatus.INACTIVE,
         ]
 
-class IsOwnerOfReaction(permissions.BasePermission):
+class IsUserOwner(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         # `obj` ở đây là một instance của Reaction
         return obj.user == request.user

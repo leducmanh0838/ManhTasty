@@ -23,7 +23,8 @@ class UserRecipesViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     def get_queryset(self):
         user_id = self.kwargs['user_pk']
         qs = Recipe.objects.filter(author_id=user_id).order_by("-id")
-        deleted = self.request.query_params.get('deleted')
+        # deleted = self.request.query_params.get('deleted')
+        status = self.request.query_params.get('status')
 
         # Nếu user không phải owner hoặc chưa login
         if not self.request.user.is_authenticated or self.request.user.id != int(user_id):
@@ -31,8 +32,8 @@ class UserRecipesViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
             qs = qs.filter(status=RecipeStatus.ACTIVE)
         else:
             # Owner: chỉ loại bỏ DELETED
-            if deleted:
-                qs = qs.filter(status=RecipeStatus.DELETED)
+            if status:
+                qs = qs.filter(status=int(status))
             else:
                 qs = qs.exclude(status=RecipeStatus.DELETED)
 

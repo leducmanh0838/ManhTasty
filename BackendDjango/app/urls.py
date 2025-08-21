@@ -6,6 +6,7 @@ from app.views.current_user.user_recipes_view import UserRecipesViewSet
 from app.views.current_user.users_view import UserViewSet
 from app.views.ingredient_view import IngredientViewSet
 from app.views.media_view import MediaUploadViewSet
+from app.views.notification_view import CurrentUserNotificationViewSet
 from app.views.reaction_view import ReactionViewSet
 from app.views.recipe_views.recipe_draft_view import RecipeDraftViewSet
 from app.views.recipe_views.recipe_review_view import RecipeReviewViewSet, ReviewViewSet
@@ -37,6 +38,7 @@ router.register(r'image-upload', MediaUploadViewSet, basename='image-upload')
 
 router.register(r'current-user/search', CurrentUserSearchViewSet, basename='current-user-search')
 router.register(r'current-user/recipes', UserRecipesViewSet, basename='current-user-recipes')
+router.register(r'current-user/notifications', CurrentUserNotificationViewSet, basename='current-user-notifications')
 
 # Tạo nested router cho comments theo từng recipe
 recipes_nested_router = routers.NestedSimpleRouter(router, r'recipes', lookup='recipe')

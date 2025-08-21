@@ -8,7 +8,7 @@ from rest_framework.pagination import PageNumberPagination
 
 from app.configs.values import CacheTimeout
 from app.dao.content_based_filtering import get_recipe_recommend
-from app.models import Recipe, RecipeStatus, Reaction, EmotionType, Comment
+from app.models import Recipe, RecipeStatus, Reaction, EmotionType, Comment, CommentStatus
 from app.paginations import RecipePagination, CommentPagination
 from app.permissions import IsAuthor
 from app.serializers.comment_serializers import StoreCommentCreateSerializer, StoreCommentListSerializer
@@ -246,7 +246,8 @@ class RecipeCommentViewSet(mixins.ListModelMixin,
 
             return Comment.objects.filter(
                 recipe_id=recipe_id,
-                parent__isnull=True
+                parent__isnull=True,
+                status=CommentStatus.ACTIVE
             ).annotate(
                 reply_count=Count('replies')
             ).prefetch_related(

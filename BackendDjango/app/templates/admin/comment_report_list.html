@@ -1,0 +1,37 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+<h1>Báo cáo cho bình luận với nội dung: {{ comment.content }}</h1>
+
+{% if reports %}
+    <table class="adminlist table table-striped" style="width:100%; table-layout: fixed;">
+        <thead>
+            <tr>
+                <th>Người báo cáo</th>
+                <th>Lý do</th>
+                <th>Mô tả</th>
+                <th>Trạng thái</th>
+                <th>Ngày báo cáo</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for report in reports %}
+            <tr>
+                <td>{{ report.reporter }}</td>
+                <td>{{ report.get_reason_display }}</td>
+                <td>{{ report.description }}</td>
+                <td>{{ report.get_status_display }}</td>
+                <td>{{ report.created_at }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Chưa có báo cáo nào.</p>
+{% endif %}
+
+<p>
+    <a href="/admin/{{ opts.app_label }}/{{ opts.model_name }}/{{ comment.id }}/change/" class="button">Quay lại món ăn</a>
+</p>
+{% endblock %}
