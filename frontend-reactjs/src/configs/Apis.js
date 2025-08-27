@@ -37,7 +37,10 @@ export const endpoints = {
             list: (recipeId) => `recipes/${recipeId}/reviews/`,
             stats: (recipeId) => `recipes/${recipeId}/reviews/stats/`,
             myReview: (recipeId) => `recipes/${recipeId}/reviews/my-review/`,
-        }
+        },
+        origin: (recipeId) => `recipes/${recipeId}/original/`,
+        trash: (recipeId) => `recipes/${recipeId}/trash/`,
+        restore: (recipeId) => `recipes/${recipeId}/restore/`,
     },
     reactions: {
         list: 'reactions/',
@@ -45,6 +48,7 @@ export const endpoints = {
     },
     comments: {
         replies: (commentId) => `comments/${commentId}/replies/`,
+        detail: (commentId) => `comments/${commentId}/`,
     },
     tags: {
         list: 'tags/',
@@ -56,21 +60,25 @@ export const endpoints = {
     reports: {
         list: 'reports/',
     },
-    imageUpload:{
+    imageUpload: {
         list: 'image-upload/',
     },
-    currentUser:{
-        recentKeywords:'current-user/search/recent-keywords/',
-        recipes:'current-user/recipes/',
+    currentUser: {
+        recentKeywords: 'current-user/search/recent-keywords/',
+        recipes: 'current-user/recipes/',
+        notifications: {
+            list: 'current-user/notifications/',
+            count: 'current-user/notifications/count/'
+        }
     },
-    user:{
+    user: {
         recipes: (userId) => `users/${userId}/recipes/`,
         detail: (userId) => `users/${userId}/`,
     },
-    search:{
+    search: {
         popularKeywords: 'search/popular-keywords/'
     },
-    reviews:{
+    reviews: {
         detail: (reviewId) => `reviews/${reviewId}/`,
     }
 };

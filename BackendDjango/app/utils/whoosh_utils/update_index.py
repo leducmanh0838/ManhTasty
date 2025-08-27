@@ -9,6 +9,7 @@ from app.configs.whoosh_config import INDEX_DIR
 # from app.utils.whoosh_utils.common_whoosh_utils import INDEX_DIR
 
 def update_index_for_recipe(recipe):
+    print("update_index_for_recipe")
     if not exists_in(INDEX_DIR):
         return
 
@@ -18,6 +19,8 @@ def update_index_for_recipe(recipe):
 
         ingredient_text = ", ".join([ing.name for ing in recipe.ingredients.all()])
         tags_text = ", ".join([tag.name for tag in recipe.tags.all()])
+        print("ingredient_text: ", ingredient_text)
+        print("tags_text: ", tags_text)
 
         writer.update_document(
             id=str(recipe.id),

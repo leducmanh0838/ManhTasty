@@ -17,7 +17,7 @@ import { FiCornerDownRight } from 'react-icons/fi';
 import LoadingSpinner from '../../../components/ui/Spinner/LoadingSpinner';
 import usePagination from '../../../hooks/usePagination';
 
-const CommentItem = ({ comment, recipeId, parent }) => {
+export const CommentItem = ({ comment, recipeId, parent }) => {
     console.info("render CommentItem ", Math.random())
     const { currentUser } = useContext(AppContext);
 

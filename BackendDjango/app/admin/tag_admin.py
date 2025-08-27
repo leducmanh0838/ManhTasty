@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
+from app.admin.site import admin_site
 from app.models import Tag
 
 
-@admin.register(Tag)
+@admin.register(Tag, site=admin_site)
 class TagAdmin(admin.ModelAdmin):
     list_display = ('name', 'get_tag_category_display', 'is_featured', 'image_preview')
     search_fields = ['name']

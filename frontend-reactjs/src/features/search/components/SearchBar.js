@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SearchAutocompleteSimple from "./SearchAutocompleteSimple";
 import { AppContext } from "../../../provides/AppProvider";
 import Apis, { authApis, endpoints } from "../../../configs/Apis";
@@ -9,10 +9,16 @@ import 'moment/locale/vi';
 
 const SearchBar = () => {
     const { currentUser } = useContext(AppContext);
+    const location = useLocation();
     const navigate = useNavigate();
+
+    const params = new URLSearchParams(location.search);
+
     const [userSearch, setUserSearch] = useState(null);
     const handleSelectItem = (suggestionItem) => {
-        navigate(`/search?keyword=${suggestionItem.keyword}`)
+        params.set('keyword', suggestionItem.keyword);
+        navigate(`/search?${params.toString()}`);
+        // navigate(`/search?keyword=${suggestionItem.keyword}`)
     }
 
     useEffect(() => {

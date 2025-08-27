@@ -1,8 +1,6 @@
 import { useContext } from "react";
 import { AppContext } from "../../../provides/AppProvider";
 import Avatar from "../../../components/ui/Avatar";
-import { Link } from "react-router-dom";
-import { useLogout } from "../../../utils/Auth";
 import HeaderProfileDropdown from "./HeaderProfileDropdown";
 
 const HeaderProfile = () => {

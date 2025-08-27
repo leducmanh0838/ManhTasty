@@ -9,8 +9,8 @@ from rest_framework.response import Response
 from bson import ObjectId, json_util
 from datetime import datetime
 
+from app.configs.mongo_db_config import recipe_drafts_collection
 from app.serializers.recipe_serializers.recipe_draft_serializers import CreateRecipeFromDraftSerializer
-from app.utils.mongodb import recipe_drafts_collection
 
 ALLOWED_FIELDS = {"title", "description", "image", "medias", "tags", "ingredients", "steps"}
 

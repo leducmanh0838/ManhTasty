@@ -33,7 +33,10 @@ const usePagination = ({ endpoint, params = {}, useAuth = false, isLoadFirstData
 
       if (!result || result.length === 0) {
         setHasMore(false);
-        return;
+        if(prePage===0)
+          setResultData([])
+        else
+          return;
       }
 
       !res.data.next && setHasMore(false);

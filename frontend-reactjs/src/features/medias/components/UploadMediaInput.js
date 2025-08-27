@@ -62,7 +62,7 @@ const UploadMediaInput = ({ image, setImage, accept = "image/*", inputKey, size 
             >
                 {image ? (
                     <img className="rounded-3"
-                        src={isCloudinary?getMediaCloudinary(image, MediaType.IMAGE.value).toURL():image}
+                        src={isCloudinary?getMediaCloudinary(image, MediaType.IMAGE.value):image}
                         alt="Ảnh chính"
                         style={{ height: `${size}px`, objectFit: "contain" }}
                     />

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import Apis, { authApis, endpoints } from "../../../configs/Apis";
 import RecipeGallery from "../components/RecipeGallery";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { AppContext } from "../../../provides/AppProvider";
 import { MediaType } from "../../medias/constants/mediaType";
 import Avatar from "../../../components/ui/Avatar"
@@ -16,16 +16,23 @@ import IngredientItemList from "../../ingredients/components/IngredientItemList"
 import CommentSection from "../../comments/components/CommentSection";
 import ReportDialogButton from "../../reports/components/ReportDialogButton";
 import NameAndImageRecipeListPreview from "../components/NameAndImageRecipeListPreview";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import ConfirmDeleteDialogButton from "../../../components/Dialogs/ConfirmDeleteDialogButton"
 import InfoRecommendButton from "../components/InfoRecommendButton";
-import { BiTime } from "react-icons/bi";
+import { BiTime, BiTrash } from "react-icons/bi";
 import { BsPeople } from "react-icons/bs";
 import { IoEyeSharp } from "react-icons/io5";
 import RecipeReviewDetailDialogButton from "../../review/components/RecipeReviewDetailDialogButton";
-import RecipeReviewInputDialog from "../../review/components/RecipeReviewInputDialog";
+
 import RecipeReviewInputDialogButton from "../../review/components/RecipeReviewInputDialogButton";
+import MenuItemWithIcon from "../../../components/ui/MenuItemWithIcon";
+import { PiPencil } from "react-icons/pi";
+import slugify from "../../../utils/string/slugify";
+import RecipeStatusUI from "../../../components/ui/RecipeStatusUI";
+import { RecipeStatus } from "../constants/recipeStatus";
+import { printErrors } from "../../../utils/printErrors";
 
 const PublicRecipeDetailPage = () => {
+    const [searchParams] = useSearchParams();
 
     const { idSlug } = useParams();
     const recipeId = idSlug.split("-")[0];
@@ -40,6 +47,7 @@ const PublicRecipeDetailPage = () => {
 
     const [recipeRecommends, setRecipeRecommends] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [isOwner, setIsOwner] = useState(false);
 
     const loaderRef = useRef(null);
 
@@ -63,11 +71,16 @@ const PublicRecipeDetailPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setShowComments(false);
+                const queryString = searchParams.toString();
+                // `/api/recipes?${queryString}`
                 setLoading(true)
                 // 1. Gọi API recipe
-                const resRecipe = await Apis.get(endpoints.recipes.detail(recipeId));
+                const api = currentUser ? await authApis() : Apis;
+                const resRecipe = await api.get(`${endpoints.recipes.detail(recipeId)}?${queryString}`);
                 setRecipe(resRecipe.data);
-                console.info("resRecipe.data: ", JSON.stringify(resRecipe.data, null, 2))
+                currentUser && resRecipe.data?.author?.id === currentUser.id && setIsOwner(true)
+                // console.info("resRecipe.data: ", JSON.stringify(resRecipe.data, null, 2))
 
                 // 2. Gọi API emotion counts
                 const resEmotions = await Apis.get(endpoints.recipes.reactions.emotionCounts(recipeId));
@@ -75,7 +88,6 @@ const PublicRecipeDetailPage = () => {
 
                 // 3. Nếu có user, gọi API riêng có token
                 if (currentUser) {
-                    const api = await authApis();  // chỗ này gọi API instance có token
                     const resCurrentEmotion = await api.get(endpoints.recipes.reactions.currentEmotion(recipeId));
                     setSelectedEmotion(resCurrentEmotion.data);
                 }
@@ -96,6 +108,16 @@ const PublicRecipeDetailPage = () => {
         fetchData();
     }, [recipeId]);
 
+    const handleMoveToTrash = async () => {
+        try{
+            const api = await authApis();
+            const res = await api.post(endpoints.recipes.trash(recipeId));
+            nav("/profile/recipes")
+        }catch(err){
+            printErrors(err);
+        }
+    }
+
     return (
         <>
             {!loading && recipe ? <>
@@ -108,6 +130,12 @@ const PublicRecipeDetailPage = () => {
                             >
                                 {recipe?.title}
                             </h2>
+                            {recipe.status !== RecipeStatus.ACTIVE.value &&
+                                <div>
+                                    <RecipeStatusUI recipeStatusNumber={recipe.status} />
+                                </div>
+                            }
+
                             <div className="d-flex py-3 cursor-pointer" onClick={() => recipe?.author && nav(`/users/${recipe.author.id}/recipes`)}>
                                 <Avatar src={recipe?.author.avatar} size={40} />
                                 <div>
@@ -124,7 +152,7 @@ const PublicRecipeDetailPage = () => {
                                     <div><IoEyeSharp /> {recipe.view_count} lượt xem</div>
                                 </div>
                                 <div className="ms-3">
-                                    <RecipeReviewDetailDialogButton recipeId={recipeId} avgStar={recipe.rating_count?(recipe.rating_sum / recipe.rating_count).toFixed(1):null} />
+                                    <RecipeReviewDetailDialogButton recipeId={recipeId} avgStar={recipe.rating_count ? (recipe.rating_sum / recipe.rating_count).toFixed(1) : null} />
                                 </div>
                             </div>
 
@@ -134,8 +162,30 @@ const PublicRecipeDetailPage = () => {
 
                             <div className="d-flex flex-row align-items-center p-1 mt-2">
                                 <ReactionPickerButton {...{ emotions, setEmotions, selectedEmotion, setSelectedEmotion, objectId: recipeId, contentType: "recipe" }} />
-                                <ReportDialogButton objectId={recipeId} contentType={"recipe"} className={"rounded-pill gap-1 px-3 py-1 me-2 border"} />
-                                <RecipeReviewInputDialogButton recipeId={recipeId} className={"rounded-pill gap-1 px-3 py-1 me-2 border"}/>
+                                {isOwner ? <>
+                                    {recipe.status === RecipeStatus.ACTIVE.value && <>
+                                        <div className="btn btn-light d-flex align-items-center btn-sm text-start rounded-pill gap-1 px-3 py-1 me-2 border" onClick={() => nav(`/recipes/${recipeId}-${slugify(recipe.title)}/edit`)}>
+                                            <MenuItemWithIcon icon={<PiPencil size={18} />} label="Chỉnh sửa" />
+                                        </div>
+                                        {/* <div className="btn btn-light d-flex align-items-center btn-sm text-start rounded-pill gap-1 px-3 py-1 me-2 border" onClick={handleMoveToTrash}>
+                                            <MenuItemWithIcon icon={<BiTrash size={18} />} label="Chuyển vào thùng rác" />
+                                        </div> */}
+                                        <ConfirmDeleteDialogButton handleDelete={handleMoveToTrash}
+                                            message={"Các mục trong thùng rác sẽ tự động bị xóa sau 30 ngày. Bạn có thể khôi phục bằng cách đi đến phần Cài đặt trong Hồ sơ cá nhân."}
+                                            confirmText={"Chuyển"}
+                                        >
+
+                                            <div className="btn btn-light d-flex align-items-center btn-sm text-start rounded-pill gap-1 px-3 py-1 me-2 border">
+                                                <MenuItemWithIcon icon={<BiTrash size={18} />} label="Chuyển vào thùng rác" />
+                                            </div>
+                                        </ConfirmDeleteDialogButton>
+                                    </>
+                                    }
+
+                                </> : <>
+                                    <ReportDialogButton objectId={recipeId} contentType={"recipe"} className={"rounded-pill gap-1 px-3 py-1 me-2 border"} />
+                                    <RecipeReviewInputDialogButton recipeId={recipeId} className={"rounded-pill gap-1 px-3 py-1 me-2 border"} />
+                                </>}
                             </div>
 
                         </div>

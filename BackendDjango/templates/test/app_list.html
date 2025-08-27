@@ -1,0 +1,14 @@
+{% if app_list %}
+  {% for app in app_list %}
+    ... <!-- code mặc định -->
+  {% endfor %}
+
+  <!-- Menu custom ngay trong danh sách -->
+  <div class="module">
+    <table>
+      <caption>Menu tùy chỉnh</caption>
+      <tr><th scope="row"><a href="/reports/">Báo cáo</a></th></tr>
+      <tr><th scope="row"><a href="/statistics/">Thống kê</a></th></tr>
+    </table>
+  </div>
+{% endif %}

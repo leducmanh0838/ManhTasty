@@ -1,41 +1,75 @@
-import { FaHome, FaSearch, FaLeaf, FaUtensils, FaBookmark, FaCog } from "react-icons/fa";
+import { FaHome, FaSearch, FaLeaf, FaUtensils, FaBookmark, FaCog, FaHamburger } from "react-icons/fa";
 import MenuItemWithIcon from "../ui/MenuItemWithIcon";
-import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../provides/AppProvider";
 import LoginDialog from "../../features/auth/components/LoginDialog";
+import { IoMdNotifications } from "react-icons/io";
+import { authApis, endpoints } from "../../configs/Apis";
 
-const SidebarMenuItem = ({ icon, label, to, requireLogin = false, messageLogin }) => {
-  const [showModal, setShowModal] = useState(false);
-  const handleClick = (e) => {
-    if (requireLogin) {
-      e.preventDefault();
-      setShowModal(true);
-      return;
-    }
-    // Nếu được phép thì link bình thường hoạt động
-  };
 
+const MenuItemWithIconExtend = ({ icon, label, to, loginMessage, showLoginModal, setShowLoginModal, notificationCount }) => {
+  // console.info("notificationCount: ", notificationCount)
+  const navigate = useNavigate();
+  const { currentUser } = useContext(AppContext);
   return (
     <>
-      <Link to={to} onClick={handleClick} className="text-decoration-none text-dark mb-3">
-        <MenuItemWithIcon icon={icon} label={label} />
-      </Link>
-      {requireLogin && <LoginDialog {...{showModal, setShowModal, to}} message = {messageLogin}/>}
+      <MenuItemWithIcon className="btn btn-light mb-2" icon={icon} label={label} notificationCount={notificationCount}
+        onClick={() => {
+          currentUser ? navigate(to) : setShowLoginModal(true)
+        }} />
+
+      <LoginDialog {...{ showModal: showLoginModal, setShowModal: setShowLoginModal, to }}
+        message={loginMessage} />
     </>
   )
 }
 
 const SidebarMenuList = () => {
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
   const { currentUser } = useContext(AppContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fecthData = async () => {
+      console.info("fecthData !!!")
+      if (!currentUser)
+        return;
+      try {
+        console.info("const api = await authApis();")
+        const api = await authApis();
+        const res = await api.get(endpoints.currentUser.notifications.count);
+        console.info("res.data: ", res.data)
+        setNotificationCount(res.data.count)
+      } catch (err) {
+
+      }
+    }
+    fecthData();
+  }, [currentUser]);
   return (
     <nav className="nav flex-column">
-      <SidebarMenuItem icon={<FaHome />} label="Trang chủ" to="/" />
+      <MenuItemWithIcon className="btn btn-light mb-2" icon={<FaHome size={22} />} label="Trang chủ" onClick={() => navigate("/")} />
       {/* <SidebarMenuItem icon={<FaSearch />} label="Khám phá" to="/explore" />
       <SidebarMenuItem icon={<FaLeaf />} label="Nguyên liệu" to="/ingredients" /> */}
-      <SidebarMenuItem icon={<FaUtensils />} label="Thêm món mới" to="/recipes-draft" requireLogin={!currentUser} messageLogin={"Đăng ký hoặc đăng nhập để thêm món mới!!"}/>
-      <SidebarMenuItem icon={<FaBookmark />} label="Đã lưu" to="/saved" />
-      <SidebarMenuItem icon={<FaCog />} label="Cài đặt" to="/settings" />
+      <MenuItemWithIconExtend icon={<FaUtensils size={22} />} label="Thêm món mới"
+        to="/recipes-draft" loginMessage="Đăng ký hoặc đăng nhập để thêm món mới!"
+        {...{ showLoginModal, setShowLoginModal }}
+      />
+
+      <MenuItemWithIconExtend icon={<FaHamburger size={22} />} label="Món của bạn"
+        to="/profile/recipes" loginMessage="Đăng ký hoặc đăng nhập để xem các món ăn của bạn!"
+        {...{ showLoginModal, setShowLoginModal }}
+      />
+
+      <div onClick={() => setNotificationCount(0)}>
+        <MenuItemWithIconExtend icon={<IoMdNotifications size={22} />} label="Thông báo" notificationCount={notificationCount}
+          to="/profile/notifications" loginMessage="Đăng ký hoặc đăng nhập để xem thông báo của bạn!"
+          {...{ showLoginModal, setShowLoginModal }}
+        />
+      </div>
+
     </nav>
   );
 };

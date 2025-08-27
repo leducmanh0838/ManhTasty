@@ -3,7 +3,7 @@ import UploadMediaInputList from "./UploadMediaInputList";
 import { compressImage } from "../../../utils/file/compressImage";
 import { authApis, endpoints } from "../../../configs/Apis";
 
-const UploadServerMediaInputList = ({ medias, setMedias, accept = "image/*", inputKey, size = 180, parentType }) => {
+const UploadServerMediaInputList = ({ medias, setMedias, accept = "image/*", inputKey, size = 180, parentType, isCloudinary=false }) => {
     const [loading, setLoading] = useState(false);
     const overrideAddMedia = async (e) => {
         if (!e.target.files[0])
@@ -33,7 +33,7 @@ const UploadServerMediaInputList = ({ medias, setMedias, accept = "image/*", inp
 
     return (
         <>
-            <UploadMediaInputList {...{ medias, setMedias, accept, inputKey, size, overrideAddMedia, loading }} />
+            <UploadMediaInputList {...{ medias, setMedias, accept, inputKey, size, overrideAddMedia, loading, isCloudinary }} />
             {/* {loading ? <MySpinner text="Đang tải ảnh" /> : <UploadMediaInputList {...{ medias, setMedias, accept, inputKey, size, overrideAddMedia }} />} */}
         </>
     )

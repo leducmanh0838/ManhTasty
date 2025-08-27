@@ -1,10 +1,10 @@
 import { FaTrash } from "react-icons/fa";
 import UploadServerMediaInput from "../../medias/components/UploadServerMediaInput";
 import { memo, useEffect, useState } from "react";
-import { handleAddDraftItem, handleDraftItemListChange, handleRemoveDraftItem } from "../../recipes/utils/draft-utils";
+import { handleAddDraftItem, handleDraftItemListChange, handleItemListChange, handleRemoveDraftItem, handleRemoveItem } from "../../recipes/utils/draft-utils";
 
 // export default StepLayout;
-const EditStepItem = memo(({ step, index, steps, setSteps, recipeId, setSaving }) => {
+const EditStepItem = memo(({ step, index, steps, setSteps, recipeId, setSaving, isDraft = true }) => {
     console.info("render EditStepItem: ", JSON.stringify(step, null, 2))
     const [tempStep, setTempStep] = useState(step)
 
@@ -35,7 +35,11 @@ const EditStepItem = memo(({ step, index, steps, setSteps, recipeId, setSaving }
                             description: e.target.value
                         }))}
                         // onBlur={(e) => handleTempStepChange("description", e.target.value)}
-                        onBlur={(e) => handleDraftItemListChange(steps, setSteps, "steps", index, "description", e.target.value, recipeId, setSaving)}
+                        onBlur={(e) => {
+                            isDraft ? handleDraftItemListChange(steps, setSteps, "steps", index, "description", e.target.value, recipeId, setSaving) :
+                                // handleItemListChange(items, setItems, index, subField, value)
+                                handleItemListChange(steps, setSteps, index, "description", e.target.value)
+                        }}
                         // value={step.description}
                         // onChange={(e) => handleStepChange(index, "description", e.target.value)}
                         style={{ flex: 1 }}
@@ -43,7 +47,10 @@ const EditStepItem = memo(({ step, index, steps, setSteps, recipeId, setSaving }
                     <button
                         className="btn btn-light text-dark"
                         // handleRemoveDraftItem(setItems, field, index, subField, value, recipeId)
-                        onClick={() => handleRemoveDraftItem(setSteps, "steps", index, "description", step.description, recipeId, setSaving)}
+                        onClick={() => {
+                            isDraft ? handleRemoveDraftItem(setSteps, "steps", index, "description", step.description, recipeId, setSaving) :
+                                handleRemoveItem(index, setSteps)
+                        }}
                         // onClick={() => handleRemoveTempStep(index, step.description)}
                         title="Xoá bước"
                     >
@@ -59,7 +66,11 @@ const EditStepItem = memo(({ step, index, steps, setSteps, recipeId, setSaving }
                         /> */}
                 <UploadServerMediaInput image={step.image} isCloudinary={true}
                     // setImage={img => { handleTempStepChange("image", img); }}
-                    setImage={img => handleDraftItemListChange(steps, setSteps, "steps", index, "image", img, recipeId, setSaving)}
+                    setImage={img => {
+                        // handleDraftItemListChange(steps, setSteps, "steps", index, "image", img, recipeId, setSaving)
+                        isDraft ? handleDraftItemListChange(steps, setSteps, "steps", index, "image", img, recipeId, setSaving) :
+                            handleItemListChange(steps, setSteps, index, "image", img)
+                    }}
                     inputKey={index} parentType={"step"} />
 
             </div>
@@ -68,18 +79,19 @@ const EditStepItem = memo(({ step, index, steps, setSteps, recipeId, setSaving }
 });
 
 
-const EditStepSection = ({ steps, setSteps, recipeId, setSaving }) => {
+const EditStepSection = ({ steps, setSteps, recipeId, setSaving, isDraft = true }) => {
     console.info("render EditStepSection: ", Math.random())
 
     const handleAddStep = () => {
         // setSteps(prevSteps => [...prevSteps, { description: "", image: null }]);
-        handleAddDraftItem(setSteps, "steps", { description: "", image: null }, recipeId, setSaving);
+        isDraft ? handleAddDraftItem(setSteps, "steps", { description: "", image: null }, recipeId, setSaving) :
+            setSteps(prev => [...prev, { description: "", image: null }])
     };
 
     return (
         <div className="mb-3">
             {steps.map((step, index) => (
-                <EditStepItem {...{ step, steps, setSteps, index, recipeId, setSaving }} />
+                <EditStepItem {...{ step, steps, setSteps, index, recipeId, setSaving, isDraft }} />
             ))}
             <button className="btn btn-outline-primary btn-sm" onClick={handleAddStep}>
                 + Thêm bước

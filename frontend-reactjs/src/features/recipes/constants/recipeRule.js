@@ -15,7 +15,7 @@ export const MAX_MEDIAS = 5
 export const MAX_TAGS = 10
 
 export const MIN_INGREDIENTS = 2
-export const MAX_INGREDIENTS = 10
+export const MAX_INGREDIENTS = 30
 
 export const MIN_INGREDIENT_NAME_LENGTH = 2
 export const MAX_INGREDIENT_NAME_LENGTH = 30

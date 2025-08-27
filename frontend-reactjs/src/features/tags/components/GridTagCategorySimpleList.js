@@ -10,7 +10,7 @@ const GridTagCategorySimple = ({ category }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await Apis.get(`${endpoints.tags.list}?tag_category=${category.value}`)
+                const res = await Apis.get(`${endpoints.tags.list}?tag_category=${category.value}&is_featured=true`)
                 setTags(res.data.results);
             }
             catch (err) {

@@ -20,7 +20,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 
 from app.utils.cacheUtils import conditional_cache_page
-from app.utils.mongodb import log_user_search_keyword
+from app.utils.mongo_db_utils.search_utils import log_user_search_keyword
 from app.utils.whoosh_utils.common_whoosh_utils import search_recipes
 
 
@@ -97,8 +97,8 @@ class RecipeViewSet(mixins.ListModelMixin,
     def search_recipes(self, request):
         keyword = request.query_params.get('keyword', '').strip()
         sort_by = request.query_params.get('sort_by', '-id').strip()
-        if keyword:
-            log_user_search_keyword(user=request.user, keyword=keyword)
+        # if keyword:
+        #     log_user_search_keyword(user=request.user, keyword=keyword)
         # page = int(request.query_params.get('page', 1))
 
         # Gọi hàm tìm kiếm
@@ -108,6 +108,8 @@ class RecipeViewSet(mixins.ListModelMixin,
         ids = [r["id"] for r in result]
 
         print("ids: ", ids)
+        if len(ids)>0:
+            log_user_search_keyword(user=request.user, keyword=keyword)
 
         recipes = Recipe.objects.filter(id__in=ids, status=RecipeStatus.ACTIVE)
 

@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from app.utils.mongodb import get_user_search_keywords
+from app.utils.mongo_db_utils.search_utils import get_user_search_keywords
 
 
 class CurrentUserSearchViewSet(viewsets.ViewSet):

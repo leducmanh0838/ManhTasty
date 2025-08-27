@@ -120,7 +120,7 @@ class Recipe(TimeStampedModel):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)  # lưu model
         # Thực hiện các thao tác khác sau khi lưu, ví dụ cập nhật index
-        update_index_for_recipe(self)
+        # update_index_for_recipe(self)
 
     def __str__(self):
         return self.title
@@ -248,10 +248,8 @@ class Comment(TimeStampedModel):
 
 # 10. Phản ứng
 class Reaction(TimeStampedModel):
-    # recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='likes')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     emotion = models.SmallIntegerField(choices=EmotionType.choices, default=EmotionType.LIKE)
-    # created_at = models.DateTimeField(auto_now_add=True)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
@@ -285,6 +283,7 @@ class Notification(TimeStampedModel):
     description = models.TextField(verbose_name="Mô tả")
     type = models.SmallIntegerField(choices=NotificationType.choices, default=NotificationType.SYSTEM,
                                     verbose_name="Kiểu thông báo")
+    is_read = models.BooleanField(default=False)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
@@ -297,13 +296,13 @@ class Notification(TimeStampedModel):
 
 
 # 13. View
-class RecipeView(TimeStampedModel):
-    recipe = models.ForeignKey("Recipe", on_delete=models.CASCADE, related_name="views")
-    ip_address = models.GenericIPAddressField()
-    count = models.PositiveIntegerField(default=0)
-
-    class Meta:
-        unique_together = ("recipe", "ip_address")
+# class RecipeView(TimeStampedModel):
+#     recipe = models.ForeignKey("Recipe", on_delete=models.CASCADE, related_name="views")
+#     ip_address = models.GenericIPAddressField()
+#     count = models.PositiveIntegerField(default=0)
+#
+#     class Meta:
+#         unique_together = ("recipe", "ip_address")
 
 
 # class View(models.Model):

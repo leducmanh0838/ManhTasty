@@ -1,9 +1,10 @@
 from django.contrib import admin
-from django.db.models import Count
+from django.db.models import Count, Case, When, ExpressionWrapper, F, FloatField
 from django.shortcuts import redirect, render
 from django.utils.html import format_html
 
 from app.admin.in_line_admins import StepInlineAdmin, IngredientInline, TagInline, RecipeMediaInlineAdmin
+from app.admin.site import admin_site
 from app.models import Recipe, RecipeStatus, Notification, NotificationType
 from django import forms
 
@@ -13,9 +14,9 @@ class LockRecipeForm(forms.Form):
     description = forms.CharField(widget=forms.Textarea, label="Lý do khóa", required=True)
 
 
-@admin.register(Recipe)
+@admin.register(Recipe, site=admin_site)
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", 'image_tag', "report_count", 'rating_avg', 'status')
+    list_display = ("id", "title", 'image_tag', "report_count", 'view_count', 'comment_count', 'rating_avg', 'status')
     list_display_links = ("id", "title", 'image_tag')
     list_filter = ("status",)
     readonly_fields = ('image_tag', 'rating_avg', "lock_button", "report_count", "report_list_link")
@@ -38,14 +39,31 @@ class RecipeAdmin(admin.ModelAdmin):
         fields.append('report_list_link')
         return fields
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        qs = qs.annotate(
+            report_count_num=Count("reports", distinct=True),
+            comment_count_num=Count("comments"),
+            rating_avg_num=Case(  # tránh chia 0
+                When(rating_count__gt=0,
+                     then=ExpressionWrapper(
+                         F("rating_sum") * 1.0 / F("rating_count"),
+                         output_field=FloatField(),
+                     )),
+                default=0.0,
+                output_field=FloatField(),
+            )
+        )
+        return qs.order_by("-report_count_num")
+
     def report_list_link(self, obj):
         count = obj.reports.count()
-        if count==0:
+        if count == 0:
             return format_html("<p>Chưa có báo cáo nào</p>")
         return format_html(
-                '<a href="/admin/app/recipe/{}/reports/">{} lượt báo cáo</a>',
-             obj.id, count,
-            )
+            '<a href="/admin/app/recipe/{}/reports/">{} lượt báo cáo</a>',
+            obj.id, count,
+        )
 
     report_list_link.short_description = "Danh sách báo cáo"
 
@@ -125,12 +143,9 @@ class RecipeAdmin(admin.ModelAdmin):
         return render(request, 'admin/lock_recipe_form.html', context)
 
     def rating_avg(self, obj):
-        if obj.rating_count > 0:
-            avg = obj.rating_sum / obj.rating_count
-            return round(avg, 2)  # làm tròn 2 chữ số
-        return 0
-
+        return round(obj.rating_avg_num, 2)
     rating_avg.short_description = "Điểm đánh giá trung bình"
+    rating_avg.admin_order_field = "rating_avg_num"  # 👈 Cho phép sort
 
     def image_tag(self, obj):
         if obj.image:
@@ -139,24 +154,16 @@ class RecipeAdmin(admin.ModelAdmin):
 
     image_tag.short_description = "Ảnh"
 
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        qs = qs.annotate(report_count_num=Count("reports"))
-        return qs.order_by("-report_count_num")
-
     def report_count(self, obj):
         return obj.report_count_num
 
     report_count.short_description = "Số lượt báo cáo"
     report_count.admin_order_field = "report_count_num"
 
-    # def lock_recipes(self, request, queryset):
-    #     # bỏ annotate trước khi update
-    #     ids = list(queryset.values_list('id', flat=True))  # convert QuerySet sang list
-    #     Recipe.objects.filter(id__in=ids).update(status=RecipeStatus.LOCKED)
-    #     self.message_user(request, f"{len(ids)} món ăn đã bị khóa")
-    #
-    # lock_recipes.short_description = "Khóa các Recipe đã chọn"
+    def comment_count(self, obj):
+        return obj.comment_count_num
+    comment_count.short_description = "Comments"
+    comment_count.admin_order_field = "comment_count_num"
 
     def has_change_permission(self, request, obj=None):
         return False

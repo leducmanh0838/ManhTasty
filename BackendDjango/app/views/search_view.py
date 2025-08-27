@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from app.utils.mongodb import get_recent_popular_keywords
+from app.utils.mongo_db_utils.search_utils import get_recent_popular_keywords
 
 
 class SearchViewSet(viewsets.ViewSet):

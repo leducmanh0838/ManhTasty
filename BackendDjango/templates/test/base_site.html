@@ -1,0 +1,13 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block branding %}
+  <h1 id="site-name"><a href="{% url 'admin:index' %}">Admin Món Ăn</a></h1>
+{% endblock %}
+
+{% block nav-global %}
+  <div class="nav-global">
+    <a href="{% url 'admin:index' %}">Trang chủ</a> |
+    <a href="{% url 'admin:statistics' %}">📊 Thống kê</a>
+  </div>
+{% endblock %}

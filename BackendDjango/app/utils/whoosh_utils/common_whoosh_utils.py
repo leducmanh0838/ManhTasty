@@ -74,7 +74,7 @@ def search_recipes(keyword):
     ix = open_dir(INDEX_DIR)
 
     # Tạo parser tìm kiếm trên cả title và ingredients
-    parser = MultifieldParser(["title", "ingredients", "tags"], schema=ix.schema)
+    parser = MultifieldParser(["title", "tags"], schema=ix.schema)
 
     # Phân tích keyword
     query = parser.parse(keyword)

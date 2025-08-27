@@ -14,6 +14,7 @@ const UploadMediaInputList = ({ medias, setMedias, accept = "image/*", inputKey,
             overrideDeleteMedia(index, value);
             return;
         }
+        
         setMedias(prev => prev.filter((_, i) => i !== index));
     }
 

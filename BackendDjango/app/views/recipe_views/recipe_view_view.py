@@ -36,8 +36,8 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 
 from app.configs.rules import RecipeViewRule
-from app.models import RecipeView, Recipe
-from app.serializers.recipe_serializers.recipe_view_serializers import RecipeViewSerializer
+from app.models import Recipe
+from app.utils.mongo_db_utils.view_utils import add_or_update_view, get_total_views
 from app.utils.other import get_client_ip
 
 
@@ -46,28 +46,31 @@ class RecipeViewViewSet(viewsets.ViewSet):
     def create(self, request, recipe_pk=None):
         ip = get_client_ip(request)
 
+        add_or_update_view(recipe_pk, ip)
         # Tìm hoặc tạo record theo (recipe, ip_address)
-        obj, created = RecipeView.objects.get_or_create(
-            recipe_id=recipe_pk,
-            ip_address=ip,
-            defaults={"count": 1},
-        )
-
-        if not created:
-            # Check cooldown
-            now = timezone.now()
-            cooldown = timedelta(seconds=RecipeViewRule.RECIPE_VIEW_COOLDOWN)
-
-            if now - obj.updated_at > cooldown:
-                obj.count = F("count") + 1
-                obj.save(update_fields=["count", "updated_at"])
-                obj.refresh_from_db()
-
-        total_views = RecipeView.objects.filter(recipe_id=recipe_pk).aggregate(
-            total=Sum("count")
-        )["total"] or 0
-
-        Recipe.objects.filter(pk=recipe_pk).update(view_count=total_views)
-
-        serializer = RecipeViewSerializer(obj)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        # obj, created = RecipeView.objects.get_or_create(
+        #     recipe_id=recipe_pk,
+        #     ip_address=ip,
+        #     defaults={"count": 1},
+        # )
+        #
+        # if not created:
+        #     # Check cooldown
+        #     now = timezone.now()
+        #     cooldown = timedelta(seconds=RecipeViewRule.RECIPE_VIEW_COOLDOWN)
+        #
+        #     if now - obj.updated_at > cooldown:
+        #         obj.count = F("count") + 1
+        #         obj.save(update_fields=["count", "updated_at"])
+        #         obj.refresh_from_db()
+        #
+        # total_views = RecipeView.objects.filter(recipe_id=recipe_pk).aggregate(
+        #     total=Sum("count")
+        # )["total"] or 0
+        #
+        # Recipe.objects.filter(pk=recipe_pk).update(view_count=total_views)
+        #
+        # serializer = RecipeViewSerializer(obj)
+        count = get_total_views(recipe_pk)
+        Recipe.objects.filter(pk=recipe_pk).update(view_count=get_total_views(recipe_pk))
+        return Response({"count": count}, status=status.HTTP_200_OK)

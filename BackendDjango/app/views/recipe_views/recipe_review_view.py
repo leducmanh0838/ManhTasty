@@ -22,7 +22,7 @@ class RecipeReviewViewSet(mixins.CreateModelMixin,
         queryset = RecipeReview.objects.all()
         recipe_id = self.kwargs.get("recipe_pk")  # lấy từ URL (nếu dùng nested router)
         if recipe_id:
-            queryset = queryset.filter(recipe_id=recipe_id)
+            queryset = queryset.filter(recipe_id=recipe_id).order_by("-id")
         return queryset
 
     def get_permissions(self):

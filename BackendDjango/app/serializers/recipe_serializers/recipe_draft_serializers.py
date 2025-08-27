@@ -2,10 +2,11 @@
 from bson import ObjectId
 from rest_framework import serializers
 
+from app.configs.mongo_db_config import recipe_drafts_collection
 from app.models import Recipe, Ingredient, Step, Tag, RecipeStatus, RecipeTag, RecipeIngredient, RecipeMedia
-from app.utils.mongodb import recipe_drafts_collection
 from app.utils.other import to_int_or_none
 from app.utils.validate import validate_recipe_data
+from app.utils.whoosh_utils.update_index import update_index_for_recipe
 
 
 class CreateRecipeFromDraftSerializer(serializers.Serializer):
@@ -49,7 +50,7 @@ class CreateRecipeFromDraftSerializer(serializers.Serializer):
 
         # 4. Lưu Ingredients
         for ing in draft["ingredients"]:
-            name = ing.get("name", "").strip()
+            name = ing.get("name", "").strip().lower()
             quantity = ing.get("quantity", "")
             if not name:
                 continue  # nếu không có tên thì bỏ qua
@@ -94,5 +95,7 @@ class CreateRecipeFromDraftSerializer(serializers.Serializer):
                 "user_id": user.id
             }
         )
+
+        update_index_for_recipe(recipe)
 
         return recipe

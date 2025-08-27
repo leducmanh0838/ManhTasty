@@ -1,11 +1,11 @@
 import { memo, useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { handleAddDraftItem, handleDraftItemListChange, handleRemoveDraftItem } from "../../recipes/utils/draft-utils";
+import { handleAddDraftItem, handleDraftItemListChange, handleItemListChange, handleRemoveDraftItem, handleRemoveItem } from "../../recipes/utils/draft-utils";
 import FloatingInput from "../../../components/ui/FloatingInput";
 import { authApis, endpoints } from "../../../configs/Apis";
 import { printErrors } from "../../../utils/printErrors";
 
-const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredients, recipeId, setSaving }) => {
+const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredients, recipeId, setSaving, isDraft = true }) => {
     console.info("render EditIngredientSection")
     const [temp, setTemp] = useState({})
 
@@ -38,9 +38,9 @@ const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredient
     }
 
     const handleSelectIngredient = (selectedIngredient) => {
-        console.info("selectedIngredient: ", selectedIngredient)
-        handleDraftItemListChange(ingredients, setIngredients, "ingredients", index, "name", selectedIngredient.name, recipeId, setSaving);
-        setTemp(prev=>({...prev, "name": selectedIngredient.name}))
+        isDraft ? handleDraftItemListChange(ingredients, setIngredients, "ingredients", index, "name", selectedIngredient.name, recipeId, setSaving) :
+            handleItemListChange(ingredients, setIngredients, index, "name", selectedIngredient.name)
+        setTemp(prev => ({ ...prev, "name": selectedIngredient.name }))
         // const exists = tags.some(tag => tag.id === selectedIngredient.id);
         // if (!exists)
         //     handleDraftItemListChange(tags, setTags, "tags", tags.length, null, selectedIngredient, recipeId);
@@ -77,7 +77,9 @@ const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredient
                             }
                         }}
                         onBlur={(e) => {
-                            handleDraftItemListChange(ingredients, setIngredients, "ingredients", index, "name", e.target.value, recipeId, setSaving);
+                            isDraft ? handleDraftItemListChange(ingredients, setIngredients, "ingredients", index, "name", e.target.value, recipeId, setSaving) :
+                                handleItemListChange(ingredients, setIngredients, index, "name", e.target.value)
+                            // handleDraftItemListChange(ingredients, setIngredients, "ingredients", index, "name", e.target.value, recipeId, setSaving);
                             setTimeout(() => {
                                 setShowDropdown(false);
                             }, 200);
@@ -120,7 +122,10 @@ const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredient
                             ...prev,
                             quantity: e.target.value
                         }))}
-                        onBlur={(e) => handleDraftItemListChange(ingredients, setIngredients, "ingredients", index, "quantity", e.target.value, recipeId, setSaving)}
+                        onBlur={(e) => {
+                            isDraft ? handleDraftItemListChange(ingredients, setIngredients, "ingredients", index, "quantity", e.target.value, recipeId, setSaving) :
+                                handleItemListChange(ingredients, setIngredients, index, "quantity", e.target.value)
+                        }}
                     // value={ingredient.quantity}
                     // onChange={(e) => handleChange(index, "quantity", e.target.value)}
                     />
@@ -128,7 +133,11 @@ const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredient
             </div>
             <button
                 className="btn btn-light text-dark"
-                onClick={() => handleRemoveDraftItem(setIngredients, "ingredients", index, "name", ingredient.name, recipeId, setSaving)}
+                onClick={() =>  {
+                    isDraft ? handleRemoveDraftItem(setIngredients, "ingredients", index, "name", ingredient.name, recipeId, setSaving) :
+                    handleRemoveItem(index, setIngredients)
+
+                }}
                 // onClick={() => handleRemove(index)}
                 title="Xoá"
             >
@@ -138,17 +147,18 @@ const EditIngredientItem = memo(({ ingredient, index, ingredients, setIngredient
     )
 })
 
-const EditIngredientSection = ({ ingredients, setIngredients, recipeId, setSaving }) => {
+const EditIngredientSection = ({ ingredients, setIngredients, recipeId, setSaving, isDraft = true }) => {
     console.info("render EditIngredientSection")
     const handleAddIngredient = () => {
         // setIngredients([...ingredients, { name: "", quantity: "" }]);
-        handleAddDraftItem(setIngredients, "ingredients", { name: "", quantity: "" }, recipeId, setSaving);
+        isDraft ? handleAddDraftItem(setIngredients, "ingredients", { name: "", quantity: "" }, recipeId, setSaving) :
+            setIngredients(prev => [...prev, { name: "", quantity: "" }])
     };
 
     return (
         <div className="mb-3">
             {ingredients.map((ingredient, index) => (
-                <EditIngredientItem {...{ ingredients, setIngredients, index, ingredient, recipeId, setSaving }} />
+                <EditIngredientItem {...{ ingredients, setIngredients, index, ingredient, recipeId, setSaving, isDraft }} />
             ))}
             <div>
                 <button className="btn btn-outline-primary btn-sm" onClick={handleAddIngredient}>

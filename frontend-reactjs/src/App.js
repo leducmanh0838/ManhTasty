@@ -8,13 +8,17 @@ import Dev from './components/Dev';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import PublicRecipeDetailPage from './features/recipes/pages/PublicRecipeDetailPage';
-import EditRecipePage from './features/recipes/pages/EditRecipePage';
+import EditRecipeDraftPage from './features/recipes/pages/EditRecipeDraftPage';
 import CreateDraftRecipe from './features/recipes/components/CreateDraftRecipe';
 import SearchPage from './features/search/pages/SearchPage';
 import ProfilePage from './features/profile/pages/ProfilePage';
 import ProfileOverview from './features/profile/components/ProfileOverview';
 import ProfileRecipes from './features/profile/components/ProfileRecipes'
 import UserRecipePage from './features/profile/pages/UserRecipePage';
+import EditPublicRecipePage from './features/recipes/pages/EditPublicRecipePage';
+import TrashRecipes from './features/profile/components/TrashRecipes';
+import NotificationList from './features/notifications/components/NotificationList';
+import CommentPage from './features/comments/pages/CommentPage';
 
 const App = () => {
 
@@ -43,13 +47,18 @@ const App = () => {
               <Route path="/" element={<HomePage />} />
               <Route path="/dev" element={<Dev />} />
               <Route path="/recipes/:idSlug" element={<PublicRecipeDetailPage />} />
+              <Route path="/recipes/:idSlug/edit" element={<EditPublicRecipePage />} />
               <Route path="/recipes-draft" element={<CreateDraftRecipe />} />
-              <Route path="/recipes-draft/:recipeId/edit" element={<EditRecipePage />} />
+              <Route path="/recipes-draft/:recipeId/edit" element={<EditRecipeDraftPage />} />
               <Route path="/search" element={<SearchPage />} />
+              <Route path="/comments/:commentId" element={<CommentPage />} />
               
               <Route path="/profile" element={<ProfilePage />} >
                 <Route index element={<ProfileOverview />} />
                 <Route path="recipes" element={<ProfileRecipes />} />
+                <Route path="trashes" element={<TrashRecipes />} />
+                <Route path="notifications" element={<NotificationList />} />
+                {/* NotificationList */}
               </Route>
               {/* CurrentUserRecipePage */}
               <Route path="/users/:userId/recipes" element={<UserRecipePage />} />

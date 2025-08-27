@@ -38,7 +38,7 @@ const PorfileRecipes = ({ }) => {
         <div className="col px-3">
             {recipes && recipes.length > 0 ? recipes.map((recipe, index) => (
                 <div key={index}>
-                    <RecipeCardExtend recipe={recipe} />
+                    <RecipeCardExtend recipe={recipe} isProfile={true} />
                 </div>
             )) : <NotFoundRecipe />}
             <div ref={loaderRef} className="p-2" />

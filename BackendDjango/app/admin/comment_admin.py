@@ -3,15 +3,16 @@ from django.db.models import Count
 from django.shortcuts import redirect, render
 from django.utils.html import format_html
 
+from app.admin.site import admin_site
 from app.models import Comment, CommentStatus, Notification, NotificationType
 from django import forms
 
 class LockRecipeForm(forms.Form):
     description = forms.CharField(widget=forms.Textarea, label="Lý do khóa", required=True)
 
-@admin.register(Comment)
+@admin.register(Comment, site=admin_site)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ("id", "user_name", "user_avatar", "recipe", "short_content", "short_parent", "report_count", 'status')
+    list_display = ("id", "user_name", "user_avatar", "short_content", "short_parent", "report_count", 'status')
     list_display_links = ("id", "user_name", 'user_avatar')
     readonly_fields = ('lock_button', 'report_list_link')
 
@@ -28,8 +29,9 @@ class CommentAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
+        qs = qs.select_related('user')
         qs = qs.annotate(report_count_num=Count("reports"))
-        return qs.order_by("-report_count_num")
+        return qs
 
     def get_urls(self):
         from django.urls import path

@@ -7,12 +7,20 @@ const Header = () => {
     const location = useLocation();
     const headerConfig = {
         "/recipes-draft": <></>,
-        // các route khác nếu cần
+        "/recipes/:id/edit": <></>,
     };
 
-    const prefixKey = Object.keys(headerConfig).find(key =>
-        location.pathname.startsWith(key)
-    );
+    const prefixKey = Object.keys(headerConfig).find(key => {
+        if (key.includes(":id")) {
+            const regex = new RegExp("^/recipes/[^/]+/edit$");
+            return regex.test(location.pathname);
+        }
+        return location.pathname.startsWith(key);
+    });
+
+    // const prefixKey = Object.keys(headerConfig).find(key =>
+    //     location.pathname.startsWith(key)
+    // );
 
     const header = prefixKey ? headerConfig[prefixKey] : <DefaultHeader />;
 
@@ -25,23 +33,3 @@ const Header = () => {
 }
 
 export default Header;
-
-// import { useLocation } from 'react-router-dom';
-
-// const headerConfig = {
-//   "/": <HomeHeader />,
-//   "/profile": <ProfileHeader />,
-//   "/dashboard": <DashboardHeader />,
-//   // có thể thêm nhiều route và header tương ứng
-// };
-
-// const Header = () => {
-//   const location = useLocation();
-//   const header = headerConfig[location.pathname] || <DefaultHeader />;
-
-//   return (
-//     <header>
-//       {header}
-//     </header>
-//   );
-// };

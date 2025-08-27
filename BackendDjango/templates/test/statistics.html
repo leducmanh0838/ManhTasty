@@ -1,0 +1,10 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+  <h1>📊 {{ title }}</h1>
+  <ul>
+      <li><b>Tổng số người dùng:</b> {{ total_users }}</li>
+      <li><b>Tổng số công thức:</b> {{ total_recipes }}</li>
+      <li><b>Tổng số bình luận:</b> {{ total_comments }}</li>
+  </ul>
+{% endblock %}

@@ -5,7 +5,7 @@ import { compressImage } from "../../../utils/file/compressImage";
 import LoadingSpinner from "../../../components/ui/Spinner/LoadingSpinner";
 import { handleDraftChange } from "../../recipes/utils/draft-utils";
 
-const EditRecipeMainImageSection = ({ image, setImage, accept = "image/*", inputKey, size = 180, parentType, recipeId, setSaving }) => {
+const EditRecipeMainImageSection = ({ image, setImage, accept = "image/*", inputKey, size = 180, parentType, recipeId, setSaving, isDraft = true }) => {
     const [loading, setLoading] = useState(false);
     const overrideAddMedia = async (e) => {
         try {
@@ -21,9 +21,9 @@ const EditRecipeMainImageSection = ({ image, setImage, accept = "image/*", input
                     'Content-Type': 'multipart/form-data'
                 }
             })
-            // setImage(res.data.src);
-            handleDraftChange(setImage, "image", res.data.src, recipeId, setSaving)
-            // handleDraftItemListChange(image, setImage, "medias", medias.length, null, res.data, recipeId)
+            // update
+            // handleDraftChange(setImage, "image", res.data.src, recipeId, setSaving)
+            isDraft ? handleDraftChange(setImage, "image", res.data.src, recipeId, setSaving): setImage(res.data.src)
         } catch (err) {
 
         } finally {
@@ -34,7 +34,7 @@ const EditRecipeMainImageSection = ({ image, setImage, accept = "image/*", input
 
     return (
         <>
-            {loading ? <LoadingSpinner text="Đang tải ảnh"/>: <UploadMediaInput {...{ image, setImage, accept, inputKey, size, overrideAddMedia }} isCloudinary={true}/>}
+            {loading ? <LoadingSpinner text="Đang tải ảnh" /> : <UploadMediaInput {...{ image, setImage, accept, inputKey, size, overrideAddMedia }} isCloudinary={true} />}
         </>
     )
 }

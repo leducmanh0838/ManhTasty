@@ -6,5 +6,5 @@ django.setup()
 
 from django.core.management import call_command
 
-with open("data_v5.json", "w", encoding="utf-8") as f:
+with open("data_v8.json", "w", encoding="utf-8") as f:
     call_command("dumpdata", indent=2, stdout=f)

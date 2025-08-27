@@ -2,14 +2,16 @@ import { memo, useState } from "react"
 import UploadMediaInputList from "./UploadMediaInputList";
 import { compressImage } from "../../../utils/file/compressImage";
 import { authApis, endpoints } from "../../../configs/Apis";
-import { handleDraftItemListChange, handleRemoveDraftItem } from "../../recipes/utils/draft-utils";
+import { handleDraftItemListChange, handleItemListChange, handleRemoveDraftItem, handleRemoveItem } from "../../recipes/utils/draft-utils";
 
-const EditRecipeMediasSection = ({ medias, setMedias, accept = "image/*", inputKey, size = 180, parentType, recipeId, setSaving }) => {
+const EditRecipeMediasSection = ({ medias, setMedias, accept = "image/*", inputKey, size = 180, parentType, recipeId, setSaving, isDraft = true }) => {
     const [loading, setLoading] = useState(false);
     // const [tempMedias, setTempMedias] = useState(false);
 
     const overrideDeleteMedia = async (index, value) => {
-        handleRemoveDraftItem(setMedias, "medias", index, "src", value, recipeId, setSaving)
+        // handleRemoveDraftItem(setMedias, "medias", index, "src", value, recipeId, setSaving)
+        isDraft ? handleRemoveDraftItem(setMedias, "medias", index, "src", value, recipeId, setSaving):
+        handleRemoveItem(index, setMedias)
     }
 
     const overrideAddMedia = async (e) => {
@@ -28,11 +30,10 @@ const EditRecipeMediasSection = ({ medias, setMedias, accept = "image/*", inputK
                     'Content-Type': 'multipart/form-data'
                 }
             })
-            // setTempMedias(prev => [...prev, {
-            //     "src": res.data.src,
-            //     "type": res.data.type,
-            // }])
-            handleDraftItemListChange(medias, setMedias, "medias", medias.length, null, res.data, recipeId, setSaving)
+
+            // handleDraftItemListChange(medias, setMedias, "medias", medias.length, null, res.data, recipeId, setSaving)
+            isDraft ? handleDraftItemListChange(medias, setMedias, "medias", medias.length, null, res.data, recipeId, setSaving) :
+            handleItemListChange(medias, setMedias, medias.length, null, res.data);
         } catch (err) {
 
         } finally {

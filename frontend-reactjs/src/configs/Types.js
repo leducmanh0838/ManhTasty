@@ -1,126 +1,126 @@
-export const LoginType = {
-  SYSTEM: 1,
-  GOOGLE: 2,
-  FACEBOOK: 3,
+// export const LoginType = {
+//   SYSTEM: 1,
+//   GOOGLE: 2,
+//   FACEBOOK: 3,
 
-  labels: {
-    1: 'System',
-    2: 'Google',
-    3: 'Facebook',
-  },
+//   labels: {
+//     1: 'System',
+//     2: 'Google',
+//     3: 'Facebook',
+//   },
 
-  getLabel(value) {
-    return LoginType.labels[value] || null;
-  }
-};
+//   getLabel(value) {
+//     return LoginType.labels[value] || null;
+//   }
+// };
 
-export const ReasonType = {
-  SPAM: 1,
-  ABUSE: 2,
-  INACCURATE: 3,
-  OTHER: 4,
+// export const ReasonType = {
+//   SPAM: 1,
+//   ABUSE: 2,
+//   INACCURATE: 3,
+//   OTHER: 4,
 
-  labels: {
-    1: 'Spam',
-    2: 'Abuse',
-    3: 'Inaccurate',
-    4: 'Other',
-  },
+//   labels: {
+//     1: 'Spam',
+//     2: 'Abuse',
+//     3: 'Inaccurate',
+//     4: 'Other',
+//   },
 
-  getLabel(value) {
-    return ReasonType.labels[value] || null;
-  }
-};
+//   getLabel(value) {
+//     return ReasonType.labels[value] || null;
+//   }
+// };
 
-export const MediaType = {
-  IMAGE: 1,
-  GIF: 2,
-  VIDEO: 3,
+// export const MediaType = {
+//   IMAGE: 1,
+//   GIF: 2,
+//   VIDEO: 3,
 
-  labels: {
-    1: 'Image',
-    2: 'GIF',
-    3: 'Video',
-  },
+//   labels: {
+//     1: 'Image',
+//     2: 'GIF',
+//     3: 'Video',
+//   },
 
-  getLabel(value) {
-    return LoginType.labels[value] || null;
-  }
-};
+//   getLabel(value) {
+//     return LoginType.labels[value] || null;
+//   }
+// };
 
-export const EmotionType = {
-  LIKE: 1,
-  LOVE: 2,
-  HAHA: 3,
-  WOW: 4,
-  DELICIOUS: 5,
-  SAD: 6,
+// export const EmotionType = {
+//   LIKE: 1,
+//   LOVE: 2,
+//   HAHA: 3,
+//   WOW: 4,
+//   DELICIOUS: 5,
+//   SAD: 6,
 
-  labels: {
-    1: 'Thích',
-    2: 'Yêu thích',
-    3: 'Haha',
-    4: 'Wow',
-    5: 'Thèm ăn',
-    6: 'Phẫn nộ',
-  },
+//   labels: {
+//     1: 'Thích',
+//     2: 'Yêu thích',
+//     3: 'Haha',
+//     4: 'Wow',
+//     5: 'Thèm ăn',
+//     6: 'Phẫn nộ',
+//   },
 
-  icons: {
-    1: '👍', // Like
-    2: '❤️', // Love
-    3: '😂', // Haha
-    4: '😮', // Wow
-    5: '😋', // Delicious
-    6: '😡', // Angry
-  },
+//   icons: {
+//     1: '👍', // Like
+//     2: '❤️', // Love
+//     3: '😂', // Haha
+//     4: '😮', // Wow
+//     5: '😋', // Delicious
+//     6: '😡', // Angry
+//   },
 
-  getLabel(value) {
-    return EmotionType.labels[value] || null;
-  },
+//   getLabel(value) {
+//     return EmotionType.labels[value] || null;
+//   },
 
-  getIcon(value) {
-    return EmotionType.icons[value] || null;
-  },
-};
+//   getIcon(value) {
+//     return EmotionType.icons[value] || null;
+//   },
+// };
 
-export const emotionTypes = [
-  { id: 1, label: 'Thích', icon: '👍' },
-  { id: 2, label: 'Yêu thích', icon: '❤️' },
-  { id: 3, label: 'Haha', icon: '😂' },
-  { id: 4, label: 'Wow', icon: '😮' },
-  { id: 5, label: 'Ngon', icon: '😋' },
-  { id: 6, label: 'Phẫn nộ', icon: '😡' },
-];
+// export const emotionTypes = [
+//   { id: 1, label: 'Thích', icon: '👍' },
+//   { id: 2, label: 'Yêu thích', icon: '❤️' },
+//   { id: 3, label: 'Haha', icon: '😂' },
+//   { id: 4, label: 'Wow', icon: '😮' },
+//   { id: 5, label: 'Ngon', icon: '😋' },
+//   { id: 6, label: 'Phẫn nộ', icon: '😡' },
+// ];
 
-export const TagCategory = {
-  OTHER: 0,
-  TYPE: 1,
-  OCCASION: 2,
-  INGREDIENT: 3,
-  DIET: 4,
-  METHOD: 5,
-  REGION: 6,
-  FLAVOR: 7,
+// export const TagCategory = {
+//   OTHER: 0,
+//   TYPE: 1,
+//   OCCASION: 2,
+//   INGREDIENT: 3,
+//   DIET: 4,
+//   METHOD: 5,
+//   REGION: 6,
+//   FLAVOR: 7,
 
-  values: {
-    0: "Khác",
-    1: "Loại món",
-    2: "Dịp",
-    3: "Nguyên liệu chính",
-    4: "Chế độ ăn",
-    5: "Cách chế biến",
-    6: "Vùng miền",
-    7: "Hương vị",
-  },
+//   values: {
+//     0: "Khác",
+//     1: "Loại món",
+//     2: "Dịp",
+//     3: "Nguyên liệu chính",
+//     4: "Chế độ ăn",
+//     5: "Cách chế biến",
+//     6: "Vùng miền",
+//     7: "Hương vị",
+//   },
 
-  getLabel(id) {
-    return TagCategory.values[id] || "Không rõ";
-  }
-};
+//   getLabel(id) {
+//     return TagCategory.values[id] || "Không rõ";
+//   }
+// };
 
-export const reportReasons = [
-  { value: 1, label: "Spam", sub: "Bài đăng bị lặp, không có nội dung, chứa liên kết quảng cáo" },
-  { value: 2, label: "Nội dung không phù hợp", sub: "Công thức không liên quan, sai chủ đề (ví dụ: quảng cáo, video không liên quan nấu ăn)" },
-  { value: 3, label: "Nội dung giả mạo / sai sự thật", sub: "Món ăn sai nguyên liệu, công thức gây hiểu nhầm, có thể gây hại nếu làm theo" },
-  { value: 4, label: "Khác", sub: "Không thuộc trường hợp trên" },
-];
+// export const reportReasons = [
+//   { value: 1, label: "Spam", sub: "Bài đăng bị lặp, không có nội dung, chứa liên kết quảng cáo" },
+//   { value: 2, label: "Nội dung không phù hợp", sub: "Công thức không liên quan, sai chủ đề (ví dụ: quảng cáo, video không liên quan nấu ăn)" },
+//   { value: 3, label: "Nội dung giả mạo / sai sự thật", sub: "Món ăn sai nguyên liệu, công thức gây hiểu nhầm, có thể gây hại nếu làm theo" },
+//   { value: 4, label: "Khác", sub: "Không thuộc trường hợp trên" },
+// ];

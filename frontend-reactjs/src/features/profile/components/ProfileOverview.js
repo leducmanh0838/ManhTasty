@@ -4,6 +4,8 @@ import { authApis, endpoints } from "../../../configs/Apis";
 import { AppContext } from "../../../provides/AppProvider";
 import { printErrors } from "../../../utils/printErrors";
 import NameAndImageRecipeListPreview from "../../recipes/components/NameAndImageRecipeListPreview";
+import MenuItemWithIcon from "../../../components/ui/MenuItemWithIcon"
+import { FaUtensils } from "react-icons/fa";
 
 const ProfileOverview = () => {
     const { currentUser } = useContext(AppContext)
@@ -24,12 +26,44 @@ const ProfileOverview = () => {
     }, [])
 
     const onClickExtraImage = () => {
-        nav(`recipes`)
+        nav('recipes')
+    }
+
+    const handleAddRecipe = async () => {
+        try{
+            const api = await authApis()
+            let response;
+            let newRecipeId;
+
+            response = await api.get(endpoints.recipes.draft.lastest);
+            newRecipeId = response.data._id;
+            if (!newRecipeId) {
+                response = await api.post(endpoints.recipes.draft.list);
+                newRecipeId = response.data._id;
+            }
+
+            // Điều hướng sang trang edit với id mới
+            nav(`/recipes-draft/${newRecipeId}/edit`);
+        }catch(err){
+            printErrors(err);
+        }
     }
     return (<>
         {recipePage && <div className="d-flex flex-column p-3">
-            <h5>Các món đã đăng ({recipePage.count} món)</h5>
+            <div className="d-flex justify-content-between align-items-center p-1">
+                <div>
+                    <h5>Các món đã đăng ({recipePage.count} món)</h5>
+                </div>
+                <div className="btn btn-primary" onClick={handleAddRecipe}>
+                    Thêm món mới
+                </div>
+            </div>
             <NameAndImageRecipeListPreview visibleRecipes={recipePage.results} count={recipePage.count} onClickExtraImage={onClickExtraImage} />
+            <div className="d-flex justify-content-end">
+                <div className="btn btn-light" style={{ color: "purple" }} onClick={() => nav('recipes')}>
+                    Xem tất cả các món ăn
+                </div>
+            </div>
         </div>}
     </>)
 }

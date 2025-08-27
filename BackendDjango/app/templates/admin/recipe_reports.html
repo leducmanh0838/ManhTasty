@@ -1,0 +1,50 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+
+<form method="get" class="mb-3">
+    <label for="by">Thống kê theo:</label>
+    <select name="by" id="by" class="form-select d-inline-block w-auto">
+        <option value="day" {% if request.GET.by == "day" %}selected{% endif %}>Ngày</option>
+        <option value="month" {% if request.GET.by == "month" or not request.GET.by %}selected{% endif %}>Tháng</option>
+        <option value="quarter" {% if request.GET.by == "quarter" %}selected{% endif %}>Quý</option>
+        <option value="year" {% if request.GET.by == "year" %}selected{% endif %}>Năm</option>
+    </select>
+
+    <label for="periods">Số khoảng thời gian:</label>
+    <input type="number" name="periods" id="periods" value="{{ request.GET.periods|default:6 }}"
+           min="1" max="100" class="form-control d-inline-block w-auto">
+
+    <button type="submit" class="btn btn-primary">Xem</button>
+</form>
+
+<canvas id="recipeChart" width="800" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('recipeChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: "{{ chart_type }}",  // <-- đổi động
+        data: {
+            labels: {{ labels|safe }},
+            datasets: [{
+                label: 'Số công thức theo {{ by }}',
+                data: {{ values|safe }},
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                fill: true, // cho line chart
+                tension: 0.3 // làm đường mềm hơn
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+{% endblock %}

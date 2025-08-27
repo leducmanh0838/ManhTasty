@@ -4,8 +4,10 @@ import 'moment/locale/vi';
 import Avatar from "../../../components/ui/Avatar";
 import AvgRating from "../../../components/ui/AvgRating";
 import Apis, { endpoints } from "../../../configs/Apis";
-import {printErrors} from "../../../utils/printErrors"
+import { printErrors } from "../../../utils/printErrors"
 import usePagination from "../../../hooks/usePagination";
+import LoadingSpinner from "../../../components/ui/Spinner/LoadingSpinner";
+import { FiCornerDownRight } from "react-icons/fi";
 
 const ReviewItem = ({ review }) => {
     return (
@@ -35,6 +37,7 @@ const ReviewList = ({ recipeId }) => {
         loadMore,
         refresh,
         hasMore,
+        loading,
     } = usePagination({ endpoint: endpoints.recipes.reviews.list(recipeId), isLoadFirstData: true });
     return (
         <>
@@ -42,6 +45,17 @@ const ReviewList = ({ recipeId }) => {
                 <ReviewItem review={review}
                 />
             ))}
+            {hasMore && <>
+                {loading ? <LoadingSpinner size='sm' text='Đang tải bình luận...' /> : <button
+                    onClick={loadMore}
+                    className="btn btn-light-blue text-primary py-1 px-3 d-flex align-items-center text-decoration-none text-primary"
+                    style={{ gap: "5px" }}
+                >
+                    <FiCornerDownRight size={18} />
+                    Hiện thêm phản hồi
+                </button>}
+            </>
+            }
         </>
     )
 }

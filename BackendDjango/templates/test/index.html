@@ -1,0 +1,43 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static "admin/css/dashboard.css" %}">
+  <style>
+    #custom-sidebar {
+        width: 220px;
+        float: left;
+        margin-right: 20px;
+    }
+    #custom-sidebar .module {
+        margin-bottom: 20px;
+    }
+    #content-main {
+        margin-left: 240px; /* đẩy nội dung sang phải để không đè menu */
+    }
+  </style>
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block nav-breadcrumbs %}{% endblock %}
+
+{# Ghi đè nav-sidebar để hiển thị menu trái #}
+{% block nav-sidebar %}
+  <div id="custom-sidebar">
+    <h2>{% translate "Menu" %}</h2>
+    {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+  </div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <h1>{% translate "Dashboard" %}</h1>
+  <p>Chào mừng đến trang quản trị.</p>
+</div>
+{% endblock %}
+
+{% block sidebar %}
+  {{ block.super }}
+{% endblock %}

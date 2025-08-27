@@ -5,31 +5,31 @@ class AppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'app'
 
-    def ready(self):
-        from django_q.tasks import schedule
-        from django_q.models import Schedule
-        # Chỉ tạo schedule nếu chưa có
-        Schedule.objects.filter(func='app.tasks.my_task').delete()
-
-        # Tạo lại schedule mới
-        schedule(
-            'app.tasks.my_task',
-            schedule_type=Schedule.MINUTES,  # chạy theo phút
-            minutes=0.1,  # 6 giây
-            repeats=-1  # -1 nghĩa là lặp vô hạn
-        )
-
     # def ready(self):
-    #     import threading
-    #     from app.utils.whoosh_utils.common_whoosh_utils import build_index
     #     from django_q.tasks import schedule
-    #
-    #     # Dùng threading để tránh lỗi AppRegistryNotReady
-    #     threading.Thread(target=build_index()).start()
-    #
     #     from django_q.models import Schedule
+    #     # Chỉ tạo schedule nếu chưa có
+    #     Schedule.objects.filter(func='app.tasks.my_task').delete()
     #
-    #     # Kiểm tra xem schedule đã tồn tại chưa, tránh tạo trùng lặp
-    #     if not Schedule.objects.filter(func='app.tasks.my_task').exists():
-    #         print("not Schedule.objects.filter(func='app.tasks.my_task').exists()")
-    #         schedule('app.tasks.my_task', schedule_type='M', minutes=0.1)
+    #     # Tạo lại schedule mới
+    #     schedule(
+    #         'app.tasks.my_task',
+    #         schedule_type=Schedule.MINUTES,  # chạy theo phút
+    #         minutes=0.1,  # 6 giây
+    #         repeats=-1  # -1 nghĩa là lặp vô hạn
+    #     )
+
+    def ready(self):
+        import threading
+        from app.utils.whoosh_utils.common_whoosh_utils import build_index
+        from django_q.tasks import schedule
+
+        # Dùng threading để tránh lỗi AppRegistryNotReady
+        threading.Thread(target=build_index()).start()
+
+        # from django_q.models import Schedule
+        #
+        # # Kiểm tra xem schedule đã tồn tại chưa, tránh tạo trùng lặp
+        # if not Schedule.objects.filter(func='app.tasks.my_task').exists():
+        #     print("not Schedule.objects.filter(func='app.tasks.my_task').exists()")
+        #     schedule('app.tasks.my_task', schedule_type='M', minutes=0.1)
