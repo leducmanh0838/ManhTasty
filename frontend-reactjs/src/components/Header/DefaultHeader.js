@@ -1,8 +1,10 @@
 import SearchBar from "../../features/search/components/SearchBar";
+import ChatBoxMessageButton from "../buttons/ChatBoxMessageButton";
 import HeaderAuth from "./HeaderAuth";
-import { FaBars } from "react-icons/fa";
+import { FaBars, FaFacebookMessenger } from "react-icons/fa";
 
 const DefaultHeader = () => {
+    
     return (
         <>
             <header className="d-flex align-items-center justify-content-between p-3 shadow bg-white sticky-top mt-2 mx-2 rounded">
@@ -17,6 +19,9 @@ const DefaultHeader = () => {
                 <div className="d-flex w-100 align-items-center">
                     <div className="flex-grow-1 me-3">
                         <SearchBar />
+                    </div>
+                    <div className="me-2">
+                        <ChatBoxMessageButton/>
                     </div>
                     <div>
                         <HeaderAuth />

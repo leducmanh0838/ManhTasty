@@ -18,7 +18,6 @@ const SearchBar = () => {
     const handleSelectItem = (suggestionItem) => {
         params.set('keyword', suggestionItem.keyword);
         navigate(`/search?${params.toString()}`);
-        // navigate(`/search?keyword=${suggestionItem.keyword}`)
     }
 
     useEffect(() => {

@@ -7,17 +7,20 @@ import "./SearchPage.css"
 import NotFoundRecipe from "./NotFoundRecipe";
 import usePagination from "../../../hooks/usePagination";
 import LoadingSpinner from "../../../components/ui/Spinner/LoadingSpinner";
+import SelectedTagListDialogButton from "../../tags/dialogs/SelectedTagListDialogButton";
 
 const SearchPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { currentUser } = useContext(AppContext);
-    const [searchParams] = useSearchParams();
+    const searchParams = new URLSearchParams(location.search);
+    // const [searchParams] = useSearchParams();
     const keyword = searchParams.get("keyword");
     const orderBy = searchParams.get("sort_by") || "-id";
+    const tags = searchParams.getAll("tags") || [];
     const [keywordSuggestions, setKeywordSuggestions] = useState([]);
 
-    // useEffect(() =>{console.info("orderBy: ", orderBy)}, [orderBy])
+    useEffect(() => { console.info("tags: ", JSON.stringify(tags, null, 2)) }, [tags])
 
     const loaderRef = useRef(null);
     const isFirstRender = useRef(true);
@@ -28,11 +31,11 @@ const SearchPage = () => {
             return;
         }
 
-        const fecthData = async() =>{
-            try{
+        const fecthData = async () => {
+            try {
                 const res = await Apis.get(`${endpoints.search.popularKeywords}?keyword=${keyword}`)
                 setKeywordSuggestions(res.data)
-            }catch(err){
+            } catch (err) {
 
             }
         }
@@ -42,7 +45,7 @@ const SearchPage = () => {
         // console.info("page", page);
         refresh();
         // console.info("recipes: ", JSON.stringify(recipes, null, 2))
-        fecthData ();
+        fecthData();
     }, [keyword]);
 
     const {
@@ -53,9 +56,16 @@ const SearchPage = () => {
         refresh,
         page,
         setPage
-    } = usePagination({ endpoint: endpoints.recipes.search, isLoadFirstData: true, useAuth: !!currentUser, params: { "keyword": keyword, "sort_by": orderBy } });
+    } = usePagination({ endpoint: endpoints.recipes.search, isLoadFirstData: true, useAuth: !!currentUser, params: { "keyword": keyword, "sort_by": orderBy, "tags": tags } });
 
     useEffect(() => {
+        // console.info("tags.length: ", tags.length)
+        // setTimeout(refresh(), 1000);
+        refresh();
+    }, [JSON.stringify(tags)])
+
+    useEffect(() => {
+        // console.info("tags AAA: ", JSON.stringify(tags,null,2))
         refresh();
     }, [orderBy])
 
@@ -111,6 +121,9 @@ const SearchPage = () => {
                 </div>
                 <div className="col-5 py-4 px-3">
                     <div className="mb-2">
+                        <SelectedTagListDialogButton />
+                    </div>
+                    <div className="mb-2">
                         <span class="fw-bold">Tìm kiếm tương tự:</span>
                     </div>
                     <div className="d-flex flex-wrap gap-2 mb-3">
@@ -122,6 +135,8 @@ const SearchPage = () => {
                             </span>
                         ))}
                     </div>
+
+
 
                     <div className="mb-2">
                         <span class="fw-bold">Sắp xếp theo:</span>

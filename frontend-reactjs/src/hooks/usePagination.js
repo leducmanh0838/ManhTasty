@@ -6,22 +6,46 @@ const usePagination = ({ endpoint, params = {}, useAuth = false, isLoadFirstData
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const isLoadingItemsRef = useRef(false);
+  const isRefreshingRef = useRef(false);
   const [hasMore, setHasMore] = useState(true);
   const [count, setCount] = useState(0);
 
   const buildUrl = (pageNumber) => {
     let url = `${endpoint}?page=${pageNumber}`;
+
     for (const key in params) {
-      if (params[key]) {
-        url += `&${key}=${params[key]}`;
+      const value = params[key];
+
+      if (value !== undefined && value !== null) {
+        if (Array.isArray(value)) {
+          // Nếu là mảng, append từng phần tử
+          value.forEach((v) => {
+            url += `&${encodeURIComponent(key)}=${encodeURIComponent(v)}`;
+          });
+        } else {
+          // Nếu là kiểu thường (string, number)
+          url += `&${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+        }
       }
     }
+
     console.info("url: ", url);
     return url;
   };
 
+  // const buildUrl = (pageNumber) => {
+  //   let url = `${endpoint}?page=${pageNumber}`;
+  //   for (const key in params) {
+  //     if (params[key]) {
+  //       url += `&${key}=${params[key]}`;
+  //     }
+  //   }
+  //   console.info("url: ", url);
+  //   return url;
+  // };
+
   const loadItems = async (prePage = 0, isReset) => {
-    console.info("loadItems ")
+    console.info("loadItems prePage isReset isLoadingItemsRef.current", prePage, isReset, isLoadingItemsRef.current)
     if (isLoadingItemsRef.current) return;
     isLoadingItemsRef.current = true;
     setLoading(true);
@@ -33,7 +57,7 @@ const usePagination = ({ endpoint, params = {}, useAuth = false, isLoadFirstData
 
       if (!result || result.length === 0) {
         setHasMore(false);
-        if(prePage===0)
+        if (prePage === 0)
           setResultData([])
         else
           return;
@@ -61,7 +85,7 @@ const usePagination = ({ endpoint, params = {}, useAuth = false, isLoadFirstData
       setPage(prePage + 1);
     } catch (error) {
       console.error("Load error:", error);
-      page===0 && setResultData([]);
+      page === 0 && setResultData([]);
     } finally {
       setLoading(false);
       isLoadingItemsRef.current = false;
@@ -76,6 +100,9 @@ const usePagination = ({ endpoint, params = {}, useAuth = false, isLoadFirstData
   };
 
   const refresh = () => {
+    console.info("refresh: ")
+    if (isRefreshingRef.current) return;
+    isRefreshingRef.current = true;
     setHasMore(true);
     if (isLoadFirstData) {
       loadItems(0, true);
@@ -84,6 +111,7 @@ const usePagination = ({ endpoint, params = {}, useAuth = false, isLoadFirstData
       setPage(0);
       setResultData([]);
     }
+    isRefreshingRef.current = false;
   };
 
   useEffect(() => {

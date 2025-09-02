@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 import cookie from "react-cookies"
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { WEB_CLIENT_ID } from "../configs/Values";
@@ -24,6 +24,7 @@ export const AppProvider = ({ children }) => {
     // console.log(document.cookie);
     const [currentUser, currentUserDispatch] = useReducer(CurrentUserReducer, null, initCurrentUser);
     const [token, tokenDispatch] = useReducer(TokenReducer, null, initToken);
+    const [activeChat, setActiveChat] = useState(true);
 
     // console.info(JSON.stringify(token, null, 2))
     // console.info(JSON.stringify(currentUser, null, 2))
@@ -33,6 +34,7 @@ export const AppProvider = ({ children }) => {
         currentUserDispatch,
         token,
         tokenDispatch,
+        activeChat, setActiveChat
     };
 
     return (

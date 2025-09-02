@@ -80,6 +80,10 @@ export const endpoints = {
     },
     reviews: {
         detail: (reviewId) => `reviews/${reviewId}/`,
+    },
+    chatbox:{
+        chat:'chatbot/chat/',
+        getList:'chatbot/chat-history/'
     }
 };
 

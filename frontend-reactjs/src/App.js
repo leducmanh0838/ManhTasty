@@ -19,6 +19,7 @@ import EditPublicRecipePage from './features/recipes/pages/EditPublicRecipePage'
 import TrashRecipes from './features/profile/components/TrashRecipes';
 import NotificationList from './features/notifications/components/NotificationList';
 import CommentPage from './features/comments/pages/CommentPage';
+import ChatBoxLayout from './components/chatbox/ChatBoxLayout';
 
 const App = () => {
 
@@ -65,6 +66,7 @@ const App = () => {
             </Routes>
 
             {/* Recipe Grid */}
+            <ChatBoxLayout/>
 
           </div>
         </div>
