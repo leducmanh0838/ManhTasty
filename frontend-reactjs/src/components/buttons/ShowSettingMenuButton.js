@@ -4,6 +4,7 @@ import MenuItemWithIcon from "../ui/MenuItemWithIcon";
 import { FaExclamationTriangle, FaFlag, FaTrashAlt } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { FaPhoneAlt } from "react-icons/fa";
 
 const ShowSettingMenuButton = ({ }) => {
     const [showSettingMenu, setShowSettingMenu] = useState(false);
@@ -17,8 +18,8 @@ const ShowSettingMenuButton = ({ }) => {
             </div>
             {showSettingMenu && <div className="ms-4">
                 <MenuItemWithIcon icon={<FaTrashAlt />} label="Thùng rác" className="btn btn-light p-2" onClick={()=>nav('/profile/trashes')} />
-                {/* <MenuItemWithIcon icon={<FaFlag />} label="Tôi đã báo cáo" className="btn btn-light p-2" />
-                <MenuItemWithIcon icon={<FaExclamationTriangle />} label="Bị báo cáo" className="btn btn-light p-2" /> */}
+                <MenuItemWithIcon icon={<FaPhoneAlt />} label="Liên hệ" className="btn btn-light p-2" onClick={()=>nav('/contact')} />
+                {/* <MenuItemWithIcon icon={<FaExclamationTriangle />} label="Bị báo cáo" className="btn btn-light p-2" /> */}
             </div>}
         </>
     )

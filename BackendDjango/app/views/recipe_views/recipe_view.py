@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 
 from app.configs.values import CacheTimeout
-from app.dao.content_based_filtering import get_recipe_recommend
+from app.dao.content_based_filtering import get_recipe_recommend, get_similar_recipes
 from app.models import Recipe, RecipeStatus, Reaction, EmotionType, Comment, CommentStatus
 from app.paginations import RecipePagination, CommentPagination
 from app.permissions import IsAuthor
@@ -22,6 +22,7 @@ from rest_framework import status
 from app.utils.cacheUtils import conditional_cache_page
 from app.utils.mongo_db_utils.search_utils import log_user_search_keyword
 from app.utils.whoosh_utils.common_whoosh_utils import search_recipes
+from functools import reduce
 
 
 class RecipeViewSet(mixins.ListModelMixin,
@@ -84,7 +85,7 @@ class RecipeViewSet(mixins.ListModelMixin,
     @action(detail=True, methods=['get'], url_path='recommend')
     def get_recipe_recommend(self, request, pk):
         print(r"Đã truy vấn /recipes/{id}/recommend/")
-        serializer = RecipeRecommendSerializer(get_recipe_recommend(pk, 5), many=True)
+        serializer = RecipeRecommendSerializer(get_similar_recipes(pk, 5), many=True)
         return Response(serializer.data)
 
     @action(detail=True, methods=['get'], url_path='original')
@@ -95,11 +96,9 @@ class RecipeViewSet(mixins.ListModelMixin,
 
     @action(detail=False, methods=['get'], url_path='search')
     def search_recipes(self, request):
+        tags = request.GET.getlist('tags')
         keyword = request.query_params.get('keyword', '').strip()
         sort_by = request.query_params.get('sort_by', '-id').strip()
-        # if keyword:
-        #     log_user_search_keyword(user=request.user, keyword=keyword)
-        # page = int(request.query_params.get('page', 1))
 
         # Gọi hàm tìm kiếm
         result = search_recipes(keyword)
@@ -112,6 +111,17 @@ class RecipeViewSet(mixins.ListModelMixin,
             log_user_search_keyword(user=request.user, keyword=keyword)
 
         recipes = Recipe.objects.filter(id__in=ids, status=RecipeStatus.ACTIVE)
+        if tags:
+            # ép kiểu int
+            tags = [int(t) for t in tags]
+            recipes = (
+                recipes
+                .filter(tags__id__in=tags)
+                .annotate(num_match=Count("tags", filter=Q(tags__id__in=tags), distinct=True))
+                .filter(num_match=len(tags))
+            )
+            # query = reduce(lambda q, t: q & Q(tags__id=t), tags, Q())
+            # recipes = recipes.filter(query).distinct()
 
         if sort_by:
             if sort_by == '-avg_rating':

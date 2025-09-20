@@ -124,19 +124,17 @@ const RecipeCardSimple = ({ recipe }) => {
                         )}
                     </div>
 
-                    <div className="d-flex gap-2">
-                        {/* Nút chia sẻ */}
+                    {/* <div className="d-flex gap-2">
                         <button
                             className="btn btn-light btn-sm rounded-circle d-flex align-items-center justify-content-center me-2"
                             style={{ width: '36px', height: '36px' }} // đảm bảo hình tròn cố định
                         >
                             <BiShareAlt />
                         </button>
-                        {/* Nút lưu */}
                         <button className="btn btn-danger btn-sm fw-bold rounded-pill px-3">
                             Lưu
                         </button>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

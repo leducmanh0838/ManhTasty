@@ -10,8 +10,20 @@ from django import forms
 
 
 # 1️⃣ Form nhập lý do khóa
+# class LockRecipeForm(forms.Form):
+#     description = forms.CharField(widget=forms.Textarea, label="Lý do khóa", required=True)
 class LockRecipeForm(forms.Form):
-    description = forms.CharField(widget=forms.Textarea, label="Lý do khóa", required=True)
+    description = forms.CharField(
+        label="Lý do khóa",
+        required=True,
+        widget=forms.Textarea(
+            attrs={
+                "class": "form-control",
+                "rows": 3,
+                "placeholder": "Nhập lý do khóa..."
+            }
+        ),
+    )
 
 
 @admin.register(Recipe, site=admin_site)
@@ -71,10 +83,10 @@ class RecipeAdmin(admin.ModelAdmin):
     def lock_button(self, obj):
         if obj and obj.status != RecipeStatus.LOCKED:
             return format_html(
-                '<a class="button" style="background-color:red;color:white;" href="/admin/app/recipe/{}/lock/">Khóa món ăn</a>',
+                '<a class="btn btn-danger btn-sm" href="/admin/app/recipe/{}/lock/">Khóa món ăn</a>',
                 obj.id
             )
-        return "Đã khóa"
+        return format_html('<span class="text-danger fw-bold">Đã khóa</span>')
 
     lock_button.short_description = "Khóa món ăn"
 
@@ -101,6 +113,7 @@ class RecipeAdmin(admin.ModelAdmin):
         recipe = self.get_object(request, recipe_id)
         reports = recipe.reports.all().order_by('-id')  # tất cả report cho recipe
         context = {
+            **self.admin_site.each_context(request),
             'recipe': recipe,
             'reports': reports,
             'opts': self.model._meta,
@@ -135,6 +148,7 @@ class RecipeAdmin(admin.ModelAdmin):
 
         # Render form custom
         context = {
+            **self.admin_site.each_context(request),
             'form': form,
             'recipe': recipe,
             'opts': self.model._meta,
@@ -144,6 +158,7 @@ class RecipeAdmin(admin.ModelAdmin):
 
     def rating_avg(self, obj):
         return round(obj.rating_avg_num, 2)
+
     rating_avg.short_description = "Điểm đánh giá trung bình"
     rating_avg.admin_order_field = "rating_avg_num"  # 👈 Cho phép sort
 
@@ -162,7 +177,8 @@ class RecipeAdmin(admin.ModelAdmin):
 
     def comment_count(self, obj):
         return obj.comment_count_num
-    comment_count.short_description = "Comments"
+
+    comment_count.short_description = "Lượt bình luận"
     comment_count.admin_order_field = "comment_count_num"
 
     def has_change_permission(self, request, obj=None):

@@ -41,10 +41,10 @@ DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
+    "jazzmin",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -95,7 +95,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -127,8 +126,6 @@ MONGODB_SETTINGS = {
     # 'COLLECTION': 'search_keywords',
 }
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -147,17 +144,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'vi'   # Chuyển sang tiếng Việt
+LANGUAGE_CODE = 'vi'  # Chuyển sang tiếng Việt
 TIME_ZONE = 'Asia/Ho_Chi_Minh'
 
 USE_I18N = True
 USE_L10N = True
 USE_TZ = False
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -185,20 +180,56 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 AUTH_USER_MODEL = 'app.User'
 
+COHERE_API_KEY = os.getenv('COHERE_API_KEY')
+AI21_API_KEY = os.getenv('AI21_API_KEY')
+
 CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:3000",
     "http://localhost:3000",
 ]
 
 Q_CLUSTER = {
     'name': 'DjangoQ',
-    'workers': 1,             # chỉ cần 1 worker để test
+    'workers': 1,  # chỉ cần 1 worker để test
     'recycle': 500,
     'timeout': 60,
     'queue_limit': 50,
     'bulk': 10,
     'poll': 10,
-    'orm': 'default',         # dùng database mặc định
+    'orm': 'default',  # dùng database mặc định
 }
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # => ảnh sẽ nằm trong: media/tags/
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Trang quản trị ManhTasty",  # tiêu đề tab trình duyệt
+    "site_header": "Hệ thống quản trị ManhTasty",  # chữ trên header
+    "site_brand": "ManhTasty Admin",  # chữ logo góc trái
+    "welcome_sign": "Xin chào, chào mừng bạn quay lại!",  # chữ ở dashboard
+    "copyright": "© 2025 ManhTasty",
+
+    # Logo hiển thị ở menu và trên header
+    "site_logo": "img/logo.png",  # logo chính
+    "site_logo_classes": "img-circle",  # class css (vd: bo tròn logo)
+
+    # Logo nhỏ khi sidebar thu gọn
+    "site_logo_small": "img/favicon.png",
+
+    # Nếu muốn đổi favicon
+    "site_icon": "img/favicon.png",
+
+    "icons": {
+        "app": "fas fa-folder",
+        "app.recipe": "fas fa-utensils",
+        "app.comment": "fas fa-comments",
+        "app.user": "fas fa-user",
+        "app.tag": "fas fa-tags",
+        "reports.recipes": "fas fa-chart-bar",
+    },
+
+    "show_ui_builder": True,
+
+    "default_icon_parents": "fas fa-folder",
+    "default_icon_children": "fas fa-circle",
+}

@@ -34,6 +34,7 @@
 #     )
 #
 # writer.commit()
+from pprint import pprint
 
 
 def generate_fake_views():
@@ -217,10 +218,55 @@ if __name__ == "__main__":
     from faker import Faker
 
     from app.models import Reaction, Recipe, User, RecipeReview, Comment
+    from django.core.cache import cache
+    from functools import reduce
+    from django.db.models import Q
+    from django.db.models import Count
 
-    generate_fake_views()
+    # tags = [3, 54]
+    #
+    # recipes = (
+    #     Recipe.objects
+    #     .filter(tags__id__in=tags)
+    #     .annotate(num_match=Count("tags", filter=Q(tags__id__in=tags), distinct=True))
+    #     .filter(num_match=len(tags))
+    # )
+    #
+    # print(f"Tìm với tags={tags}, số recipe: {recipes.count()}")
+    # for r in recipes:
+    #     print({
+    #         "id": r.id,
+    #         "title": r.title,
+    #         "tags": list(r.tags.values("id", "name"))
+    #     })
+
+    # generate_fake_views()
     # generate_fake_reviews()
     # generate_fake_comments()
     # generate_fake_reactions()
     # Comment.objects.filter(id__gt=10000).delete()
+    Recipe.objects.filter(id=17).delete()
     print("thành công")
+# YOUR_API_KEY = "c4062d20-b045-4b39-834b-344b9127a29e"
+# from ai21 import AI21Client
+# from ai21.models.chat import ChatMessage
+#
+# client = AI21Client(
+#     # defaults to os.environ.get('AI21_API_KEY')
+#     api_key=YOUR_API_KEY,
+# )
+#
+# system = "You're a support engineer in a SaaS company"
+# messages = [
+#     ChatMessage(content=system, role="system"),
+#     ChatMessage(content="Hello, I need help with a signup process.", role="user"),
+# ]
+#
+# chat_completions = client.chat.completions.create(
+#     messages=messages,
+#     model="jamba-mini",
+# )
+#
+# # pprint(vars(chat_completions))
+# for choice in chat_completions.choices:
+#     print(choice.message.content)

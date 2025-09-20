@@ -2,3 +2,4 @@
 /BackendDjango/.env
 /frontend-reactjs/.env
 /BackendDjango/my_secret/
+__pycache__/

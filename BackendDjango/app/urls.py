@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework_nested import routers
 
+from app.views.chatbot_view import ChatbotViewSet
 from app.views.comment_view import CommentViewSet
 from app.views.current_user.user_recipes_view import UserRecipesViewSet
 from app.views.current_user.users_view import UserViewSet
@@ -39,6 +40,7 @@ router.register(r'image-upload', MediaUploadViewSet, basename='image-upload')
 router.register(r'current-user/search', CurrentUserSearchViewSet, basename='current-user-search')
 router.register(r'current-user/recipes', UserRecipesViewSet, basename='current-user-recipes')
 router.register(r'current-user/notifications', CurrentUserNotificationViewSet, basename='current-user-notifications')
+router.register(r'chatbot', ChatbotViewSet, basename='chatbot')
 
 # Tạo nested router cho comments theo từng recipe
 recipes_nested_router = routers.NestedSimpleRouter(router, r'recipes', lookup='recipe')

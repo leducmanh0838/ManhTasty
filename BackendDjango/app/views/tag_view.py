@@ -1,6 +1,9 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import mixins, viewsets
 from rest_framework.exceptions import ValidationError
 
+from app.configs.values import CacheTimeout
 from app.models import Tag
 from app.paginations import CommonPagination
 from app.serializers.tag_serializers import TagSerializer
@@ -27,3 +30,8 @@ class TagViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
                 queries = queries.filter(is_featured=True)
 
             return queries
+
+    # @method_decorator(cache_page(CacheTimeout.TAG_LIST_TIMEOUT))
+    def list(self, request, *args, **kwargs):
+        print(r"Đã truy vấn /tags/")
+        return super().list(request, *args, **kwargs)

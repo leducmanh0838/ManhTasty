@@ -16,7 +16,6 @@ django.setup()
 #
 from app.models import Ingredient, TagCategory, Tag, Recipe
 from django.db.models import Count, Q, F
-from app.dao.content_based_filtering import get_recipe_recommend
 
 
 def create_200_ingredients():
@@ -145,4 +144,7 @@ def main():
         print(f"{model._meta.app_label:20} {model._meta.model_name:20} {ct.id:15}")
 
 if __name__ == "__main__":
-    main()
+    from app.dao.content_based_filtering import get_similar_recipes
+    similar_recipes = get_similar_recipes(1, 5)
+    x = [{"id": r.id, "title": r.title} for r in similar_recipes]
+    print(x)

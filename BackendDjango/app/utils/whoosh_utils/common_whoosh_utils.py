@@ -69,6 +69,17 @@ def build_index():
 
 RECIPE_SEARCH_PAGE_SIZE = 10
 
+# def build_fuzzy_multifield_query(keyword, fields, maxdist=2):
+#     keyword = keyword.lower()
+#     term_groups = []
+#     for word in keyword.split():
+#         # mỗi từ có thể match trên bất kỳ field nào → Or
+#         term_group = [FuzzyTerm(field, word, maxdist=maxdist) for field in fields]
+#         term_groups.append(Or(term_group))
+#     # tất cả từ phải match ít nhất 1 field → And
+#     print("And(term_groups): ", And(term_groups))
+#     return And(term_groups)
+
 def search_recipes(keyword):
     # Mở index
     ix = open_dir(INDEX_DIR)
@@ -81,24 +92,7 @@ def search_recipes(keyword):
 
     # Tìm kiếm với phân trang và sắp xếp id giảm dần
     with ix.searcher() as searcher:
-        # Sort theo id giảm dần
-        # sorted_by_id = FieldFacet("id", reverse=True)
-
-        # Kết quả trang
-        # start = (page - 1) * RECIPE_SEARCH_PAGE_SIZE
-        # end = start + RECIPE_SEARCH_PAGE_SIZE
-
-        # Thực hiện truy vấn
-        # results = searcher.search(query, limit=None, sortedby=sorted_by_id)
         results = searcher.search(query, limit=None)
-
-        # Tổng số trang
-        # total_pages = math.ceil(len(results) / RECIPE_SEARCH_PAGE_SIZE)
-
-        # Lấy kết quả phân trang
-        # paginated = results[start:end]
-
-        # Hiển thị kết quả
         recipes = []
         for hit in results:
             recipes.append({

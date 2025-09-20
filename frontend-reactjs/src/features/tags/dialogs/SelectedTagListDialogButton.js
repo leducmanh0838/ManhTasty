@@ -118,7 +118,7 @@ const SelectedTagListDialogButton = () => {
             </button>
             <Modal show={showModal} onHide={() => setShowModal(false)} centered >
                 <Modal.Header closeButton>
-                    <Modal.Title className="fw-bold">Báo cáo</Modal.Title>
+                    <Modal.Title className="fw-bold">Tag</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div style={{ maxHeight: "400px", overflowY: "auto" }}>

@@ -6,3 +6,4 @@ class CacheTimeout:
     RECIPE_RECOMMEND_CACHE_TIMEOUT = 60 * 15  # 15 phút
     RECIPE_DETAIL_TIMEOUT = 60 * 15  # 15 phút
     RECIPE_LIST_TIMEOUT = 60  # 15 phút
+    TAG_LIST_TIMEOUT = 60*30

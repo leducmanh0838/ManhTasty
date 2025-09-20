@@ -123,20 +123,20 @@ const SearchPage = () => {
                     <div className="mb-2">
                         <SelectedTagListDialogButton />
                     </div>
-                    <div className="mb-2">
-                        <span class="fw-bold">Tìm kiếm tương tự:</span>
-                    </div>
-                    <div className="d-flex flex-wrap gap-2 mb-3">
-                        {keywordSuggestions.map((item, index) => (
-                            <span key={index} className={`px-3 py-1 rounded-pill border border-2 btn btn-light`}
-                                onClick={() => navigate(`/search?keyword=${item.keyword}`)}
-                            >
-                                {item?.keyword}
-                            </span>
-                        ))}
-                    </div>
-
-
+                    {keywordSuggestions && keywordSuggestions.length > 0 && <>
+                        <div className="mb-2">
+                            <span class="fw-bold">Tìm kiếm tương tự:</span>
+                        </div>
+                        <div className="d-flex flex-wrap gap-2 mb-3">
+                            {keywordSuggestions.map((item, index) => (
+                                <span key={index} className={`px-3 py-1 rounded-pill border border-2 btn btn-light`}
+                                    onClick={() => navigate(`/search?keyword=${item.keyword}`)}
+                                >
+                                    {item?.keyword}
+                                </span>
+                            ))}
+                        </div>
+                    </>}
 
                     <div className="mb-2">
                         <span class="fw-bold">Sắp xếp theo:</span>

@@ -111,7 +111,7 @@ class Recipe(TimeStampedModel):
     rating_sum = models.PositiveIntegerField(default=0, verbose_name="Tổng sao")  # Tổng số sao
     rating_count = models.PositiveIntegerField(default=0, verbose_name="Số lượt đánh giá")  # Số lượt đánh giá
 
-    tags = models.ManyToManyField('Tag', through='RecipeTag', related_name='tags')
+    tags = models.ManyToManyField('Tag', through='RecipeTag', related_name='tags', verbose_name="Tag")
     ingredients = models.ManyToManyField('Ingredient', through='RecipeIngredient', related_name='recipes',
                                          verbose_name="Nguyên liệu")
     reactions = GenericRelation('Reaction', verbose_name="Phản ứng")
@@ -177,6 +177,10 @@ class RecipeTag(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     tag = models.ForeignKey('Tag', on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name = "Tag"
+        verbose_name_plural = "Các tag"
+
 
 # 6. Nguyên liệu
 class Ingredient(models.Model):
@@ -201,6 +205,9 @@ class RecipeIngredient(models.Model):
 
     # class Meta:
     #     db_table = 'app_recipe_ingredients'
+    class Meta:
+        verbose_name = "Nguyên liệu"
+        verbose_name_plural = "Các nguyên liệu"
 
 
 # 8. Các bước nấu ăn

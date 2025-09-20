@@ -8,7 +8,17 @@ from app.models import Comment, CommentStatus, Notification, NotificationType
 from django import forms
 
 class LockRecipeForm(forms.Form):
-    description = forms.CharField(widget=forms.Textarea, label="Lý do khóa", required=True)
+    description = forms.CharField(
+        label="Lý do khóa",
+        required=True,
+        widget=forms.Textarea(
+            attrs={
+                "class": "form-control",
+                "rows": 3,
+                "placeholder": "Nhập lý do khóa..."
+            }
+        ),
+    )
 
 @admin.register(Comment, site=admin_site)
 class CommentAdmin(admin.ModelAdmin):
@@ -94,10 +104,10 @@ class CommentAdmin(admin.ModelAdmin):
     def lock_button(self, obj):
         if obj and obj.status != CommentStatus.LOCKED:
             return format_html(
-                '<a class="button" style="background-color:red;color:white;" href="/admin/app/comment/{}/lock/">Khóa bình luận</a>',
+                '<a class="btn btn-danger btn-sm" href="/admin/app/comment/{}/lock/">Khóa bình luận</a>',
                 obj.id
             )
-        return "Đã khóa"
+        return format_html('<span class="text-danger fw-bold">Đã khóa</span>')
 
     lock_button.short_description = "Khóa bình luận"
 
@@ -139,18 +149,20 @@ class CommentAdmin(admin.ModelAdmin):
 
         # Render form custom
         context = {
+            **self.admin_site.each_context(request),
             'form': form,
             'comment': comment,
             'opts': self.model._meta,
             'original': comment,
         }
-        return render(request, 'admin/lock_recipe_form.html', context)
+        return render(request, 'admin/lock_comment_form.html', context)
 
     # View hiển thị danh sách report
     def view_reports(self, request, comment_id):
         comment = self.get_object(request, comment_id)
         reports = comment.reports.all().order_by('-id')  # tất cả report cho comment
         context = {
+            **self.admin_site.each_context(request),
             'comment': comment,
             'reports': reports,
             'opts': self.model._meta,
@@ -165,3 +177,6 @@ class CommentAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+    # def has_module_permission(self, request):
+    #     return request.user.has_perm('app.view_comment')

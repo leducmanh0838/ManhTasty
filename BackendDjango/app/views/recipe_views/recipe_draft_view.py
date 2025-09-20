@@ -21,14 +21,14 @@ class RecipeDraftViewSet(viewsets.GenericViewSet):
     def get_user_id(self):
         return self.request.user.id
 
-    def get_draft_or_404(self, draft_id):
-        draft = recipe_drafts_collection.find_one({
-            "_id": ObjectId(draft_id),
-            "user_id": self.get_user_id()
-        })
-        if not draft:
-            raise Response({"detail": "Draft not found"}, status=status.HTTP_404_NOT_FOUND)
-        return draft
+    # def get_draft_or_404(self, draft_id):
+    #     draft = recipe_drafts_collection.find_one({
+    #         "_id": ObjectId(draft_id),
+    #         "user_id": self.get_user_id()
+    #     })
+    #     if not draft:
+    #         raise Response({"detail": "Draft not found"}, status=status.HTTP_404_NOT_FOUND)
+    #     return draft
 
     # POST /recipes/draft/
     def create(self, request):
