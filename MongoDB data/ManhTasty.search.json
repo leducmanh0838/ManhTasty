@@ -1,0 +1,322 @@
+[{
+  "_id": {
+    "$oid": "68af1a0a4c73c071381262e8"
+  },
+  "user_id": "0",
+  "keyword": "ăn chay bữa sáng",
+  "count": 1,
+  "first_seen": {
+    "$date": "2025-08-27T21:45:30.124Z"
+  },
+  "last_seen": {
+    "$date": "2025-08-27T21:45:30.124Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68af1a4c4c73c071381262e9"
+  },
+  "keyword": "trứng chiên bữa sáng",
+  "user_id": "0",
+  "count": 4,
+  "first_seen": {
+    "$date": "2025-08-27T21:46:36.990Z"
+  },
+  "last_seen": {
+    "$date": "2025-08-28T00:10:31.073Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68af20fc4c73c071381262eb"
+  },
+  "keyword": "thịt",
+  "user_id": "0",
+  "count": 1,
+  "first_seen": {
+    "$date": "2025-08-27T22:15:08.124Z"
+  },
+  "last_seen": {
+    "$date": "2025-08-27T22:15:08.124Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68af21034c73c071381262ec"
+  },
+  "keyword": "trứng",
+  "user_id": "0",
+  "count": 10322,
+  "first_seen": {
+    "$date": "2025-08-27T22:15:15.099Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-12T14:26:13.570Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68af3c0d4c73c071381262ed"
+  },
+  "keyword": "trứng gà",
+  "user_id": "0",
+  "count": 3,
+  "first_seen": {
+    "$date": "2025-08-28T00:10:37.243Z"
+  },
+  "last_seen": {
+    "$date": "2025-08-28T00:11:37.774Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68af46f44c73c071381262ee"
+  },
+  "keyword": "trứng chiên",
+  "user_id": "0",
+  "count": 6,
+  "first_seen": {
+    "$date": "2025-08-28T00:57:08.109Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-12T14:26:40.107Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68af49ac4c73c071381262ef"
+  },
+  "keyword": "chiên",
+  "user_id": "0",
+  "count": 8,
+  "first_seen": {
+    "$date": "2025-08-28T01:08:44.152Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-09T15:49:08.879Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68af4a364c73c071381262f0"
+  },
+  "keyword": "món chính",
+  "user_id": "506",
+  "count": 6,
+  "first_seen": {
+    "$date": "2025-08-28T01:11:02.794Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-18T14:23:01.219Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68afe6304c73c071381262f1"
+  },
+  "keyword": "món chính",
+  "user_id": "0",
+  "count": 2,
+  "first_seen": {
+    "$date": "2025-08-28T12:16:32.561Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-09T15:48:42.946Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b98c945f9998d9565986ba"
+  },
+  "keyword": "trứng chiên bữa sáng",
+  "user_id": "506",
+  "count": 4,
+  "first_seen": {
+    "$date": "2025-09-04T19:56:52.702Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-09T15:52:07.031Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b98d165f9998d9565986bb"
+  },
+  "user_id": "506",
+  "keyword": "trứng chiên",
+  "count": 8,
+  "first_seen": {
+    "$date": "2025-09-04T19:59:02.080Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-05T00:39:56.674Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b9cec95f9998d9565986bc"
+  },
+  "keyword": "trứng chiên thơm ngon",
+  "user_id": "506",
+  "count": 1,
+  "first_seen": {
+    "$date": "2025-09-05T00:39:21.608Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-05T00:39:21.608Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b9cee55f9998d9565986bd"
+  },
+  "keyword": "trứng chiên thịt bằm",
+  "user_id": "506",
+  "count": 1,
+  "first_seen": {
+    "$date": "2025-09-05T00:39:49.514Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-05T00:39:49.514Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b9ceea5f9998d9565986be"
+  },
+  "keyword": "trứng chiên thịt",
+  "user_id": "506",
+  "count": 1,
+  "first_seen": {
+    "$date": "2025-09-05T00:39:54.574Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-05T00:39:54.574Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68bad1ec5f9998d9565986c0"
+  },
+  "user_id": "506",
+  "keyword": "tôm thịt",
+  "count": 4,
+  "first_seen": {
+    "$date": "2025-09-05T19:05:00.200Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-09T15:51:19.620Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68bfe9fa5f9998d9565986c2"
+  },
+  "keyword": "xào",
+  "user_id": "0",
+  "count": 1,
+  "first_seen": {
+    "$date": "2025-09-09T15:48:58.907Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-09T15:48:58.907Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68bfea015f9998d9565986c3"
+  },
+  "user_id": "0",
+  "keyword": "hấp",
+  "count": 1,
+  "first_seen": {
+    "$date": "2025-09-09T15:49:05.918Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-09T15:49:05.918Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68bfea085f9998d9565986c4"
+  },
+  "keyword": "món khai vị",
+  "user_id": "0",
+  "count": 1,
+  "first_seen": {
+    "$date": "2025-09-09T15:49:12.140Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-09T15:49:12.140Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68bfea0f5f9998d9565986c5"
+  },
+  "keyword": "bữa sáng",
+  "user_id": "0",
+  "count": 1,
+  "first_seen": {
+    "$date": "2025-09-09T15:49:19.744Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-09T15:49:19.744Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68bfea8f5f9998d9565986c6"
+  },
+  "user_id": "506",
+  "keyword": "bữa sáng",
+  "count": 3,
+  "first_seen": {
+    "$date": "2025-09-09T15:51:27.446Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-18T14:23:05.676Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68bfeab95f9998d9565986c7"
+  },
+  "keyword": "bò",
+  "user_id": "506",
+  "count": 5,
+  "first_seen": {
+    "$date": "2025-09-09T15:52:09.562Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-09T15:52:31.174Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68c3cb36ebf3d1c14f9b7ce7"
+  },
+  "keyword": "trứng chiên mặn",
+  "user_id": "0",
+  "count": 1,
+  "first_seen": {
+    "$date": "2025-09-12T14:26:46.030Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-12T14:26:46.030Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68c3cb3bebf3d1c14f9b7ce8"
+  },
+  "keyword": "trứng chiên việt",
+  "user_id": "0",
+  "count": 1,
+  "first_seen": {
+    "$date": "2025-09-12T14:26:51.299Z"
+  },
+  "last_seen": {
+    "$date": "2025-09-12T14:26:51.299Z"
+  }
+}]

@@ -1,0 +1,246 @@
+[{
+  "_id": {
+    "$oid": "68b003732b537effbfb91688"
+  },
+  "user_id": 506,
+  "messages": [
+    {
+      "sender": "user",
+      "text": "Tôi muốn làm bánh bông lan, bạn biết cách làm không?",
+      "timestamp": "2025-08-28T14:21:23.008779"
+    },
+    {
+      "sender": "bot",
+      "text": "Rất thích thú vào bạn làm bánh bông lan! \n\nBạn cần 2 phần đầu đều cho bánh bông lan:\n\n- Đầu đều đặc biệt: 1 đầu đều đặc biệt cho bánh bông lan là nước hoa, đầu đều có thể được thực hiện bằng 2 phương thức:\n  1. Nước hoa từ nhà thờ ở nhà, bằng cách gọi đầu đều vào nhà thờ để nhà thờ sử dụng cách đầu đều của mình.\n  2. Nước hoa từ trái cây, bằng cách g",
+      "timestamp": "2025-08-28T14:21:31.401091"
+    },
+    {
+      "sender": "user",
+      "text": "Tôi muốn làm bánh bông lan, bạn biết cách làm không?",
+      "timestamp": "2025-08-28T14:27:10.896187"
+    },
+    {
+      "sender": "bot",
+      "text": "Rất vui, mục đích của bạn đơn giản và thú vị. Bạn có thể thực hiện bánh bông lan theo cách được ánh xưa dùng thế nào?\n\n1. Khai báo các món phải bánh bông lan.\n2. Khai báo các món được thực hiện trong khó khăn.\n3. Khai báo các món được thực hiệneverywhere.\n4. Khai báo các món được thực hiện trong các tổ chức nhà hàng.\n5. Khai báo các món được thực hiện trong các tổ chức nhà hàng đ",
+      "timestamp": "2025-08-28T14:27:19.313929",
+      "service_type": "cohere"
+    },
+    {
+      "sender": "user",
+      "text": "Tôi muốn làm bánh bông lan",
+      "timestamp": "2025-08-28T15:11:20.503549"
+    },
+    {
+      "sender": "bot",
+      "text": "Rất thích hợp mỗi thứ! Bạn có muốn tham khảo cách nấu bánh bông lan cho trẻ 2-5 tuổi không?\n\nĐối diện vào món này, bạn cần có 3 thứ rất quan trọng:\n\n1. Một vòi bột đậu kéo dài (có thể là đậu phu thân, đậu đen, đậu đen da khô, đậu đen đại từng, đậu trắng đại từng, đậu đen lá cạnh...)\n2. Một vòi rau của đậu, tối đa 10 phút để làm chấm chỉ và",
+      "timestamp": "2025-08-28T15:11:28.777716",
+      "service_type": "cohere"
+    },
+    {
+      "sender": "user",
+      "text": "chào bạn, bạn có thể làm về món chiên trứng không?",
+      "timestamp": "2025-08-28T15:13:39.211821"
+    },
+    {
+      "sender": "bot",
+      "text": "Hi there! I'd be happy to help you with a recipe for fried eggs. If you have a specific recipe in mind, let me know and I will do my best to assist you. \n\nOne thing you could do is crack an egg into a bowl and whisk it lightly with some salt and pepper to taste. Then, heat a pan with some oil or butter and pour the egg mixture into the pan once it's hot. Allow it to cook until it's done to your liking, and you're ready to serve! \n\nLet me know if you'd like me to walk you through the process or provide you with more detailed instructions.",
+      "timestamp": "2025-08-28T15:13:43.916535",
+      "service_type": "cohere"
+    },
+    {
+      "sender": "user",
+      "text": "bạn có thể làm về món phở việt nam không?",
+      "timestamp": "2025-08-28T15:14:05.057485"
+    },
+    {
+      "sender": "bot",
+      "text": "Cám ơn bạn đã gọi để tôi xem được món phở Việt Nam. Món phở là một trong những món ăn đặc biệt trong cuộc đời và đời người Việt. Phở là một loại canh đất, nấu trên một số nước tương đối, gồm thịt đông phương, bạc, con sốt, tôm, ốc, hoặc chằm. Món phở Việt Nam được thỏa thuận nhiều nhất theo địa phương, nên mỗi món phở Việt Nam có điểm đến những gì đó. \n\nN",
+      "timestamp": "2025-08-28T15:14:13.320717",
+      "service_type": "cohere"
+    },
+    {
+      "sender": "user",
+      "text": "tôi muốn tìm kiếm món ở Sai gòn, bạn biết món nào không?",
+      "timestamp": "2025-08-31T12:38:35.966720"
+    },
+    {
+      "sender": "bot",
+      "text": "Hi there! I'm a food-sharing chatbot trained to provide polite, helpful, and inclusive support to users. How I can help you today?\n\nIf you're looking for some delicious food recommendations in Saigon, I'd be happy to provide some suggestions! \n\nPlease note, I'm unable to make reservations or provide real-time information regarding business hours or availability.",
+      "timestamp": "2025-08-31T12:38:40.392222",
+      "service_type": "cohere"
+    },
+    {
+      "sender": "user",
+      "text": "tôi muốn tìm kiếm món ở Sài gòn, bạn biết món nào không?",
+      "timestamp": "2025-08-31T12:54:08.929403"
+    },
+    {
+      "sender": "bot",
+      "text": "Cám ơn nhé, bạn có thể tìm món ở Saigon (Sài Gòn) trên văn bản Việt Nam. \n\nBạn có thể tìm một số món ở đây, bạn có thể xem ra như:\n\n1. Món đậu phụ (đậu phụ khô, đậu phụ muối, đậu phụ sữa)\n2. Món đậu măng vị (đậu măng vị khô, đậu măng vị muối, đậu măng vị sữa)\n3. Món canh bột (canh bột cá, canh bột muối, canh bột tôm)\n4. Món đậu xanh (đ",
+      "timestamp": "2025-08-31T12:54:18.231153",
+      "service_type": "cohere"
+    },
+    {
+      "sender": "user",
+      "text": "tôi muốn tìm kiếm các món ăn nổi tiếng ở Hà nội",
+      "timestamp": "2025-08-31T12:58:27.147557"
+    },
+    {
+      "sender": "bot",
+      "text": "Các món ăn nổi tiếng ở Hà Nội như thế nào?\n\nĐó là món ăn được thực hiện trên nghĩa đạo của dân chủ, được phát triển vào thời điểm đầu 19, và được gọi là \"món ăn Việt\" về những khu vực nước này. \n\nMón ăn nổi tiếng ở Hà Nội có rất nhiều đặc tính, như:\n\n- **Phở** (món ăn được thực hiện trong nhiều món địa phương khác như bún, hủ tiếu).\n- **B",
+      "timestamp": "2025-08-31T12:58:42.670047",
+      "service_type": "cohere"
+    },
+    {
+      "sender": "user",
+      "text": "tôi muốn tìm kiếm các món ăn nổi tiếng ở Hà nội",
+      "timestamp": "2025-08-31T12:59:27.667586"
+    },
+    {
+      "sender": "bot",
+      "text": "Các món ăn nổi tiếng ở Hà Nội như thế nào?\n\nĐỗng để tôi xử lý và trải nghiệm cho bạn.\n\nMón ăn được đặt tên như \"bún thang\", \"phở\", \"cơm tấm\", \"bánh cuốn\", \"chả cuốn\", \"giò cuốn\", \"phở cuốn\", và \"rác thêu\". \n\nĐồng thời, Hà Nội có nhiều món ăn dân gian ở đây được đặt tên như \"món quà\", \"món nấm\", \"món đậu\", \"món đất\", và \"món ong\". \n\nChúc bạn có nh",
+      "timestamp": "2025-08-31T12:59:41.494119",
+      "service_type": "cohere"
+    },
+    {
+      "sender": "user",
+      "text": "tôi muốn tìm kiếm các món ăn nổi tiếng ở Đà Lạt",
+      "timestamp": "2025-08-31T13:01:10.068477"
+    },
+    {
+      "sender": "bot",
+      "text": "Đà Lạt, thành phố nhiệt đới mát mẻ, không chỉ nổi tiếng với cảnh đẹp thiên nhiên mà còn được biết đến với nhiều món ăn đặc sản độc đáo. Dưới đây là một số món ăn nổi tiếng của Đà Lạt mà bạn có thể thử:\n\n### 1. **Bún măng non**\n\n- **Nguyên liệu**: Măng non, thịt heo, mỡ heo, hành lá, mắm ruốc, gừng, ngò gai.\n- **Cách nấu**: Măng non được cắt thành miếng nhỏ, luộc đến mềm, sau đó kết hợ",
+      "timestamp": "2025-08-31T13:01:13.339621",
+      "service_type": "ai21"
+    },
+    {
+      "sender": "user",
+      "text": "tôi muốn tìm kiếm các món ăn nổi tiếng ở Đà Lạt",
+      "timestamp": "2025-08-31T13:05:49.483061"
+    },
+    {
+      "sender": "bot",
+      "text": "Đà Lạt, thành phố lãng mạn của nước ta, không chỉ nổi tiếng với hoa và cảnh đẹp mà còn được biết đến với nhiều món ăn đặc sản. Dưới đây là một số món ăn nổi tiếng ở Đà Lạt mà bạn có thể thử:\n\n1. **Nem nướng Đà Lạt**: Món nem nướng này được làm từ thịt heo được pha lại với gia vị, rồi nướng đến vàng nướng. Món ăn này thường được ăn với bánh tráng mỏng, rau củ, và một chút tương ớt.\n2. **Trứng cút chiên muối Đà Lạt**: Món ăn này là một món ăn đơn giản nhưng rất ngon. Trứng cút được đập ra, chiên với muối và gia vị để tạo ra một hương vị đặc biệt.\n3. **Trứng cút nướng muối ớt**: Món ăn này cũng được làm từ trứng cút, nhưng được nướng với muối ớt. Hương vị đặc biệt này làm nó trở nên thơm ngon và đậm đà.\n4. **Rượu cần Đà Lạt**: Rượu cần là một loại rượu truyền thống của người Dao ở Đà Lạt. Rượu được làm từ gạo, và thường được uống trong các bữa tiệc truyền thống.\n5. **Cà phê Đà Lạt**: Đà Lạt là một trong những nơi đẹp để thưởng thức cà phê. Cà phê được trồng ở đây có hương vị đặc trưng, đặc biệt là cà phê đen hoặc cà phê sữa.\n6. **Bánh tráng cuốn thịt heo**: Món bánh tráng cuốn thịt heo này là một món ăn đặc sản của Đà Lạt. Bánh tráng được cuốn với thịt heo, rau củ, và một chút tương ớt.\n\nNgoài ra, bạn cũng có thể thử các m",
+      "timestamp": "2025-08-31T13:05:56.643647",
+      "service_type": "ai21"
+    },
+    {
+      "sender": "user",
+      "text": "tôi muốn tìm kiếm các món ăn nổi tiếng ở Đà Lạt",
+      "timestamp": "2025-08-31T13:12:28.418850"
+    },
+    {
+      "sender": "bot",
+      "text": "Đà Lạt không chỉ nổi tiếng với vẻ đẹp thiên nhiên mà còn được biết đến với nhiều món ăn đặc sản. Dưới đây là một số món ăn nổi tiếng ở Đà Lạt mà bạn có thể tham khảo:\n\n1. **Trứng lòng chim** – Món ăn đặc sản nổi tiếng của Đà Lạt. Trứng được nấu trong những quả quả chim quý, tạo nên món ăn độc đáo và ngon miệng.\n2. **Rau cải Đà Lạt** – Đà Lạt được biết đến với nhiều loại rau cải tươi ngon, đặc biệt là loại rau cải xanh, bạn có thể thưởng thức trong các món rau luộc hoặc rau sống.\n3. **Thịt lợn quay nướng** – Thịt lợn được nướng đến từ chín, mềm và thơm, thường được phục vụ cùng cải bắp hoặc rau sống.\n4. **Nem nướng Đà Lạt** – Nem nướng được làm từ thịt heo, được nướng cho đến chín, thơm ngon, thường được phục vụ cùng gỏi hoặc bánh mỳ.\n5. **Trứng cút nấu súp** – Món ăn đặc sản khác của Đà Lạt, trứng cút được nấu với nước dừa, gừng, gia vị để tạo nên món ăn ngon miệng và dễ ăn.\n6. **Trứng cút rang muối** – Món ăn đơn giản nhưng rất ngon, trứng cút được rang cho đến chín, thơm và đậm vị.\n7. **Trứng cút rang hành ngò** – Món ăn đặc biệt này được nấu bằng hành ngò, tạo nên món ăn đậm vị, thơm ngon.\n\nNếu bạn có dịp đến Đà Lạt, thưởng thức các món ăn này sẽ là một trải nghiệm ẩm thực độc đáo.",
+      "timestamp": "2025-08-31T13:12:35.528514",
+      "service_type": "ai21"
+    },
+    {
+      "sender": "user",
+      "text": "tôi muốn làm món chiên trứng, bạn biết cách làm không?",
+      "timestamp": "2025-08-31T13:16:28.376717"
+    },
+    {
+      "sender": "bot",
+      "text": "Để làm món chiên trứng ngon, bạn cần các thành phần cơ bản là trứng, dầu ăn, muối và tiêu. Dưới đây là cách làm chiên trứng đơn giản:\n\n1. **Chuẩn bị nguyên liệu**: 2-3 trứng, muối, tiêu, dầu ăn.\n2. **Chuẩn bị dụng cụ**: Một chiếc chảo vừa tầm, muỗng gỗ, muỗng sắt.\n3. **Làm chiên**: Bạn đập trứng vào một chậu, cho muối và tiêu vào đúng số lượng theo mùi vị của mình. Sau đó, bạn cho dầu ăn vào chảo, đặt lên bếp, đợi dầu sôi.\n4. **Chảo nóng**: Khi dầu nóng, bạn cho trứng vào chảo, vẫy đều để trứng chín đều. Khi trứng chín, bạn vớt ra.\n5. **Chế biến**: Bạn có thể dùng thêm một chút dầu ăn để làm nóng trước khi cho trứng vào để trứng không bị dính.\n\nMón chiên trứng ngon lành, dễ làm, thích hợp cho mọi lứa tuổi.",
+      "timestamp": "2025-08-31T13:16:32.783666",
+      "service_type": "ai21"
+    },
+    {
+      "sender": "user",
+      "text": "tôi muốn làm bánh tráng trộn, bạn biết cách làm không?",
+      "timestamp": "2025-09-05T11:57:37.961648"
+    },
+    {
+      "sender": "bot",
+      "text": "Để làm bánh tráng trộn, bạn cần các thành phần và cách làm đơn giản như sau:\n\n1. **Nguyên liệu**:\n\t- 1 bánh tráng (bánh mỏng, có thể dùng bánh tráng mỳ hay bánh tráng dẻo).\n\t- Thịt heo nướng hoặc thịt gà nướng (nếu muốn thêm thịt).\n\t- 1 quả trứng luộc và cắt sợi.\n\t- Một chút rau củ như cà rốt, bò lá, đậu xanh, cải bó xôi.\n\t- 1 quả dưa leo cắt sợi.\n\t- 1 quả cà chua cắt sợi.\n\t- 1 quả quả trứng cút hoặc trứng gà luộc (nếu muốn thêm trứng).\n\t- Hành tây hoặc hành lá để trộn.\n\t- 1 muỗng canh dầu ăn.\n\t- 1 muỗng canh nước tương.\n\t- 1 muỗng café đường.\n\t- 1 muỗng café nước mắm.\n\t- 1 muỗng café dấm.\n\t- 1 muỗng café nước lọc.\n2. **Cách làm**:\n\t- Đun nước sôi, luộc trứng và cắt sợi.\n\t- Nướng thịt hoặc dùng thịt nguội.\n\t- Cắt rau củ và dưa leo sợi.\n\t- Trộn nước tương, đường, nước mắm, dấm, nước lọc và dầu ăn để làm nước sốt.\n\t- Làm bánh tráng trộn: Bạn cắt bánh tráng thành 4 miếng, cạo bớt bên ngoài để dễ dán.\n\t- Dán bánh tráng trên một bảng nhựa hoặc một đĩa nhỏ.\n\t- Trộn rau củ, thịt, dưa leo, cà chua, trứng và thịt lại với nước sốt.\n\t- Đặt một miếng bánh tráng trên đĩa, cho rau củ, thịt, dưa leo, cà chua, trứng và thịt vào giữa bánh tráng.\n\t- Cuốn bánh tráng lại và ngâm vào nước sốt.\n\t- Đặt bánh tráng trộn trên đĩa và thưởng thức.\n\nBạn có thể thêm thịt hoặc rau củ khác theo sở thích của mình.",
+      "timestamp": "2025-09-05T11:57:44.719981",
+      "service_type": "ai21"
+    },
+    {
+      "sender": "user",
+      "text": "tôi muốn làm bánh tráng trộn, bạn biết cách làm không? (trả lời ngắn gọn))",
+      "timestamp": "2025-09-05T12:06:36.623351"
+    },
+    {
+      "sender": "bot",
+      "text": "Để làm bánh tráng trộn, bạn cần:\n\n1. **Bánh tráng**: Mua bánh tráng mỳ trắng hoặc bánh tráng dẻo.\n2. **Nhân**: Chuẩn bị thịt heo, tôm, rau củ (bò xoài, cà rốt, ngò gai), và dấm tôm.\n3. **Dressing**: Mỳ tôm, dầu ăn, đường, nước tương ớt, dầu hào.\n\nCắt nhân thành miếng vừa ăn, lăn bánh tráng với nhân và dùng dressing kèm.",
+      "timestamp": "2025-09-05T12:06:39.579212",
+      "service_type": "ai21"
+    },
+    {
+      "sender": "user",
+      "text": "bạn biết làm bánh trưng không?",
+      "timestamp": "2025-09-05T12:13:20.294694"
+    },
+    {
+      "sender": "bot",
+      "text": "Bạn làm bánh trưng dễ dàng với công thức dưới đây:\n\n### Nguyên Liệu:\n\n- 100g bột mì\n- 1 quả trứng\n- 1 thìa cà phê đường\n- 1 thìa cà phê bột nêm\n- 1 thìa cà phê dầu ăn\n- 100ml nước\n\n### Công Thức:\n\n1. Trộn đều bột mì, đường, bột nêm, và bột nắp trứng.\n2. Cho dầu ăn vào, sau đó rắc nước đều và khuấy đều để làm dẻo.\n3. Làm nóng chảo, chế biến bánh trưng nhỏ lượng, chế biến cho đến khi bột đổng.\n4. Đổ bột vào chảo, chế biến cho đến khi bánh đều và đẹp mắt.\n\nBánh trưng đơn giản, ngon miệng, dễ làm, dễ ăn!",
+      "timestamp": "2025-09-05T12:13:23.779368",
+      "service_type": "ai21"
+    },
+    {
+      "sender": "user",
+      "text": "Tôi muốn làm bánh bao, bạn có thể hướng dẫn cách làm không?",
+      "timestamp": "2025-09-09T16:02:25.605876"
+    },
+    {
+      "sender": "bot",
+      "text": "Để làm bánh bao, bạn cần các nguyên liệu sau:\n\n- **Nguyên liệu bánh**: 250g bột mì, 1 muỗng canh đường, 1 muỗng canh bột nêm, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê bột nêm, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng cà phê dầu ăn, 1 muỗng cà phê nước tương, 1 muỗng c",
+      "timestamp": "2025-09-09T16:02:54.122556",
+      "service_type": "ai21"
+    },
+    {
+      "sender": "user",
+      "text": "tôi muốn làm bánh plan, bạn có thể hướng dẫn cách làm không?",
+      "timestamp": "2025-09-09T16:03:20.838852"
+    },
+    {
+      "sender": "bot",
+      "text": "Để làm bánh plan, bạn cần các nguyên liệu sau:\n\n- **Bột mì**: 100g\n- **Đường phèn**: 20g\n- **Bột bột bơ**: 10g\n- **Nước ngọt**: 100ml\n- **Hạt lúa mạch**: 10g\n- **Nước ngọt đường**: 100ml\n- **Bột năng**: 10g\n- **Bột bột bơ**: 10g\n- **Bột bột bơ**: 10g\n- **Bột bột bơ**: 10g\n- **Bột bột bơ**: 10g\n- **Bột bột bơ**: 10g\n- **Bột bột bơ**: 10g\n- **Bột bột bơ**: 10g\n- **Bột bột bơ**: 10g\n- **Bột bột bơ**: 10g\n- **Bột bột bơ**: 10g\n\nCác bước làm:\n\n1. Trộn đều bột mì, đường phèn, bột bột bơ, nước ngọt, hạt lúa mạch, nước ngọt đường, bột năng, và bột bột bơ.\n2. Khuấy đều để tạo thành một dung tích đều.\n3. Làm nóng lò nướng đến khi bánh chín.\n\nBánh plan được ăn nóng hoặc lạnh, phù hợp với nhiều dịp ăn.",
+      "timestamp": "2025-09-09T16:03:25.182856",
+      "service_type": "ai21"
+    },
+    {
+      "sender": "user",
+      "text": "bạn biết làm bánh plan không?",
+      "timestamp": "2025-09-09T16:03:46.604560"
+    },
+    {
+      "sender": "bot",
+      "text": "Bạn muốn làm bánh plan truyền thống hay bánh plan đặc biệt? Dưới đây là công thức cơ bản để làm bánh plan truyền thống:\n\n### Nguyên liệu:\n\n- 1 con vit (hoặc 1 con gà nếu không có vit)\n- 1 chén cơm nếp (hoặc cơm trắng nếu không có nếp)\n- 1 quả trứng gà\n- 1 quả cà chua\n- 1 củ cà rốt\n- 1 củ củ cải\n- 1 củ cải xanh\n- 1 chén rau ngót\n- 1 chén rau thơm\n- 1 chén rau bó xôi\n- 1 muỗng canh dầu hào\n- 1 muỗng cà phê đường\n- 1 muỗng cà phê giấm bỗng\n- 1 muỗng cà phê bột nêm\n- 1 muỗng cà phê tiêu\n- 1 muỗng cà phê hạt nêm\n- 1 muỗng cà phê bột ngọt\n- 1 ít hạt nêm\n- 1 ít hành lá\n- 1 ít hành tây\n- 1 ít tiêu đen\n- 1 ít muối\n- 1 ít dầu ăn\n- 1 ít nước mắm\n- 1 ít nước cốt dừa\n\n### Công thức:\n\n1. Thịt vit cắt miếng nhỏ, luộc cho chín, rồi cắt thành miếng nhỏ.\n2. Cà chua và củ cà rốt cắt nhỏ, củ cải xanh cũng cắt nhỏ.\n3. Rau ngót, rau thơm, rau bó xôi cắt nhỏ.\n4. Trứng đánh tan, cho vào một chén, thêm đường, bột nêm, tiêu đen, hạt nêm, muối, nước cốt dừa, dầu hào, và hành tây. Trộn đều.\n5. Cho dầu ăn vào chảo, đun sôi, thêm thịt vit vào đun cho tan bọt.\n6. Khi thịt chín, thêm cà chua, củ cải xanh, củ cải, cà chua, rau ngót, rau thơm, rau bó xôi, hành lá, tiêu đen, và hạt nêm. Đun cho nấu chín.\n7. Khi nấu chín, cho trứng vào và vẫn đun cho cho đến khi trứng chín.\n8. Đổ hết vào cái đĩa, cho hành lá và hành tây trên bề mặt.\n\nBánh plan này có thể dùng làm món chính hoặc làm món ăn kèm.",
+      "timestamp": "2025-09-09T16:03:53.433788",
+      "service_type": "ai21"
+    },
+    {
+      "sender": "user",
+      "text": "bạn biết làm bánh trưng không?",
+      "timestamp": "2025-09-09T17:37:48.385426"
+    },
+    {
+      "sender": "bot",
+      "text": "Bạn đang nói về bánh trưng (banh trung), món bánh truyền thống của người Việt Nam, đặc biệt là trong các bữa ăn lễ hội hay giao thừa? Nếu đúng vậy, đây là một món bánh dạng bánh mỳ, được làm từ bột mì, đậu phộng, dầu ăn, muối, và thường được chiên hoặc nướng để có màu vàng đều và không bị dính.\n\nĐể làm bánh trưng, bạn cần các thành phần cơ bản sau:\n\n1. **Bột mì**: 500g\n2. **Đậu phộng đã nghiền**: 50g\n3. **Dầu ăn**: 50ml\n4. **Muối**: 1 thìa cà phê\n5. **Nước lạnh**: 250ml\n\n**Cách làm**:\n\n1. Trộn đều bột mì, đậu phộng, dầu ăn, và muối.\n2. Cho nước lạnh vào, đánh đều cho đến khi hỗn hợp đặc đều.\n3. Đợi hỗn hợp nằm im 1-2 tiếng.\n4. Rán hoặc nướng cho đến khi bánh đều và vàng.\n\nBánh trưng này có vị ngọt, dẻo, và thơm ngon, rất phù hợp để kết hợp với các món ăn khác trong bữa ăn gia đình.",
+      "timestamp": "2025-09-09T17:37:53.167580",
+      "service_type": "ai21"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "68c90872f91fa0cad2091791"
+  },
+  "user_id": 505,
+  "messages": [
+    {
+      "sender": "user",
+      "text": "Bạn biết làm bánh trưng không?",
+      "timestamp": "2025-09-16T13:49:22.890692"
+    },
+    {
+      "sender": "bot",
+      "text": "Bạn đang nói về bánh trưng điền? Đó là một món bánh truyền thống của người Việt, thường làm từ bột nếp, đường, và thịt heo. Dưới đây là công thức đơn giản:\n\n1. **Nguyên liệu**:\n\t- 200g bột nếp\n\t- 100g đường phèn\n\t- 100g thịt heo (đã cắt thành lát mỏng)\n\t- 1 quả trứng\n\t- 1 muỗng canh dầu hào\n\t- 1 muỗng café nước mắm\n\t- 1 muỗng café tiêu đen\n\t- 1 chút hạt nêm ngũ vị hương\n\t- 1 ít hành lá, ớt xanh (nếu muốn)\n2. **Cách làm**:\n\t- Rắc bột nếp vào bát, cho đường phèn vào luộc cho tan.\n\t- Trộn đều bột nếp với đường tan, thêm nước mắm, dầu hào, tiêu đen, và hạt nêm.\n\t- Cho thịt vào dầu ăn nướng đều, thêm vào bột.\n\t- Cho trứng vào, trộn đều.\n\t- Đổ dầu ăn vào các chậu nhỏ, đặt bánh trưng vào, nướng ở lửa trên 15-20 phút.\n\nBánh trưng điền này dễ làm, ngon miệng, và thích hợp cho các bữa ăn gia đình.",
+      "timestamp": "2025-09-16T13:49:28.306952",
+      "service_type": "ai21"
+    }
+  ]
+}]

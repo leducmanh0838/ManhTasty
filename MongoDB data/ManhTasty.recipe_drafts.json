@@ -1,0 +1,127 @@
+[{
+  "_id": {
+    "$oid": "68a816e57b4813b699f12a89"
+  },
+  "user_id": 1,
+  "title": "Tiêu đề",
+  "description": "Mô tả món ăn",
+  "servings": "2",
+  "cooking_time": "30",
+  "image": "recipes/20250826160045_76cb4b88",
+  "medias": [
+    {
+      "src": "recipes/20250826160048_2c9e6099",
+      "type": 1
+    },
+    {
+      "src": "recipes/20250826160055_a20a2dd3",
+      "type": 1
+    }
+  ],
+  "tags": [
+    {
+      "id": 10,
+      "name": "trứng chiên"
+    },
+    {
+      "id": 17,
+      "name": "món xào"
+    }
+  ],
+  "ingredients": [
+    {
+      "name": "nguyên liệu 1",
+      "quantity": "1"
+    },
+    {
+      "name": "nguyên liệu 2",
+      "quantity": "2"
+    }
+  ],
+  "steps": [
+    {
+      "description": "Bước 1",
+      "image": "recipes/20250826160103_f391cad7"
+    },
+    {
+      "description": "Bước 2",
+      "image": "recipes/20250826160114_92a2965f"
+    }
+  ],
+  "created_at": {
+    "$date": "2025-08-22T14:06:13.982Z"
+  },
+  "updated_at": {
+    "$date": "2025-08-26T16:01:31.767Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68c90043f91fa0cad2091790"
+  },
+  "user_id": 506,
+  "title": "Thịt nướng thơm ngon",
+  "description": "Đây là món ngon",
+  "servings": "2",
+  "cooking_time": "15",
+  "image": "recipes/20250916131710_c8f12905",
+  "medias": [
+    {
+      "src": "recipes/20250916131714_c1dbc1d4",
+      "type": 1,
+      "parent_type": "step"
+    }
+  ],
+  "tags": [
+    {
+      "id": 52,
+      "name": "nướng"
+    },
+    {
+      "id": 73,
+      "name": "mặn"
+    },
+    {
+      "id": 11,
+      "name": "món chính"
+    }
+  ],
+  "ingredients": [
+    {
+      "name": "Thịt heo",
+      "quantity": "200g"
+    },
+    {
+      "name": "tỏi",
+      "quantity": "1 quả"
+    },
+    {
+      "name": "hành tím",
+      "quantity": "1 quả"
+    },
+    {
+      "name": "rau",
+      "quantity": "300g"
+    }
+  ],
+  "steps": [
+    {
+      "description": "Đốt than cho đỏ hồng.",
+      "image": ""
+    },
+    {
+      "description": "Làm nóng lò ở 200°C.",
+      "image": null
+    },
+    {
+      "description": "Trải thịt trên khay có lót giấy bạc, nướng 15–20 phút, trở 1 lần cho chín đều.",
+      "image": null
+    }
+  ],
+  "created_at": {
+    "$date": "2025-09-16T13:14:27.044Z"
+  },
+  "updated_at": {
+    "$date": "2025-09-16T13:19:12.644Z"
+  }
+}]

@@ -27,9 +27,15 @@ class AppConfig(AppConfig):
         # Dùng threading để tránh lỗi AppRegistryNotReady
         threading.Thread(target=build_index()).start()
 
-        # from django_q.models import Schedule
-        #
-        # # Kiểm tra xem schedule đã tồn tại chưa, tránh tạo trùng lặp
-        # if not Schedule.objects.filter(func='app.tasks.my_task').exists():
-        #     print("not Schedule.objects.filter(func='app.tasks.my_task').exists()")
-        #     schedule('app.tasks.my_task', schedule_type='M', minutes=0.1)
+        from django_q.models import Schedule
+
+        # Chỉ tạo schedule nếu chưa có
+        Schedule.objects.filter(func='app.tasks.clean_deleted_recipes').delete()
+
+        # Tạo lại schedule mới
+        schedule(
+            'app.tasks.clean_deleted_recipes',
+            schedule_type=Schedule.MINUTES,  # chạy theo phút
+            minutes=0.1,  # 6 giây
+            repeats=-1  # -1 nghĩa là lặp vô hạn
+        )
