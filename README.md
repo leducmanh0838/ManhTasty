@@ -21,30 +21,33 @@ Demo video: https://www.youtube.com/watch?v=jCqo9_qHdcM
 - **Login**: Google OAuth 2.0, Facebook OAuth  
 - **Media storage**: Cloudinary
 - **Chatbot**: AI21
-- **Full-text search**: Whoosh
+- **Full-text search**: Whoosh️
 
 ---
 
 ## ✨ Features
 
-- 🔑 **Authentication & Authorization**
-  - Google Login, Oauth2
-  - Role-based access: **Admin**, **Landlord**, **Tenant**.
+- **User**
+  - Login with Google, Facebook
+  - React to post, comment (like 👍, love ❤️, haha 😂, delicious 😋, wow 😮, angry 😡)
+  - Comment on post, other comment
+  - Rate post
+  - Report post, comment
+  - Chat with Chatbot (Ai21)
+  - Post recipe
+  - Search, filter dishes
+- **Admin**
+  - View statistics
+  - Manage users
+  - Manage comments
+  - Manage tags
+  - Manage recipes
+ 
+---
 
-- 📍 **Google Maps Integration**
-  - Display room locations on the map.
-  - Search for rentals by area.
-
-- 💬 **Realtime Chat**
-  - Direct chat between tenants and landlords.
-  - Implemented with Firebase
-
-- 🏘 **Room Management**
-  - Post rental listings (add, edit, delete).
-  - Manage room inventory.
-
-- 📊 **Admin Dashboard**
-  - Manage users, rooms, and reported listings.
-  - System monitoring and statistics.
+ ## 👤 Use case
+ 
+<img width="1149" height="730" alt="image" src="https://github.com/user-attachments/assets/9a2f768d-a4c7-450d-90f6-91ee7b92e42f" />
 
 ---
+
