@@ -7,7 +7,7 @@ A comprehensive Recipe Sharing Platform designed to connect food enthusiasts. Th
 
 ## 🎥 Demo Video
 
-Click on the image below to see detailed demo:
+Demo video: https://www.youtube.com/watch?v=jCqo9_qHdcM
 
 [![ManhTasty Demo](https://img.youtube.com/vi/jCqo9_qHdcM/0.jpg)](https://www.youtube.com/watch?v=jCqo9_qHdcM)
 
